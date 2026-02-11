@@ -1,0 +1,455 @@
+<svg viewBox="0 0 800 1200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Organic edge distortion for fabric -->
+    <filter id="worn" x="-3%" y="-3%" width="106%" height="106%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.015 0.04" numOctaves="5" seed="2" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="8" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Heavier distortion for tattered bottom -->
+    <filter id="tatter" x="-8%" y="-8%" width="116%" height="116%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.03" numOctaves="6" seed="5" result="warp"/>
+      <feDisplacementMap in="SourceGraphic" in2="warp" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- Subtle noise grain overlay -->
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="4" seed="8" result="n"/>
+      <feColorMatrix type="saturate" values="0" in="n" result="gn"/>
+      <feBlend in="SourceGraphic" in2="gn" mode="soft-light" result="grained"/>
+      <feComponentTransfer in="grained">
+        <feFuncA type="linear" slope="1"/>
+      </feComponentTransfer>
+    </filter>
+    <!-- Ambient gold halo -->
+    <filter id="goldGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="18" result="b"/>
+      <feFlood flood-color="#C5B358" flood-opacity="0.04"/>
+      <feComposite in2="b" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- Inner shadow for depth -->
+    <filter id="innerDepth">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b"/>
+      <feOffset dy="4"/>
+      <feFlood flood-color="#000" flood-opacity="0.4"/>
+      <feComposite in2="b" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Cloak base: very dark, barely-there color shift -->
+    <linearGradient id="cloak" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#111120"/>
+      <stop offset="35%" stop-color="#0c0c18"/>
+      <stop offset="70%" stop-color="#080810"/>
+      <stop offset="100%" stop-color="#050508"/>
+    </linearGradient>
+    <!-- Fold highlight: the faintest caught-light on ridges -->
+    <linearGradient id="foldHi" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="rgba(200,195,175,0.07)"/>
+      <stop offset="100%" stop-color="rgba(200,195,175,0)"/>
+    </linearGradient>
+    <!-- Deep fold shadow -->
+    <linearGradient id="foldSh" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.35)"/>
+      <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+    </linearGradient>
+    <!-- Hood darkness -->
+    <radialGradient id="void" cx="50%" cy="42%" r="48%">
+      <stop offset="0%" stop-color="#000"/>
+      <stop offset="80%" stop-color="#020206"/>
+      <stop offset="100%" stop-color="#08080f"/>
+    </radialGradient>
+    <!-- Hood fabric -->
+    <radialGradient id="hood" cx="50%" cy="18%" r="82%">
+      <stop offset="0%" stop-color="#141422"/>
+      <stop offset="50%" stop-color="#0c0c1a"/>
+      <stop offset="100%" stop-color="#070710"/>
+    </radialGradient>
+    <!-- Gauntlet -->
+    <linearGradient id="metal" x1="0.3" y1="0" x2="0.7" y2="1">
+      <stop offset="0%" stop-color="#302820"/>
+      <stop offset="40%" stop-color="#1c1814"/>
+      <stop offset="100%" stop-color="#0c0a08"/>
+    </linearGradient>
+    <!-- Ball -->
+    <radialGradient id="ball" cx="38%" cy="32%" r="58%">
+      <stop offset="0%" stop-color="#1a1a28"/>
+      <stop offset="100%" stop-color="#080810"/>
+    </radialGradient>
+    <!-- Background glow -->
+    <radialGradient id="bgGlow" cx="50%" cy="30%" r="50%">
+      <stop offset="0%" stop-color="rgba(197,179,88,0.06)"/>
+      <stop offset="100%" stop-color="rgba(197,179,88,0)"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Faint atmospheric glow -->
+  <ellipse cx="400" cy="400" rx="320" ry="440" fill="url(#bgGlow)"/>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN ROBE — heavy, weighted, pooling at base
+       ═══════════════════════════════════════════ -->
+  <g filter="url(#worn)">
+    <path d="
+      M400 52
+      C368 55, 312 88, 290 138
+      C272 182, 276 220, 286 252
+      C264 280, 225 328, 185 395
+      C145 462, 112 548, 88 648
+      C65 748, 48 858, 35 968
+      C26 1032, 16 1098, 6 1168
+      L0 1200 L800 1200
+      C794 1168, 784 1098, 775 1032
+      C762 858, 745 748, 722 648
+      C698 548, 665 462, 625 395
+      C585 328, 546 280, 524 252
+      C534 220, 538 182, 520 138
+      C498 88, 442 55, 410 52 Z
+    " fill="url(#cloak)" filter="url(#goldGlow)"/>
+  </g>
+
+  <!-- FOLD VOLUMES — filled overlapping shapes for real depth -->
+  <g filter="url(#grain)">
+    <!-- Left major drape fold (wide V from shoulder) -->
+    <path d="
+      M308 260 C295 310, 272 388, 252 478
+      C232 568, 210 672, 192 785
+      C178 878, 164 972, 148 1072
+      C140 1118, 132 1162, 125 1200
+      L185 1200 C190 1148, 198 1088, 208 1022
+      C225 928, 245 828, 265 728
+      C285 628, 302 532, 318 438
+      C330 370, 335 305, 330 268 Z
+    " fill="url(#foldSh)" opacity="0.6"/>
+
+    <!-- Left drape ridge (light catch) -->
+    <path d="
+      M330 268 C325 318, 318 398, 308 488
+      C298 578, 286 678, 272 778
+      C260 868, 248 952, 235 1042
+      C228 1092, 222 1148, 218 1200
+      L250 1200 C254 1138, 260 1068, 268 998
+      C282 898, 296 798, 310 698
+      C324 598, 336 498, 344 398
+      C348 328, 348 278, 342 262 Z
+    " fill="url(#foldHi)" opacity="0.5"/>
+
+    <!-- Right major drape fold -->
+    <path d="
+      M502 260 C515 310, 538 388, 558 478
+      C578 568, 600 672, 618 785
+      C632 878, 646 972, 662 1072
+      C670 1118, 678 1162, 685 1200
+      L625 1200 C620 1148, 612 1088, 602 1022
+      C585 928, 565 828, 545 728
+      C525 628, 508 532, 492 438
+      C480 370, 475 305, 480 268 Z
+    " fill="url(#foldSh)" opacity="0.6"/>
+
+    <!-- Right drape ridge -->
+    <path d="
+      M480 262 C485 318, 492 398, 502 488
+      C512 578, 524 678, 538 778
+      C550 868, 562 952, 575 1042
+      C582 1092, 588 1148, 592 1200
+      L560 1200 C556 1138, 550 1068, 542 998
+      C528 898, 514 798, 500 698
+      C486 598, 474 498, 466 398
+      C462 328, 462 278, 468 262 Z
+    " fill="url(#foldHi)" opacity="0.5"/>
+
+    <!-- Center-left inner fold -->
+    <path d="
+      M370 295 C365 395, 358 518, 350 648
+      C342 778, 335 898, 328 1018
+      C324 1078, 320 1142, 318 1200
+      L352 1200 C354 1132, 358 1058, 362 982
+      C368 862, 375 738, 382 618
+      C388 498, 390 385, 388 298 Z
+    " fill="rgba(0,0,0,0.2)" opacity="0.7"/>
+
+    <!-- Center-right inner fold -->
+    <path d="
+      M440 295 C445 395, 452 518, 460 648
+      C468 778, 475 898, 482 1018
+      C486 1078, 490 1142, 492 1200
+      L458 1200 C456 1132, 452 1058, 448 982
+      C442 862, 435 738, 428 618
+      C422 498, 420 385, 422 298 Z
+    " fill="rgba(0,0,0,0.2)" opacity="0.7"/>
+
+    <!-- Center crease — the deepest shadow line -->
+    <path d="M400 290 C399 420, 398 572, 397 728 C396 878, 397 1018, 398 1160"
+      stroke="rgba(0,0,0,0.5)" stroke-width="3" fill="none"/>
+    <path d="M402 292 C401 422, 400 574, 399 730 C398 880, 399 1020, 400 1162"
+      stroke="rgba(180,170,140,0.03)" stroke-width="1.5" fill="none"/>
+
+    <!-- Far left outer fold -->
+    <path d="
+      M195 395 C168 488, 142 598, 122 718
+      C105 828, 88 942, 72 1062
+      C62 1118, 52 1168, 42 1200
+      L88 1200 C96 1158, 106 1098, 118 1032
+      C135 918, 155 798, 178 688
+      C198 588, 215 492, 228 408 Z
+    " fill="rgba(0,0,0,0.18)"/>
+
+    <!-- Far right outer fold -->
+    <path d="
+      M615 395 C642 488, 668 598, 688 718
+      C705 828, 722 942, 738 1062
+      C748 1118, 758 1168, 768 1200
+      L722 1200 C714 1158, 704 1098, 692 1032
+      C675 918, 655 798, 632 688
+      C612 588, 595 492, 582 408 Z
+    " fill="rgba(0,0,0,0.18)"/>
+  </g>
+
+  <!-- Secondary fold detail lines (many subtle creases) -->
+  <g opacity="0.8">
+    <path d="M240 468 C228 558, 214 662, 200 778 C190 862, 178 952, 165 1052" stroke="rgba(200,190,160,0.025)" stroke-width="2" fill="none"/>
+    <path d="M248 472 C236 562, 222 668, 208 782 C198 868, 186 958, 173 1058" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none"/>
+    <path d="M155 548 C145 638, 132 742, 120 858 C112 938, 102 1028, 92 1128" stroke="rgba(200,190,160,0.02)" stroke-width="1.5" fill="none"/>
+    <path d="M360 358 C355 468, 348 598, 340 738 C334 848, 328 958, 322 1078" stroke="rgba(200,190,160,0.02)" stroke-width="1" fill="none"/>
+
+    <path d="M570 468 C582 558, 596 662, 610 778 C620 862, 632 952, 645 1052" stroke="rgba(200,190,160,0.025)" stroke-width="2" fill="none"/>
+    <path d="M562 472 C574 562, 588 668, 602 782 C612 868, 624 958, 637 1058" stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none"/>
+    <path d="M655 548 C665 638, 678 742, 690 858 C698 938, 708 1028, 718 1128" stroke="rgba(200,190,160,0.02)" stroke-width="1.5" fill="none"/>
+    <path d="M450 358 C455 468, 462 598, 470 738 C476 848, 482 958, 488 1078" stroke="rgba(200,190,160,0.02)" stroke-width="1" fill="none"/>
+
+    <!-- Horizontal tension creases across the body -->
+    <path d="M270 460 C320 454, 380 450, 400 449 C420 450, 480 454, 540 460" stroke="rgba(200,190,160,0.015)" stroke-width="1" fill="none"/>
+    <path d="M230 570 C300 560, 370 555, 400 554 C430 555, 500 560, 580 570" stroke="rgba(200,190,160,0.012)" stroke-width="1" fill="none"/>
+    <path d="M190 700 C270 688, 350 682, 400 680 C450 682, 530 688, 620 700" stroke="rgba(200,190,160,0.01)" stroke-width="1" fill="none"/>
+    <path d="M150 850 C250 835, 340 828, 400 826 C460 828, 550 835, 660 850" stroke="rgba(200,190,160,0.008)" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       HOOD — heavy draped cowl with bunched fabric
+       ═══════════════════════════════════════════ -->
+  <g filter="url(#worn)">
+    <!-- Hood main volume -->
+    <path d="
+      M400 28
+      C362 30, 300 68, 278 118
+      C260 158, 258 195, 268 225
+      C278 255, 300 268, 325 272
+      C355 275, 380 262, 398 248
+      C402 246, 412 248, 420 252
+      C438 262, 458 275, 488 272
+      C512 268, 534 255, 544 225
+      C554 195, 552 158, 534 118
+      C512 68, 450 30, 412 28 Z
+    " fill="url(#hood)" filter="url(#innerDepth)"/>
+
+    <!-- Hood brow ridge — heavy overhang creating deep shadow -->
+    <path d="
+      M330 195 C348 188, 375 178, 400 176
+      C425 178, 452 188, 470 195
+      C478 200, 480 212, 470 218
+      C452 228, 425 235, 400 236
+      C375 235, 348 228, 330 218
+      C320 212, 322 200, 330 195 Z
+    " fill="rgba(0,0,0,0.5)"/>
+
+    <!-- Hood fabric folds — bunched fabric on left -->
+    <path d="M298 128 C292 155, 286 185, 282 212 C280 232, 288 248, 302 258"
+      stroke="rgba(200,190,160,0.04)" stroke-width="2.5" fill="none"/>
+    <path d="M312 118 C308 148, 302 178, 298 208 C296 228, 302 242, 315 252"
+      stroke="rgba(0,0,0,0.25)" stroke-width="2" fill="none"/>
+    <path d="M328 108 C325 138, 320 170, 318 202 C316 222, 320 238, 332 248"
+      stroke="rgba(200,190,160,0.03)" stroke-width="1.5" fill="none"/>
+
+    <!-- Hood fabric folds — bunched on right -->
+    <path d="M512 128 C518 155, 524 185, 528 212 C530 232, 522 248, 508 258"
+      stroke="rgba(200,190,160,0.04)" stroke-width="2.5" fill="none"/>
+    <path d="M498 118 C502 148, 508 178, 512 208 C514 228, 508 242, 495 252"
+      stroke="rgba(0,0,0,0.25)" stroke-width="2" fill="none"/>
+    <path d="M482 108 C485 138, 490 170, 492 202 C494 222, 490 238, 478 248"
+      stroke="rgba(200,190,160,0.03)" stroke-width="1.5" fill="none"/>
+
+    <!-- Hood peak subtle -->
+    <path d="M400 28 C394 42, 385 62, 383 85 C382 98, 392 95, 398 82 C402 74, 408 74, 412 82 C418 95, 428 98, 427 85 C425 62, 416 42, 410 28 Z"
+      fill="#0a0a15"/>
+  </g>
+
+  <!-- Face void — absolute darkness -->
+  <ellipse cx="400" cy="155" rx="50" ry="58" fill="url(#void)"/>
+  <ellipse cx="400" cy="160" rx="38" ry="42" fill="#000"/>
+
+  <!-- Ghost-light eyes — almost imperceptible -->
+  <circle cx="386" cy="150" r="2.2" fill="#C5B358" opacity="0.2"/>
+  <circle cx="414" cy="150" r="2.2" fill="#C5B358" opacity="0.2"/>
+  <circle cx="386" cy="150" r="7" fill="#C5B358" opacity="0.025"/>
+  <circle cx="414" cy="150" r="7" fill="#C5B358" opacity="0.025"/>
+
+  <!-- ═══════════════════════════════════════════
+       ARMS — heavy sleeves reaching to ball
+       ═══════════════════════════════════════════ -->
+  <!-- Left arm -->
+  <g filter="url(#worn)">
+    <path d="
+      M280 335
+      C258 372, 228 425, 208 478
+      C188 532, 172 578, 168 612
+      C164 638, 165 658, 172 668
+      C180 675, 192 665, 204 642
+      C222 598, 242 548, 262 498
+      C282 448, 296 398, 302 358 Z
+    " fill="url(#cloak)"/>
+    <!-- Sleeve fold shadows -->
+    <path d="M272 350 C254 392, 230 448, 216 498 C202 545, 192 585, 184 618"
+      stroke="rgba(0,0,0,0.3)" stroke-width="3" fill="none"/>
+    <path d="M260 362 C245 398, 225 448, 212 498 C200 542, 190 582, 182 612"
+      stroke="rgba(200,190,160,0.035)" stroke-width="2" fill="none"/>
+    <path d="M290 348 C278 388, 262 438, 250 488 C240 532, 232 572, 225 608"
+      stroke="rgba(200,190,160,0.025)" stroke-width="1.5" fill="none"/>
+    <path d="M248 378 C238 415, 222 462, 210 508 C200 548, 192 585, 186 618"
+      stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Right arm -->
+  <g filter="url(#worn)">
+    <path d="
+      M530 335
+      C552 372, 582 425, 602 478
+      C622 532, 638 578, 642 612
+      C646 638, 645 658, 638 668
+      C630 675, 618 665, 606 642
+      C588 598, 568 548, 548 498
+      C528 448, 514 398, 508 358 Z
+    " fill="url(#cloak)"/>
+    <path d="M538 350 C556 392, 580 448, 594 498 C608 545, 618 585, 626 618"
+      stroke="rgba(0,0,0,0.3)" stroke-width="3" fill="none"/>
+    <path d="M550 362 C565 398, 585 448, 598 498 C610 542, 620 582, 628 612"
+      stroke="rgba(200,190,160,0.035)" stroke-width="2" fill="none"/>
+    <path d="M520 348 C532 388, 548 438, 560 488 C570 532, 578 572, 585 608"
+      stroke="rgba(200,190,160,0.025)" stroke-width="1.5" fill="none"/>
+    <path d="M562 378 C572 415, 588 462, 600 508 C610 548, 618 585, 624 618"
+      stroke="rgba(0,0,0,0.2)" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       GAUNTLET HANDS — armored, gripping ball
+       ═══════════════════════════════════════════ -->
+  <!-- Left hand -->
+  <g>
+    <!-- Wrist bracer -->
+    <path d="M176 648 C172 658, 168 672, 172 682 C178 688, 188 682, 192 668 C195 656, 190 648, 184 644 Z" fill="url(#metal)"/>
+    <!-- Fingers wrapping around ball from left -->
+    <path d="M182 668 C178 682, 174 700, 178 712 C184 718, 192 712, 194 698 C196 686, 192 672, 188 666 Z" fill="url(#metal)"/>
+    <path d="M192 662 C189 678, 186 696, 190 708 C196 714, 204 706, 206 692 C208 678, 204 664, 198 658 Z" fill="url(#metal)"/>
+    <path d="M202 655 C200 672, 198 690, 202 702 C208 708, 216 700, 218 686 C220 672, 216 656, 210 650 Z" fill="url(#metal)"/>
+    <path d="M212 648 C210 665, 210 682, 214 694 C220 700, 228 692, 228 678 C228 664, 224 650, 218 644 Z" fill="url(#metal)"/>
+    <!-- Thumb -->
+    <path d="M172 660 C166 668, 160 682, 164 692 C170 696, 178 688, 180 676 C182 666, 178 658, 174 656 Z" fill="url(#metal)"/>
+    <!-- Knuckle highlights -->
+    <circle cx="188" cy="672" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="198" cy="666" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="208" cy="658" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="218" cy="652" r="2" fill="rgba(200,185,140,0.04)"/>
+  </g>
+
+  <!-- Right hand -->
+  <g>
+    <path d="M634 648 C638 658, 642 672, 638 682 C632 688, 622 682, 618 668 C615 656, 620 648, 626 644 Z" fill="url(#metal)"/>
+    <path d="M628 668 C632 682, 636 700, 632 712 C626 718, 618 712, 616 698 C614 686, 618 672, 622 666 Z" fill="url(#metal)"/>
+    <path d="M618 662 C621 678, 624 696, 620 708 C614 714, 606 706, 604 692 C602 678, 606 664, 612 658 Z" fill="url(#metal)"/>
+    <path d="M608 655 C610 672, 612 690, 608 702 C602 708, 594 700, 592 686 C590 672, 594 656, 600 650 Z" fill="url(#metal)"/>
+    <path d="M598 648 C600 665, 600 682, 596 694 C590 700, 582 692, 582 678 C582 664, 586 650, 592 644 Z" fill="url(#metal)"/>
+    <path d="M638 660 C644 668, 650 682, 646 692 C640 696, 632 688, 630 676 C628 666, 632 658, 636 656 Z" fill="url(#metal)"/>
+    <circle cx="622" cy="672" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="612" cy="666" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="602" cy="658" r="2.5" fill="rgba(200,185,140,0.06)"/>
+    <circle cx="592" cy="652" r="2" fill="rgba(200,185,140,0.04)"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       SOCCER BALL — cradled between hands
+       ═══════════════════════════════════════════ -->
+  <g transform="translate(345,612)">
+    <!-- Soft shadow -->
+    <ellipse cx="55" cy="95" rx="44" ry="7" fill="rgba(0,0,0,0.2)"/>
+    <!-- Ball body -->
+    <circle cx="55" cy="48" r="50" fill="url(#ball)" stroke="rgba(255,255,255,0.07)" stroke-width="0.8"/>
+    <!-- Pentagon panels -->
+    <polygon points="55,12 70,26 66,44 44,44 40,26" fill="rgba(255,255,255,0.025)" stroke="rgba(255,255,255,0.065)" stroke-width="0.7"/>
+    <!-- Seam lines -->
+    <line x1="40" y1="26" x2="22" y2="18" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <line x1="55" y1="12" x2="55" y2="-2" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <line x1="70" y1="26" x2="88" y2="18" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <line x1="66" y1="44" x2="82" y2="58" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <line x1="44" y1="44" x2="28" y2="58" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <!-- Lower panels -->
+    <polygon points="18,58 28,58 34,72 24,80 14,72" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <polygon points="92,58 82,58 76,72 86,80 96,72" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <polygon points="55,76 66,68 76,76 72,90 38,90 34,76 44,68" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.7"/>
+    <!-- Outer seams -->
+    <line x1="22" y1="18" x2="8" y2="36" stroke="rgba(255,255,255,0.035)" stroke-width="0.7"/>
+    <line x1="88" y1="18" x2="102" y2="36" stroke="rgba(255,255,255,0.035)" stroke-width="0.7"/>
+    <line x1="8" y1="36" x2="14" y2="58" stroke="rgba(255,255,255,0.035)" stroke-width="0.7"/>
+    <line x1="102" y1="36" x2="96" y2="58" stroke="rgba(255,255,255,0.035)" stroke-width="0.7"/>
+    <!-- Gold ambient catch -->
+    <circle cx="42" cy="32" r="16" fill="rgba(197,179,88,0.025)"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       TATTERED BOTTOM — ragged torn fabric shapes
+       ═══════════════════════════════════════════ -->
+  <g filter="url(#tatter)">
+    <!-- Irregular torn fabric shapes, not just lines -->
+    <!-- Far left tatter strip -->
+    <path d="M48 890 C42 935, 28 1005, 15 1082 C8 1128, 2 1172, 0 1200 L22 1200 C24 1168, 30 1118, 38 1068 C52 988, 62 918, 65 882 Z" fill="#06060c" opacity="0.8"/>
+    <path d="M78 920 C72 968, 58 1042, 45 1128 C40 1165, 36 1188, 34 1200 L58 1200 C60 1182, 65 1148, 72 1108 C85 1028, 95 948, 98 908 Z" fill="#08080e" opacity="0.7"/>
+    <path d="M112 948 C106 998, 92 1068, 80 1148 C76 1178, 72 1198, 70 1200 L95 1200 C96 1188, 100 1158, 108 1122 C118 1052, 128 978, 132 938 Z" fill="#070710" opacity="0.6"/>
+    <path d="M155 975 C148 1025, 138 1092, 128 1165 C125 1185, 122 1198, 120 1200 L148 1200 C149 1188, 152 1162, 158 1132 C168 1068, 175 1005, 178 968 Z" fill="#08080e" opacity="0.5"/>
+
+    <!-- Center-left tatters -->
+    <path d="M210 998 C204 1048, 196 1112, 188 1178 C186 1192, 185 1200, 184 1200 L212 1200 C212 1192, 214 1168, 218 1142 C226 1082, 232 1028, 235 990 Z" fill="#06060c" opacity="0.45"/>
+    <path d="M280 1015 C276 1058, 270 1112, 264 1172 C262 1190, 260 1200, 260 1200 L288 1200 C288 1192, 290 1168, 294 1142 C298 1088, 302 1042, 304 1008 Z" fill="#08080e" opacity="0.35"/>
+
+    <!-- Center tatters -->
+    <path d="M350 1005 C346 1052, 340 1112, 334 1178 C332 1192, 330 1200, 330 1200 L360 1200 C360 1190, 362 1162, 366 1132 C370 1078, 374 1032, 376 998 Z" fill="#07070e" opacity="0.3"/>
+    <path d="M435 1005 C438 1052, 444 1112, 450 1178 C452 1192, 454 1200, 454 1200 L424 1200 C424 1190, 422 1162, 418 1132 C414 1078, 410 1032, 408 998 Z" fill="#07070e" opacity="0.3"/>
+
+    <!-- Center-right tatters -->
+    <path d="M510 1015 C514 1058, 520 1112, 526 1172 C528 1190, 530 1200, 530 1200 L502 1200 C502 1192, 500 1168, 496 1142 C492 1088, 488 1042, 486 1008 Z" fill="#08080e" opacity="0.35"/>
+    <path d="M585 998 C590 1048, 598 1112, 606 1178 C608 1192, 610 1200, 610 1200 L582 1200 C582 1192, 580 1168, 576 1142 C568 1082, 562 1028, 558 990 Z" fill="#06060c" opacity="0.45"/>
+
+    <!-- Far right tatters -->
+    <path d="M645 975 C652 1025, 662 1092, 672 1165 C675 1185, 678 1198, 680 1200 L652 1200 C651 1188, 648 1162, 642 1132 C632 1068, 625 1005, 622 968 Z" fill="#08080e" opacity="0.5"/>
+    <path d="M695 948 C702 998, 718 1068, 730 1148 C734 1178, 738 1198, 740 1200 L715 1200 C714 1188, 710 1158, 702 1122 C692 1052, 682 978, 678 938 Z" fill="#070710" opacity="0.6"/>
+    <path d="M728 920 C734 968, 748 1042, 762 1128 C768 1165, 772 1188, 774 1200 L750 1200 C748 1182, 742 1148, 735 1108 C722 1028, 712 948, 708 908 Z" fill="#08080e" opacity="0.7"/>
+    <path d="M758 890 C764 935, 778 1005, 792 1082 C798 1128, 804 1172, 806 1200 L784 1200 C782 1168, 776 1118, 768 1068 C755 988, 745 918, 742 882 Z" fill="#06060c" opacity="0.8"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       CHEST FOLD SHADOWS where arms meet body
+       ═══════════════════════════════════════════ -->
+  <path d="M290 330 C278 368, 262 412, 248 458 C238 492, 258 498, 278 478 C294 455, 302 418, 305 368 Z" fill="rgba(0,0,0,0.3)"/>
+  <path d="M520 330 C532 368, 548 412, 562 458 C572 492, 552 498, 532 478 C516 455, 508 418, 505 368 Z" fill="rgba(0,0,0,0.3)"/>
+
+  <!-- ═══════════════════════════════════════════
+       EDGE LIGHT CATCHES — subtle rim lighting
+       ═══════════════════════════════════════════ -->
+  <g opacity="0.5">
+    <path d="M288 132 C280 162, 272 198, 270 228" stroke="rgba(200,190,160,0.06)" stroke-width="1.2" fill="none"/>
+    <path d="M524 132 C532 162, 540 198, 542 228" stroke="rgba(200,190,160,0.06)" stroke-width="1.2" fill="none"/>
+    <path d="M278 258 C255 318, 228 398, 208 488" stroke="rgba(200,190,160,0.04)" stroke-width="1" fill="none"/>
+    <path d="M534 258 C557 318, 584 398, 604 488" stroke="rgba(200,190,160,0.04)" stroke-width="1" fill="none"/>
+    <!-- Left outer edge catch -->
+    <path d="M88 648 C72 748, 55 858, 42 968" stroke="rgba(200,190,160,0.025)" stroke-width="1" fill="none"/>
+    <!-- Right outer edge catch -->
+    <path d="M722 648 C738 748, 755 858, 768 968" stroke="rgba(200,190,160,0.025)" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- ═══════════════════════════════════════════
+       GROUND MIST
+       ═══════════════════════════════════════════ -->
+  <g opacity="0.4">
+    <ellipse cx="400" cy="1194" rx="420" ry="28" fill="rgba(255,255,255,0.01)"/>
+    <ellipse cx="300" cy="1198" rx="240" ry="16" fill="rgba(255,255,255,0.008)"/>
+    <ellipse cx="520" cy="1196" rx="200" ry="14" fill="rgba(255,255,255,0.006)"/>
+    <ellipse cx="150" cy="1199" rx="120" ry="8" fill="rgba(255,255,255,0.004)"/>
+    <ellipse cx="680" cy="1199" rx="100" ry="7" fill="rgba(255,255,255,0.004)"/>
+  </g>
+</svg>
