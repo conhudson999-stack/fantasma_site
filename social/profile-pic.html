@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Fantasma — Profile Picture</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      background: #040C14;
+      border-radius: 50%;
+    }
+
+    /* ── Conic light burst from center ── */
+    .burst {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1200px;
+      height: 1200px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(255,215,0,0.06) 2deg, transparent 4deg,
+        transparent 12deg, rgba(255,215,0,0.04) 14deg, transparent 16deg,
+        transparent 24deg, rgba(255,215,0,0.07) 26deg, transparent 28deg,
+        transparent 40deg, rgba(255,215,0,0.04) 42deg, transparent 44deg,
+        transparent 56deg, rgba(255,215,0,0.06) 58deg, transparent 60deg,
+        transparent 72deg, rgba(255,215,0,0.04) 74deg, transparent 76deg,
+        transparent 88deg, rgba(255,215,0,0.07) 90deg, transparent 92deg,
+        transparent 104deg, rgba(255,215,0,0.04) 106deg, transparent 108deg,
+        transparent 120deg, rgba(255,215,0,0.06) 122deg, transparent 124deg,
+        transparent 136deg, rgba(255,215,0,0.04) 138deg, transparent 140deg,
+        transparent 152deg, rgba(255,215,0,0.07) 154deg, transparent 156deg,
+        transparent 168deg, rgba(255,215,0,0.04) 170deg, transparent 172deg,
+        transparent 184deg, rgba(255,215,0,0.06) 186deg, transparent 188deg,
+        transparent 200deg, rgba(255,215,0,0.04) 202deg, transparent 204deg,
+        transparent 216deg, rgba(255,215,0,0.07) 218deg, transparent 220deg,
+        transparent 232deg, rgba(255,215,0,0.04) 234deg, transparent 236deg,
+        transparent 248deg, rgba(255,215,0,0.06) 250deg, transparent 252deg,
+        transparent 264deg, rgba(255,215,0,0.04) 266deg, transparent 268deg,
+        transparent 280deg, rgba(255,215,0,0.07) 282deg, transparent 284deg,
+        transparent 296deg, rgba(255,215,0,0.04) 298deg, transparent 300deg,
+        transparent 312deg, rgba(255,215,0,0.06) 314deg, transparent 316deg,
+        transparent 328deg, rgba(255,215,0,0.04) 330deg, transparent 332deg,
+        transparent 344deg, rgba(255,215,0,0.07) 346deg, transparent 348deg
+      );
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    /* ── Radial glow behind logo ── */
+    .glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255,215,0,0.30) 0%,
+        rgba(255,215,0,0.14) 35%,
+        transparent 65%
+      );
+      z-index: 2;
+    }
+
+    /* White glow directly behind logo */
+    .logo-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255,255,255,0.07) 0%,
+        rgba(255,255,255,0.02) 40%,
+        transparent 65%
+      );
+      z-index: 3;
+    }
+
+    /* ── Background ghost text — "FANTASMA" rotating around ── */
+    .ghost-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 20px;
+      color: rgba(255,215,0,0.07);
+      white-space: nowrap;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .gt-1 { font-size: 120px; top: 120px; left: -60px; transform: rotate(-25deg); }
+    .gt-2 { font-size: 100px; bottom: 150px; right: -80px; transform: rotate(-25deg); }
+    .gt-3 { font-size: 80px; top: 400px; left: -120px; transform: rotate(-25deg); }
+    .gt-4 { font-size: 90px; bottom: 380px; right: -60px; transform: rotate(-25deg); }
+
+    /* ── Concentric circle rings — more of them ── */
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .ring-1 { width: 1000px; height: 1000px; border: 1px solid rgba(255,215,0,0.18); }
+    .ring-2 { width: 920px; height: 920px; border: 1px solid rgba(255,215,0,0.28); }
+    .ring-3 { width: 820px; height: 820px; border: 1px solid rgba(255,215,0,0.14); }
+    .ring-4 { width: 700px; height: 700px; border: 1px solid rgba(255,215,0,0.22); }
+    .ring-5 { width: 580px; height: 580px; border: 1px solid rgba(255,215,0,0.10); }
+
+    /* ── Outer gold border ring ── */
+    .border-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1040px;
+      height: 1040px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,215,0,0.55);
+      z-index: 50;
+    }
+
+    /* ── Tick marks — compass style, more of them ── */
+    .tick {
+      position: absolute;
+      background: rgba(255,215,0,0.38);
+      z-index: 50;
+    }
+    .tick-n { width: 1px; height: 28px; top: 26px; left: 50%; transform: translateX(-50%); }
+    .tick-s { width: 1px; height: 28px; bottom: 26px; left: 50%; transform: translateX(-50%); }
+    .tick-w { width: 28px; height: 1px; left: 26px; top: 50%; transform: translateY(-50%); }
+    .tick-e { width: 28px; height: 1px; right: 26px; top: 50%; transform: translateY(-50%); }
+    /* Diagonals */
+    .tick-ne { width: 1px; height: 18px; top: 96px; right: 128px; transform: rotate(-45deg); background: rgba(255,215,0,0.12); }
+    .tick-nw { width: 1px; height: 18px; top: 96px; left: 128px; transform: rotate(45deg); background: rgba(255,215,0,0.12); }
+    .tick-se { width: 1px; height: 18px; bottom: 96px; right: 128px; transform: rotate(45deg); background: rgba(255,215,0,0.12); }
+    .tick-sw { width: 1px; height: 18px; bottom: 96px; left: 128px; transform: rotate(-45deg); background: rgba(255,215,0,0.12); }
+    /* Sub-ticks between main ticks */
+    .tick-sub { background: rgba(255,215,0,0.08); }
+    .tick-nnw { width: 1px; height: 10px; top: 50px; left: 330px; transform: rotate(22deg); }
+    .tick-nne { width: 1px; height: 10px; top: 50px; right: 330px; transform: rotate(-22deg); }
+    .tick-ssw { width: 1px; height: 10px; bottom: 50px; left: 330px; transform: rotate(-22deg); }
+    .tick-sse { width: 1px; height: 10px; bottom: 50px; right: 330px; transform: rotate(22deg); }
+    .tick-wnw { width: 10px; height: 1px; left: 50px; top: 330px; transform: rotate(22deg); }
+    .tick-wsw { width: 10px; height: 1px; left: 50px; bottom: 330px; transform: rotate(-22deg); }
+    .tick-ene { width: 10px; height: 1px; right: 50px; top: 330px; transform: rotate(-22deg); }
+    .tick-ese { width: 10px; height: 1px; right: 50px; bottom: 330px; transform: rotate(22deg); }
+
+    /* ── Horizontal glitch bars ── */
+    .glitch {
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* ── Crosshair — extended ── */
+    .cross-h {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.06) 20%, rgba(255,215,0,0.10) 45%, transparent 48%, transparent 52%, rgba(255,215,0,0.10) 55%, rgba(255,215,0,0.06) 80%, transparent);
+      z-index: 5;
+    }
+    .cross-v {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1px;
+      height: 500px;
+      background: linear-gradient(180deg, transparent, rgba(255,215,0,0.06) 20%, rgba(255,215,0,0.10) 45%, transparent 48%, transparent 52%, rgba(255,215,0,0.10) 55%, rgba(255,215,0,0.06) 80%, transparent);
+      z-index: 5;
+    }
+
+    /* ── Perimeter data text ── */
+    .pdata {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,215,0,0.35);
+      z-index: 45;
+    }
+    .pdata-top { top: 72px; left: 50%; transform: translateX(-50%); }
+    .pdata-bottom { bottom: 72px; left: 50%; transform: translateX(-50%); }
+    .pdata-left { left: 76px; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: center; }
+    .pdata-right { right: 76px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; }
+
+    /* ── Halftone dot ring in the outer zone ── */
+    .halftone-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 960px;
+      height: 960px;
+      border-radius: 50%;
+      z-index: 2;
+      background:
+        radial-gradient(circle, rgba(255,215,0,0.08) 1px, transparent 1px);
+      background-size: 16px 16px;
+      mask-image: radial-gradient(ellipse at center, transparent 42%, black 44%, black 48%, transparent 50%);
+      -webkit-mask-image: radial-gradient(ellipse at center, transparent 42%, black 44%, black 48%, transparent 50%);
+    }
+
+    /* ── Scan lines ── */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 4px,
+        rgba(0,0,0,0.08) 4px,
+        rgba(0,0,0,0.08) 5px
+      );
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    /* ── Film grain ── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.07;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 90;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      width: 580px;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(1.35);
+    }
+
+    /* ── Chromatic aberration ghosts ── */
+    .logo-ghost {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 580px;
+      height: 580px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9;
+    }
+    .logo-ghost img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .logo-ghost.gold {
+      transform: translate(calc(-50% + 5px), calc(-50% - 4px));
+      opacity: 0.18;
+      filter: brightness(2) sepia(1) hue-rotate(10deg) saturate(3);
+    }
+    .logo-ghost.blue {
+      transform: translate(calc(-50% - 4px), calc(-50% + 3px));
+      opacity: 0.08;
+      filter: brightness(2) sepia(1) hue-rotate(180deg) saturate(2);
+    }
+
+    /* ── Vignette ── */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 50%,
+        rgba(0,0,0,0.45) 100%
+      );
+      z-index: 60;
+      pointer-events: none;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="slide grain">
+  <!-- Atmospheric layers -->
+  <div class="burst"></div>
+  <div class="glow"></div>
+  <div class="logo-glow"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+
+  <!-- Ghost text in background -->
+  <div class="ghost-text gt-1">FANTASMA FANTASMA</div>
+  <div class="ghost-text gt-2">FANTASMA FANTASMA</div>
+  <div class="ghost-text gt-3">FEAR THE PHANTOM</div>
+  <div class="ghost-text gt-4">FEAR THE PHANTOM</div>
+
+  <!-- Halftone dot ring -->
+  <div class="halftone-ring"></div>
+
+  <!-- Concentric rings -->
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+  <div class="ring ring-4"></div>
+  <div class="ring ring-5"></div>
+
+  <!-- Outer border ring -->
+  <div class="border-ring"></div>
+
+  <!-- Crosshair -->
+  <div class="cross-h"></div>
+  <div class="cross-v"></div>
+
+  <!-- Compass tick marks -->
+  <div class="tick tick-n"></div>
+  <div class="tick tick-s"></div>
+  <div class="tick tick-w"></div>
+  <div class="tick tick-e"></div>
+  <div class="tick tick-ne"></div>
+  <div class="tick tick-nw"></div>
+  <div class="tick tick-se"></div>
+  <div class="tick tick-sw"></div>
+  <!-- Sub-ticks -->
+  <div class="tick tick-sub tick-nnw"></div>
+  <div class="tick tick-sub tick-nne"></div>
+  <div class="tick tick-sub tick-ssw"></div>
+  <div class="tick tick-sub tick-sse"></div>
+  <div class="tick tick-sub tick-wnw"></div>
+  <div class="tick tick-sub tick-wsw"></div>
+  <div class="tick tick-sub tick-ene"></div>
+  <div class="tick tick-sub tick-ese"></div>
+
+  <!-- Glitch bars -->
+  <div class="glitch" style="top:205px; height:3px; background:rgba(255,215,0,0.10); transform:translateX(20px);"></div>
+  <div class="glitch" style="top:410px; height:2px; background:rgba(80,140,220,0.06); transform:translateX(-15px);"></div>
+  <div class="glitch" style="bottom:390px; height:3px; background:rgba(255,215,0,0.08); transform:translateX(25px);"></div>
+  <div class="glitch" style="bottom:195px; height:2px; background:rgba(255,215,0,0.12); transform:translateX(-20px);"></div>
+
+  <!-- Perimeter data -->
+  <div class="pdata pdata-top">SIG // 001</div>
+  <div class="pdata pdata-bottom">Fantasma Football</div>
+  <div class="pdata pdata-left">Pittsburgh PA</div>
+  <div class="pdata pdata-right">Est. 2025</div>
+
+  <!-- Chromatic aberration ghosts -->
+  <div class="logo-ghost gold"><img src="../public/fantasma_logo_final.png" alt=""></div>
+  <div class="logo-ghost blue"><img src="../public/fantasma_logo_final.png" alt=""></div>
+
+  <!-- Logo — centerpiece, untouched -->
+  <div class="logo"><img src="../public/fantasma_logo_final.png" alt="Fantasma"></div>
+</div>
+
+</body>
+</html>

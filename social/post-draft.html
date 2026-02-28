@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Fantasma Post Draft — Website Launch</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0;
+      gap: 40px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* ── Shared ── */
+    .watermark {
+      position: absolute;
+      top: 52px;
+      right: 56px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      z-index: 10;
+    }
+    .watermark-light { color: rgba(197, 179, 88, 0.4); }
+    .watermark-dark  { color: rgba(197, 179, 88, 0.3); }
+
+    .corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 10;
+    }
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+    }
+    .corner-gold::before, .corner-gold::after { background: rgba(197, 179, 88, 0.25); }
+    .corner-subtle::before, .corner-subtle::after { background: rgba(197, 179, 88, 0.12); }
+    .corner-tl { top: 48px; left: 48px; }
+    .corner-tl::before { top: 0; left: 0; width: 40px; height: 1px; }
+    .corner-tl::after  { top: 0; left: 0; width: 1px; height: 40px; }
+    .corner-tr { top: 48px; right: 48px; }
+    .corner-tr::before { top: 0; right: 0; width: 40px; height: 1px; }
+    .corner-tr::after  { top: 0; right: 0; width: 1px; height: 40px; }
+    .corner-bl { bottom: 48px; left: 48px; }
+    .corner-bl::before { bottom: 0; left: 0; width: 40px; height: 1px; }
+    .corner-bl::after  { bottom: 0; left: 0; width: 1px; height: 40px; }
+    .corner-br { bottom: 48px; right: 48px; }
+    .corner-br::before { bottom: 0; right: 0; width: 40px; height: 1px; }
+    .corner-br::after  { bottom: 0; right: 0; width: 1px; height: 40px; }
+
+    /* ==================== SLIDE 1: COVER ==================== */
+    .slide-1 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .slide-1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 40%, rgba(197, 179, 88, 0.07) 0%, transparent 60%);
+    }
+
+    .s1-badge {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: #040C14;
+      background: #C5B358;
+      padding: 10px 28px;
+      border-radius: 9999px;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 56px;
+    }
+
+    .s1-headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 168px;
+      line-height: 0.88;
+      color: #FFFFFF;
+      letter-spacing: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s1-headline .gold { color: #C5B358; }
+
+    .s1-line {
+      width: 80px;
+      height: 2px;
+      background: #C5B358;
+      margin: 52px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s1-url {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    .s1-sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 17px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.25);
+      margin-top: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==================== SLIDE 2: BROWSER MOCKUP ==================== */
+    .slide-2 {
+      background: #040C14;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .slide-2::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 65%, rgba(197, 179, 88, 0.08) 0%, transparent 55%);
+    }
+
+    .s2-label {
+      position: absolute;
+      top: 64px;
+      left: 80px;
+      z-index: 10;
+    }
+
+    .s2-label-pre {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(197, 179, 88, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .s2-label-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 56px;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .browser-frame {
+      position: relative;
+      z-index: 2;
+      width: 920px;
+      margin-top: 80px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow:
+        0 4px 60px rgba(197, 179, 88, 0.12),
+        0 0 120px rgba(197, 179, 88, 0.06);
+    }
+
+    .browser-chrome {
+      background: #1a1a1a;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .browser-dots {
+      display: flex;
+      gap: 7px;
+    }
+
+    .browser-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+    }
+
+    .browser-bar {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.5px;
+    }
+
+    .browser-body {
+      line-height: 0;
+    }
+
+    .browser-body img {
+      width: 100%;
+      display: block;
+    }
+
+    .s2-bottom {
+      position: absolute;
+      bottom: 56px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 10;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ==================== SLIDE 3: FEATURES SHOWCASE ==================== */
+    .slide-3 {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .s3-header {
+      padding: 64px 80px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .s3-pre {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .s3-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      color: #0A0A0A;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .s3-divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin-top: 24px;
+    }
+
+    .s3-screens {
+      flex: 1;
+      position: relative;
+      margin-top: 32px;
+    }
+
+    .s3-card {
+      position: absolute;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+    }
+
+    .s3-card img {
+      display: block;
+      width: 100%;
+    }
+
+    .s3-card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 16px 20px;
+      background: linear-gradient(transparent, rgba(4, 12, 20, 0.85));
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+    }
+
+    .s3-card-formation {
+      width: 560px;
+      left: 56px;
+      top: 20px;
+      transform: rotate(-2deg);
+      z-index: 3;
+    }
+
+    .s3-card-booking {
+      width: 540px;
+      right: 56px;
+      top: 160px;
+      transform: rotate(1.5deg);
+      z-index: 2;
+    }
+
+    .s3-tag {
+      position: absolute;
+      bottom: 56px;
+      left: 80px;
+      z-index: 5;
+    }
+
+    .s3-tag-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 36px;
+      color: #0A0A0A;
+      letter-spacing: 2px;
+      line-height: 1.1;
+    }
+
+    .s3-tag-text .gold {
+      color: #C5B358;
+    }
+
+    /* Gold accent bar on left */
+    .s3-accent {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      width: 4px;
+      height: 100px;
+      background: #C5B358;
+      border-radius: 0 2px 2px 0;
+      z-index: 10;
+    }
+
+    /* ==================== SLIDE 4: CLOSE ==================== */
+    .slide-4 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .slide-4::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.06);
+    }
+
+    .slide-4::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.04);
+    }
+
+    .s4-tagline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 100px;
+      color: #FFFFFF;
+      letter-spacing: 5px;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s4-tagline .gold { color: #C5B358; }
+
+    .s4-line {
+      width: 60px;
+      height: 2px;
+      background: rgba(197, 179, 88, 0.4);
+      margin: 48px 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s4-url {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 20px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #C5B358;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 28px;
+    }
+
+    .s4-handle {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 2px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .s4-handle + .s4-handle { margin-top: 6px; }
+
+    .s4-cta {
+      margin-top: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 52px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(197, 179, 88, 0.35);
+      background: transparent;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.6);
+      position: relative;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── SLIDE 1: ANNOUNCEMENT COVER ─── -->
+<div class="slide slide-1">
+  <div class="corner corner-gold corner-tl"></div>
+  <div class="corner corner-gold corner-tr"></div>
+  <div class="corner corner-gold corner-bl"></div>
+  <div class="corner corner-gold corner-br"></div>
+  <div class="watermark watermark-light">@fantasmafootball</div>
+
+  <div class="s1-badge">Now Live</div>
+  <div class="s1-headline">WE'RE<br><span class="gold">ONLINE</span></div>
+  <div class="s1-line"></div>
+  <div class="s1-url">fantasmafootball.com</div>
+  <div class="s1-sub">Our official home on the web</div>
+</div>
+
+<!-- ─── SLIDE 2: BROWSER MOCKUP OF SITE ─── -->
+<div class="slide slide-2">
+  <div class="watermark watermark-light">@fantasmafootball</div>
+
+  <div class="s2-label">
+    <div class="s2-label-pre">The Website</div>
+    <div class="s2-label-title">WELCOME HOME</div>
+  </div>
+
+  <div class="browser-frame">
+    <div class="browser-chrome">
+      <div class="browser-dots">
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+        <div class="browser-dot"></div>
+      </div>
+      <div class="browser-bar">fantasmafootball.com</div>
+    </div>
+    <div class="browser-body">
+      <img src="site-hero.png" alt="Fantasma Football Website">
+    </div>
+  </div>
+
+  <div class="s2-bottom">Swipe to see more</div>
+</div>
+
+<!-- ─── SLIDE 3: FEATURE PAGES ─── -->
+<div class="slide slide-3">
+  <div class="s3-accent"></div>
+  <div class="watermark watermark-dark">@fantasmafootball</div>
+
+  <div class="s3-header">
+    <div class="s3-pre">Interactive Tools</div>
+    <div class="s3-title">BUILT FOR PLAYERS</div>
+    <div class="s3-divider"></div>
+  </div>
+
+  <div class="s3-screens">
+    <div class="s3-card s3-card-formation">
+      <img src="site-formation.png" alt="Formation Builder">
+      <div class="s3-card-label">Formation Builder</div>
+    </div>
+    <div class="s3-card s3-card-booking">
+      <img src="site-booking.png" alt="Book a Session">
+      <div class="s3-card-label">Book a Session</div>
+    </div>
+  </div>
+
+  <div class="s3-tag">
+    <div class="s3-tag-text">EXPLORE IT ALL AT<br><span class="gold">FANTASMAFOOTBALL.COM</span></div>
+  </div>
+</div>
+
+<!-- ─── SLIDE 4: CLOSING CTA ─── -->
+<div class="slide slide-4">
+  <div class="corner corner-subtle corner-tl"></div>
+  <div class="corner corner-subtle corner-tr"></div>
+  <div class="corner corner-subtle corner-bl"></div>
+  <div class="corner corner-subtle corner-br"></div>
+  <div class="watermark watermark-light">@fantasmafootball</div>
+
+  <div class="s4-tagline">FEAR THE <span class="gold">PHANTOM.</span></div>
+  <div class="s4-tagline">TRAIN <span class="gold">FANTASMA.</span></div>
+  <div class="s4-line"></div>
+  <div class="s4-url">fantasmafootball.com</div>
+  <div class="s4-handle">@fantasmafootball</div>
+  <div class="s4-handle">@fantasmafooty</div>
+  <div class="s4-cta">Book your first session</div>
+</div>
+
+</body>
+</html>

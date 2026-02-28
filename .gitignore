@@ -28,3 +28,10 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Generated output (screenshots, videos, banners)
+posts/
+media/
+
+# Claude Code
+.claude/

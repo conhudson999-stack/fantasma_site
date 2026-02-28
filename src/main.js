@@ -1,74 +1,13 @@
 import './style.css'
-
-// --- Element references ---
-const navbar = document.getElementById('navbar')
-const navToggle = document.getElementById('navToggle')
-const navMenu = document.getElementById('navMenu')
-const topBar = document.getElementById('topBar')
-const wraithBg = document.querySelector('.wraith-bg')
-const heroWraith = document.querySelector('.wraith-figure')
-
-// --- Consolidated scroll handler ---
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY
-
-  // Navbar scroll effect
-  if (scrollY > 50) {
-    navbar.classList.add('scrolled')
-    if (topBar) topBar.classList.add('hidden')
-  } else {
-    navbar.classList.remove('scrolled')
-    if (topBar) topBar.classList.remove('hidden')
-  }
-
-  // Background wraith parallax (subtle drift)
-  if (wraithBg) {
-    const parallax = scrollY * 0.15
-    wraithBg.style.transform = `translateY(${parallax}px)`
-  }
-})
+import './shared.js'
 
 // --- Hero wraith entrance animation ---
+const heroWraith = document.querySelector('.wraith-figure')
 if (heroWraith) {
   setTimeout(() => {
     heroWraith.classList.add('wraith-entered')
   }, 2400)
 }
-
-// --- Mobile nav toggle ---
-navToggle.addEventListener('click', () => {
-  navToggle.classList.toggle('active')
-  navMenu.classList.toggle('active')
-})
-
-// Close mobile menu when a link is clicked
-navMenu.querySelectorAll('.nav-link').forEach(link => {
-  link.addEventListener('click', () => {
-    navToggle.classList.remove('active')
-    navMenu.classList.remove('active')
-  })
-})
-
-// --- Scroll reveal animations ---
-const revealElements = document.querySelectorAll('.reveal')
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        const siblings = entry.target.parentElement.querySelectorAll('.reveal')
-        const siblingIndex = Array.from(siblings).indexOf(entry.target)
-        setTimeout(() => {
-          entry.target.classList.add('active')
-        }, siblingIndex * 120)
-        revealObserver.unobserve(entry.target)
-      }
-    })
-  },
-  { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
-)
-
-revealElements.forEach(el => revealObserver.observe(el))
 
 // --- Contact gold line reveal ---
 const goldLine = document.querySelector('.contact-gold-line')
@@ -359,30 +298,43 @@ function setupCoachCarouselControls() {
 // --- Contact form ---
 const contactForm = document.getElementById('contactForm')
 
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+if (contactForm) {
+  contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault()
 
-  const formData = new FormData(contactForm)
-  const name = formData.get('name')
+    const submitBtn = contactForm.querySelector('button[type="submit"]')
+    const formData = new FormData(contactForm)
+    const name = formData.get('name')
 
-  contactForm.innerHTML = `
-    <div class="form-success">
-      <h3>MESSAGE SENT!</h3>
-      <p>Thanks ${name}! We'll get back to you within 24 hours.</p>
-    </div>
-  `
-})
+    submitBtn.disabled = true
+    submitBtn.textContent = 'Sending...'
 
-// --- Smooth scroll for anchor links ---
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', (e) => {
-    const target = document.querySelector(anchor.getAttribute('href'))
-    if (target) {
-      e.preventDefault()
-      target.scrollIntoView({ behavior: 'smooth' })
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData
+      })
+      const result = await response.json()
+
+      if (result.success) {
+        contactForm.innerHTML = `
+          <div class="form-success">
+            <h3>MESSAGE SENT!</h3>
+            <p>Thanks ${name}! We'll get back to you within 24 hours.</p>
+          </div>
+        `
+      } else {
+        submitBtn.disabled = false
+        submitBtn.textContent = 'Send Message'
+        alert('Something went wrong. Please try again or email us directly.')
+      }
+    } catch {
+      submitBtn.disabled = false
+      submitBtn.textContent = 'Send Message'
+      alert('Something went wrong. Please try again or email us directly.')
     }
   })
-})
+}
 
 // ============================================
 // INSTAGRAM FEED

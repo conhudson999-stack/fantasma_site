@@ -49,6 +49,7 @@
               <li><a href="#coaches" class="nav-link">Coaches</a></li>
               <li><a href="#faq" class="nav-link">FAQ</a></li>
               <li><a href="#contact" class="nav-link">Contact</a></li>
+              <li><a href="/formation.html" class="nav-link">Formation</a></li>
               <li class="nav-menu-social">
                 <a href="https://instagram.com/fantasmafootball" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none" /></svg>
@@ -65,7 +66,7 @@
               </li>
             </ul>
           </div>
-          <a href="#contact" class="nav-cta">Book a Session</a>
+          <a href="/booking.html" class="nav-cta">Book a Session</a>
           <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
             <span></span>
             <span></span>
@@ -86,7 +87,7 @@
             </h1>
             <p class="hero-sub">Where the poetry and grit of football meet. Personalized training that develops technically gifted, tactically intelligent, mentally tough athletes.</p>
             <div class="hero-buttons">
-              <a href="#contact" class="btn btn-dark">Book a Session</a>
+              <a href="/booking.html" class="btn btn-dark">Book a Session</a>
               <a href="#programs" class="btn btn-outline-dark">View Programs</a>
             </div>
           </div>
@@ -435,6 +436,10 @@
             </div>
             <!-- Right: form -->
             <form class="contact-form reveal" id="contactForm">
+              <input type="hidden" name="access_key" value="90f97860-135b-4202-b24d-2234a6113296" />
+              <input type="hidden" name="subject" value="New Fantasma Training Inquiry" />
+              <input type="hidden" name="from_name" value="Fantasma Website" />
+              <input type="checkbox" name="botcheck" class="hidden" style="display:none" />
               <div class="form-group">
                 <label for="name">Full Name</label>
                 <input type="text" id="name" name="name" placeholder="Your name" required />
@@ -442,6 +447,10 @@
               <div class="form-group">
                 <label for="email">Email Address</label>
                 <input type="email" id="email" name="email" placeholder="your@email.com" required />
+              </div>
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="(412) 555-1234" />
               </div>
               <div class="form-group">
                 <label for="message">Message</label>
@@ -464,6 +473,8 @@
             </div>
             <div class="footer-col">
               <h5>Training</h5>
+              <a href="/booking.html">Book a Session</a>
+              <a href="/formation.html">Formation Builder</a>
               <a href="#programs">1-on-1 Training</a>
               <a href="#programs">Small Group</a>
               <a href="#programs">Elite Camps</a>

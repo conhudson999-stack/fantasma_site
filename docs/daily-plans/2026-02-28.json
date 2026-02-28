@@ -1,0 +1,87 @@
+{
+  "date": "2026-02-28",
+  "generated_at": "2026-02-28T05:41:19.505Z",
+  "research": {
+    "focus": "Weekly performance summary: what worked this week, engagement analysis, key takeaways",
+    "competitors": [
+      {
+        "name": "Curran Soccer Academy",
+        "insight": "Offering specialized training sessions focused on skill development for youth players, attracting parents looking for targeted improvement."
+      },
+      {
+        "name": "Pittsburgh Soccer Academy",
+        "insight": "Promoting 1-on-1 training and youth camps, effectively reaching a broader audience through seasonal camps."
+      },
+      {
+        "name": "Riverhounds Development Academy",
+        "insight": "Emphasizing a professional pathway for players, which appeals to parents interested in long-term development and college scholarships."
+      }
+    ],
+    "seasonal": "February is a transitional month with school soccer tryouts approaching in March, creating urgency for training in preparation for the season.",
+    "content_opportunities": [
+      "Tips for preparing for soccer tryouts",
+      "Success stories from past trainees",
+      "Training drills to improve specific skills before the season starts"
+    ],
+    "keywords": [
+      {
+        "term": "soccer tryout preparation Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "private soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer camps Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "1-on-1 soccer coaching Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer skills training Pittsburgh",
+        "opportunity": "medium"
+      }
+    ],
+    "recommended_action": "Launch a targeted social media campaign promoting a 'Tryout Preparation Package' for youth players.",
+    "reasoning": "This campaign will directly address the upcoming tryouts, positioning Fantasma as the go-to option for players seeking to enhance their skills and confidence before the season starts."
+  },
+  "social": {
+    "recommended": true,
+    "type": "stat-highlight",
+    "content": {
+      "label": "PREPARE FOR SUCCESS",
+      "stat": "87%",
+      "headline": "D1 PLAYERS TRAINED PRIVATELY",
+      "body": "Unlock your potential and join the ranks of elite players preparing for tryouts this season."
+    },
+    "caption": "Are you ready to elevate your game? Get the competitive edge before tryouts! #SoccerTraining #PittsburghSoccer #EliteAthletes #PrivateTraining #TryoutPreparation",
+    "hashtags": [
+      "#PittsburghSoccer",
+      "#SoccerTraining",
+      "#EliteAthletes",
+      "#PrivateTraining",
+      "#TryoutPreparation"
+    ],
+    "image_url": "https://i.ibb.co/ZRVL4ZjH/e88421700503.png"
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include keywords related to soccer tryout preparation and emphasize the urgency due to upcoming tryouts.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh\">",
+      "replace": "<meta name=\"description\" content=\"Prepare for soccer tryouts in Pittsburgh with our specialized training sessions. Boost your skills and confidence before the season starts!\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a call-to-action section promoting a 'Tryout Preparation Package' to increase conversions and address the upcoming tryouts.",
+      "type": "text_update",
+      "search": "<h2>Our Services</h2>",
+      "replace": "<h2>Our Services</h2><p>Get ready for the upcoming soccer tryouts! Check out our exclusive 'Tryout Preparation Package' designed to enhance your skills and confidence. <a href=\"booking.html\">Book your session now!</a></p>"
+    }
+  ],
+  "status": "pending"
+}

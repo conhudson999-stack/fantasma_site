@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, initial-scale=1">
+  <title>Fantasma — Interference Series</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0;
+      gap: 60px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      background: #040C14;
+    }
+
+    /* ═══════════════════════════════════════════════════════════════
+       SHARED INTERFERENCE SYSTEM
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Film grain */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.08;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 90;
+    }
+
+    /* Scan lines */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.15) 3px,
+        rgba(0,0,0,0.15) 4px
+      );
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    /* Vertical signal bars */
+    .sig-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+    }
+    .sig-bar.left { left: 0; }
+    .sig-bar.right { right: 0; }
+    .sig-seg { flex: 1; }
+
+    /* Horizontal glitch bars */
+    .glitch {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* Corner data blocks */
+    .data {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(197,179,88,0.20);
+      z-index: 40;
+      line-height: 1.6;
+    }
+    .data.tl { top: 60px; left: 68px; }
+    .data.tr { top: 60px; right: 68px; text-align: right; }
+    .data.bl { bottom: 60px; left: 68px; }
+    .data.br { bottom: 60px; right: 68px; text-align: right; }
+
+    /* Crosshair */
+    .cross-h, .cross-v {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 8;
+      pointer-events: none;
+    }
+    .cross-h { width: 200px; height: 1px; background: rgba(197,179,88,0.08); }
+    .cross-v { width: 1px; height: 200px; background: rgba(197,179,88,0.08); }
+
+    /* Radial glow behind text */
+    .glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 500px;
+      background: radial-gradient(ellipse at center, rgba(197,179,88,0.06) 0%, transparent 70%);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Double-exposure text base */
+    .dbl {
+      position: relative;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 10px;
+      line-height: 0.85;
+      color: #FFFFFF;
+    }
+    .dbl::before {
+      content: attr(data-text);
+      position: absolute;
+      top: -6px;
+      left: 8px;
+      color: rgba(197,179,88,0.35);
+      z-index: -1;
+    }
+    .dbl::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 6px;
+      left: -6px;
+      color: rgba(80,140,220,0.10);
+      z-index: -1;
+    }
+
+    /* Signal label */
+    .sig-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: rgba(197,179,88,0.40);
+    }
+
+    /* Sub text */
+    .sig-sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.20);
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       POST 1 — SESSIONS OPEN (Booking / CTA)
+       Centered, clean, with a circular targeting reticle
+       ═══════════════════════════════════════════════════════════════ */
+
+    /* Targeting reticle */
+    .p1-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      border: 1px solid rgba(197,179,88,0.10);
+      z-index: 5;
+    }
+    .p1-reticle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 1px solid rgba(197,179,88,0.06);
+    }
+    .p1-reticle::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 560px;
+      height: 560px;
+      border-radius: 50%;
+      border: 1px solid rgba(197,179,88,0.04);
+    }
+
+    /* Tick marks on the reticle */
+    .p1-tick {
+      position: absolute;
+      background: rgba(197,179,88,0.15);
+      z-index: 6;
+    }
+    .p1-tick-top { width: 1px; height: 24px; top: 50%; left: 50%; transform: translate(-50%, -234px); }
+    .p1-tick-bottom { width: 1px; height: 24px; top: 50%; left: 50%; transform: translate(-50%, 210px); }
+    .p1-tick-left { width: 24px; height: 1px; top: 50%; left: 50%; transform: translate(-234px, -50%); }
+    .p1-tick-right { width: 24px; height: 1px; top: 50%; left: 50%; transform: translate(210px, -50%); }
+
+    .p1-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    .p1-status {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #040C14;
+      background: #C5B358;
+      padding: 6px 20px;
+      margin-bottom: 36px;
+    }
+
+    .p1-list {
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .p1-list-item {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .p1-list-item .active-dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: #C5B358;
+      border-radius: 50%;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       POST 2 — OUTWORK EVERYONE (Mindset / Aggression)
+       Left-aligned, stacked text, heavier glitch, more chaotic
+       ═══════════════════════════════════════════════════════════════ */
+
+    .p2-text {
+      position: absolute;
+      top: 50%;
+      left: 80px;
+      transform: translateY(-55%);
+      z-index: 10;
+    }
+
+    /* Heavier chromatic on this one */
+    .dbl-heavy {
+      position: relative;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 8px;
+      line-height: 0.85;
+      color: #FFFFFF;
+    }
+    .dbl-heavy::before {
+      content: attr(data-text);
+      position: absolute;
+      top: -8px;
+      left: 10px;
+      color: rgba(197,179,88,0.40);
+      z-index: -1;
+    }
+    .dbl-heavy::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 8px;
+      left: -8px;
+      color: rgba(80,140,220,0.15);
+      z-index: -1;
+    }
+
+    /* Repeated faded word filling background */
+    .p2-bg-word {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 160px;
+      letter-spacing: 20px;
+      color: rgba(255,255,255,0.02);
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    /* Vertical accent bar */
+    .p2-accent {
+      position: absolute;
+      left: 68px;
+      top: 280px;
+      width: 4px;
+      height: 100px;
+      background: linear-gradient(180deg, #C5B358, transparent);
+      z-index: 10;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       POST 3 — READ THE GAME (Tactical / Intelligence)
+       More structured, data-viz feel, horizontal rule lines
+       ═══════════════════════════════════════════════════════════════ */
+
+    .p3-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+      width: 800px;
+    }
+
+    /* Data rows — like a readout */
+    .p3-readout {
+      position: absolute;
+      z-index: 10;
+    }
+    .p3-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+    .p3-row-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(197,179,88,0.30);
+      width: 120px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .p3-row-bar {
+      height: 2px;
+      background: rgba(197,179,88,0.12);
+      border-radius: 1px;
+    }
+    .p3-row-bar-fill {
+      height: 2px;
+      background: rgba(197,179,88,0.35);
+      border-radius: 1px;
+    }
+    .p3-row-val {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.20);
+      width: 40px;
+      flex-shrink: 0;
+    }
+
+    /* Horizontal divider lines across the canvas */
+    .p3-divider {
+      position: absolute;
+      left: 68px;
+      right: 68px;
+      height: 1px;
+      background: rgba(197,179,88,0.05);
+      z-index: 4;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       POST 4 — 6AM (Early Morning Grind)
+       Giant stat number, darker/colder, timestamp-heavy
+       ═══════════════════════════════════════════════════════════════ */
+
+    .p4-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -52%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    /* Massive number with double exposure */
+    .p4-mega {
+      position: relative;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 440px;
+      letter-spacing: 10px;
+      line-height: 0.75;
+      color: #FFFFFF;
+    }
+    .p4-mega::before {
+      content: attr(data-text);
+      position: absolute;
+      top: -10px;
+      left: 12px;
+      color: rgba(197,179,88,0.30);
+      z-index: -1;
+    }
+    .p4-mega::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 10px;
+      left: -10px;
+      color: rgba(80,140,220,0.12);
+      z-index: -1;
+    }
+
+    .p4-unit {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 120px;
+      letter-spacing: 20px;
+      color: #C5B358;
+      line-height: 1;
+      margin-top: -10px;
+    }
+
+    /* Countdown-style ticks along the bottom */
+    .p4-ticks {
+      position: absolute;
+      bottom: 180px;
+      left: 68px;
+      right: 68px;
+      display: flex;
+      justify-content: space-between;
+      z-index: 10;
+    }
+    .p4-tick {
+      width: 1px;
+      height: 16px;
+      background: rgba(197,179,88,0.10);
+    }
+    .p4-tick.major {
+      height: 28px;
+      background: rgba(197,179,88,0.20);
+    }
+
+    /* Cold blue glow for this one */
+    .p4-glow {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(80,140,220,0.04) 0%,
+        rgba(197,179,88,0.03) 40%,
+        transparent 70%
+      );
+      z-index: 3;
+      pointer-events: none;
+    }
+
+
+    /* ═══════════════════════════════════════════════════════════════
+       POST 5 — PITTSBURGH MADE (City Identity / Origin)
+       Coordinates featured, steel/industrial tint, pride
+       ═══════════════════════════════════════════════════════════════ */
+
+    .p5-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+    }
+
+    /* Coordinate display */
+    .p5-coords {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      z-index: 4;
+    }
+    .p5-coord-line {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 80px;
+      letter-spacing: 4px;
+      color: rgba(197,179,88,0.04);
+      white-space: nowrap;
+    }
+    .p5-coord-1 { top: 60px; left: -100px; transform: rotate(-3deg); }
+    .p5-coord-2 { bottom: 80px; right: -120px; transform: rotate(-3deg); }
+
+    /* Horizontal rule with label */
+    .p5-rule {
+      position: absolute;
+      left: 68px;
+      right: 68px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .p5-rule-line {
+      flex: 1;
+      height: 1px;
+      background: rgba(197,179,88,0.10);
+    }
+    .p5-rule-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(197,179,88,0.20);
+      flex-shrink: 0;
+    }
+
+    /* Steel-blue signal bars for this post */
+    .sig-bar-steel .sig-seg-steel {
+      flex: 1;
+    }
+
+  </style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     POST 1 — SESSIONS OPEN
+     Clean, centered, targeting reticle, booking CTA
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="slide grain">
+  <div class="scanlines"></div>
+
+  <!-- Signal bars -->
+  <div class="sig-bar left">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.05);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.14);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.03);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.09);"></div>
+  </div>
+  <div class="sig-bar right">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.05);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.03);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.16);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.02);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.07);"></div>
+  </div>
+
+  <!-- Glitch bars -->
+  <div class="glitch" style="top:190px; background:rgba(197,179,88,0.10); transform:translateX(25px);"></div>
+  <div class="glitch" style="top:380px; background:rgba(197,179,88,0.06); transform:translateX(-15px);"></div>
+  <div class="glitch" style="bottom:320px; background:rgba(80,140,220,0.06); transform:translateX(20px);"></div>
+  <div class="glitch" style="bottom:170px; background:rgba(197,179,88,0.08); transform:translateX(-30px);"></div>
+
+  <div class="cross-h"></div>
+  <div class="cross-v"></div>
+  <div class="glow"></div>
+
+  <!-- Targeting reticle -->
+  <div class="p1-reticle"></div>
+  <div class="p1-tick p1-tick-top"></div>
+  <div class="p1-tick p1-tick-bottom"></div>
+  <div class="p1-tick p1-tick-left"></div>
+  <div class="p1-tick p1-tick-right"></div>
+
+  <!-- Main content -->
+  <div class="p1-text">
+    <div class="sig-label" style="margin-bottom:40px;">Signal: Booking Active</div>
+    <div class="dbl" data-text="SESSIONS" style="font-size:180px; letter-spacing:12px;">SESSIONS</div>
+    <div class="dbl" data-text="OPEN" style="font-size:220px; letter-spacing:16px; color:#C5B358;">OPEN</div>
+    <div class="p1-list">
+      <div class="p1-list-item"><span class="active-dot"></span>1-on-1 Training</div>
+      <div class="p1-list-item"><span class="active-dot"></span>Small Group</div>
+      <div class="p1-list-item"><span class="active-dot"></span>Elite Camps</div>
+    </div>
+  </div>
+
+  <div class="p1-status" style="position:absolute; bottom:100px; left:50%; transform:translateX(-50%); z-index:40;">NOW BOOKING</div>
+
+  <!-- Corner data -->
+  <div class="data tl">SIG//BOOK<br>STATUS: OPEN</div>
+  <div class="data tr">TYPE: TRAINING<br>LOC: PITTSBURGH</div>
+  <div class="data bl">CH: FANTASMA<br>MODE: ACTIVE</div>
+  <div class="data br">fantasmafootball.com<br>@fantasmafootball</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     POST 2 — OUTWORK EVERYONE
+     Left-aligned, aggressive, heavier glitches, background words
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="slide grain">
+  <div class="scanlines"></div>
+
+  <div class="sig-bar left">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.16);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.20);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.14);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.18);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.03);"></div>
+  </div>
+  <div class="sig-bar right">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.18);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.14);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.20);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+  </div>
+
+  <!-- Heavier glitch bars — more of them, more intense -->
+  <div class="glitch" style="top:120px; background:rgba(197,179,88,0.18); transform:translateX(40px); height:4px;"></div>
+  <div class="glitch" style="top:260px; background:rgba(80,140,220,0.10); transform:translateX(-25px);"></div>
+  <div class="glitch" style="top:445px; background:rgba(197,179,88,0.12); transform:translateX(15px); height:5px;"></div>
+  <div class="glitch" style="bottom:350px; background:rgba(197,179,88,0.08); transform:translateX(-35px);"></div>
+  <div class="glitch" style="bottom:240px; background:rgba(80,140,220,0.06); transform:translateX(50px); height:4px;"></div>
+  <div class="glitch" style="bottom:130px; background:rgba(197,179,88,0.14); transform:translateX(-20px);"></div>
+
+  <!-- Background repeat words -->
+  <div class="p2-bg-word" style="top:80px; left:-40px; transform:rotate(-5deg);">OUTWORK OUTWORK OUTWORK OUTWORK</div>
+  <div class="p2-bg-word" style="top:350px; left:-80px; transform:rotate(-5deg);">OUTWORK OUTWORK OUTWORK OUTWORK</div>
+  <div class="p2-bg-word" style="bottom:200px; left:-60px; transform:rotate(-5deg);">OUTWORK OUTWORK OUTWORK OUTWORK</div>
+  <div class="p2-bg-word" style="bottom:40px; left:-100px; transform:rotate(-5deg);">OUTWORK OUTWORK OUTWORK OUTWORK</div>
+
+  <div class="glow" style="left:35%;"></div>
+  <div class="p2-accent"></div>
+
+  <!-- Main text — left aligned -->
+  <div class="p2-text">
+    <div class="sig-label" style="margin-bottom:36px;">Transmission: Raw</div>
+    <div class="dbl-heavy" data-text="OUT" style="font-size:240px; letter-spacing:12px;">OUT</div>
+    <div class="dbl-heavy" data-text="WORK" style="font-size:240px; letter-spacing:12px;">WORK</div>
+    <div class="dbl-heavy" data-text="EVERY" style="font-size:200px; letter-spacing:10px; color:rgba(255,255,255,0.5);">EVERY</div>
+    <div class="dbl-heavy" data-text="ONE." style="font-size:240px; letter-spacing:12px; color:#C5B358;">ONE.</div>
+    <div class="sig-sub" style="margin-top:40px;">No shortcuts. No excuses.</div>
+  </div>
+
+  <div class="data tl">SIG//GRIND<br>FREQ: 412.7</div>
+  <div class="data tr">REP: MAX<br>REST: NONE</div>
+  <div class="data bl">MODE: RELENTLESS<br>STATUS: ACTIVE</div>
+  <div class="data br">fantasmafootball.com<br>@fantasmafootball</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     POST 3 — READ THE GAME (Tactical / Intelligence)
+     Structured, data-visualization feel, horizontal readouts
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="slide grain">
+  <div class="scanlines"></div>
+
+  <div class="sig-bar left">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.14);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.03);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+  </div>
+  <div class="sig-bar right">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.05);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.14);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.07);"></div>
+  </div>
+
+  <div class="glitch" style="top:230px; background:rgba(197,179,88,0.08); transform:translateX(18px);"></div>
+  <div class="glitch" style="bottom:300px; background:rgba(80,140,220,0.06); transform:translateX(-12px);"></div>
+  <div class="glitch" style="bottom:160px; background:rgba(197,179,88,0.10); transform:translateX(28px);"></div>
+
+  <!-- Horizontal divider lines across canvas -->
+  <div class="p3-divider" style="top:280px;"></div>
+  <div class="p3-divider" style="top:340px;"></div>
+  <div class="p3-divider" style="bottom:340px;"></div>
+  <div class="p3-divider" style="bottom:280px;"></div>
+
+  <div class="cross-h" style="width:300px;"></div>
+  <div class="cross-v" style="height:300px;"></div>
+  <div class="glow"></div>
+
+  <!-- Main text -->
+  <div class="p3-text">
+    <div class="sig-label" style="margin-bottom:36px;">Decrypting: Tactical Data</div>
+    <div class="dbl" data-text="READ" style="font-size:200px; letter-spacing:14px;">READ</div>
+    <div class="dbl" data-text="THE GAME" style="font-size:160px; letter-spacing:10px; color:#C5B358;">THE GAME</div>
+    <div class="sig-sub" style="margin-top:40px;">Intelligence Over Speed</div>
+  </div>
+
+  <!-- Data readout — left side -->
+  <div class="p3-readout" style="left:68px; bottom:130px; width:400px;">
+    <div class="p3-row">
+      <div class="p3-row-label">Vision</div>
+      <div class="p3-row-bar" style="width:140px; position:relative;">
+        <div class="p3-row-bar-fill" style="width:120px;"></div>
+      </div>
+      <div class="p3-row-val">86%</div>
+    </div>
+    <div class="p3-row">
+      <div class="p3-row-label">Positioning</div>
+      <div class="p3-row-bar" style="width:140px; position:relative;">
+        <div class="p3-row-bar-fill" style="width:130px;"></div>
+      </div>
+      <div class="p3-row-val">93%</div>
+    </div>
+    <div class="p3-row">
+      <div class="p3-row-label">Decision</div>
+      <div class="p3-row-bar" style="width:140px; position:relative;">
+        <div class="p3-row-bar-fill" style="width:108px;"></div>
+      </div>
+      <div class="p3-row-val">77%</div>
+    </div>
+    <div class="p3-row">
+      <div class="p3-row-label">Awareness</div>
+      <div class="p3-row-bar" style="width:140px; position:relative;">
+        <div class="p3-row-bar-fill" style="width:126px;"></div>
+      </div>
+      <div class="p3-row-val">90%</div>
+    </div>
+  </div>
+
+  <div class="data tl">SIG//TACTICAL<br>MODE: ANALYSIS</div>
+  <div class="data tr">SCAN: ACTIVE<br>FIELD: 360°</div>
+  <div class="data bl">IQ: PROCESSING<br>STATUS: LOCKED</div>
+  <div class="data br">fantasmafootball.com<br>@fantasmafootball</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     POST 4 — 6AM (Early Morning Grind)
+     Giant stat number, cold blue glow, timestamp-heavy, darker
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="slide grain">
+  <div class="scanlines"></div>
+
+  <div class="sig-bar left">
+    <div class="sig-seg" style="background:rgba(80,140,220,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+  </div>
+  <div class="sig-bar right">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(80,140,220,0.08);"></div>
+  </div>
+
+  <!-- Glitch bars with blue tint -->
+  <div class="glitch" style="top:180px; background:rgba(80,140,220,0.10); transform:translateX(-20px); height:4px;"></div>
+  <div class="glitch" style="top:390px; background:rgba(197,179,88,0.08); transform:translateX(30px);"></div>
+  <div class="glitch" style="bottom:290px; background:rgba(80,140,220,0.08); transform:translateX(15px);"></div>
+  <div class="glitch" style="bottom:140px; background:rgba(197,179,88,0.12); transform:translateX(-25px); height:4px;"></div>
+
+  <!-- Cold glow -->
+  <div class="p4-glow"></div>
+
+  <!-- Countdown ticks -->
+  <div class="p4-ticks">
+    <div class="p4-tick major"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div>
+    <div class="p4-tick major"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div>
+    <div class="p4-tick major"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div>
+    <div class="p4-tick major"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div>
+    <div class="p4-tick major"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div><div class="p4-tick"></div>
+    <div class="p4-tick major"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="p4-text">
+    <div class="sig-label" style="margin-bottom:24px;">Broadcast: Live</div>
+    <div class="p4-mega" data-text="6">6</div>
+    <div class="p4-unit">A M</div>
+    <div style="margin-top:40px;">
+      <div class="sig-sub">While they sleep</div>
+      <div class="sig-sub" style="color:rgba(197,179,88,0.30); margin-top:8px;">We train</div>
+    </div>
+  </div>
+
+  <div class="data tl">SIG//WAKE<br>TIME: 06:00:00</div>
+  <div class="data tr">TEMP: 22°F<br>DARK: YES</div>
+  <div class="data bl">ALARM: DISABLED<br>DISCIPLINE: ON</div>
+  <div class="data br">fantasmafootball.com<br>@fantasmafootball</div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════════════
+     POST 5 — PITTSBURGH MADE (City Identity)
+     Coordinates, steel tint, city pride, origin signal
+     ═══════════════════════════════════════════════════════════════════════ -->
+<div class="slide grain">
+  <div class="scanlines"></div>
+
+  <div class="sig-bar left">
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.04);"></div>
+  </div>
+  <div class="sig-bar right">
+    <div class="sig-seg" style="background:rgba(160,170,180,0.08);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.12);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.10);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.04);"></div>
+    <div class="sig-seg" style="background:rgba(160,170,180,0.06);"></div>
+    <div class="sig-seg" style="background:rgba(197,179,88,0.10);"></div>
+  </div>
+
+  <div class="glitch" style="top:200px; background:rgba(160,170,180,0.08); transform:translateX(-18px);"></div>
+  <div class="glitch" style="top:420px; background:rgba(197,179,88,0.10); transform:translateX(22px);"></div>
+  <div class="glitch" style="bottom:260px; background:rgba(160,170,180,0.06); transform:translateX(-30px);"></div>
+  <div class="glitch" style="bottom:130px; background:rgba(197,179,88,0.08); transform:translateX(15px);"></div>
+
+  <!-- Background coordinate text -->
+  <div class="p5-coords">
+    <div class="p5-coord-line p5-coord-1">40.4406° N</div>
+    <div class="p5-coord-line p5-coord-2">79.9959° W</div>
+  </div>
+
+  <!-- Horizontal rules -->
+  <div class="p5-rule" style="top:300px;">
+    <div class="p5-rule-line"></div>
+    <div class="p5-rule-text">Steel City</div>
+    <div class="p5-rule-line"></div>
+  </div>
+  <div class="p5-rule" style="bottom:300px;">
+    <div class="p5-rule-line"></div>
+    <div class="p5-rule-text">Est. 2025</div>
+    <div class="p5-rule-line"></div>
+  </div>
+
+  <div class="cross-h" style="width:250px;"></div>
+  <div class="cross-v" style="height:250px;"></div>
+  <div class="glow"></div>
+
+  <!-- Main text -->
+  <div class="p5-text">
+    <div class="sig-label" style="margin-bottom:36px;">Origin Signal Detected</div>
+    <div class="dbl" data-text="PITTSBURGH" style="font-size:160px; letter-spacing:10px;">PITTSBURGH</div>
+    <div class="dbl" data-text="MADE" style="font-size:240px; letter-spacing:16px; color:#C5B358;">MADE</div>
+    <div class="sig-sub" style="margin-top:44px;">Forged in steel. Built to last.</div>
+  </div>
+
+  <div class="data tl">SIG//ORIGIN<br>CITY: PITTSBURGH</div>
+  <div class="data tr">LAT: 40.4406° N<br>LON: 79.9959° W</div>
+  <div class="data bl">RIVERS: 3<br>BRIDGES: 446</div>
+  <div class="data br">fantasmafootball.com<br>@fantasmafootball</div>
+</div>
+
+
+</body>
+</html>

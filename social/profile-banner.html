@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1640, initial-scale=1">
+  <title>Fantasma — Profile Banners</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      padding: 60px 0;
+    }
+
+    /* ── Shared banner styles ── */
+    .banner {
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: #040C14;
+    }
+
+    /* ── X / Twitter: 1500 x 500 ── */
+    .banner-x { width: 1500px; height: 500px; }
+
+    /* ── Facebook: 820 x 312 ── */
+    .banner-fb { width: 820px; height: 312px; }
+
+    /* ── Scan lines ── */
+    .scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.07) 3px,
+        rgba(0,0,0,0.07) 4px
+      );
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    /* ── Film grain ── */
+    .grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.06;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      z-index: 90;
+    }
+
+    /* ── Vignette — wide format ── */
+    .vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse 80% 120% at center,
+        transparent 30%,
+        rgba(0,0,0,0.50) 100%
+      );
+      z-index: 60;
+      pointer-events: none;
+    }
+
+    /* ── Radial glow — offset left behind logo ── */
+    .glow {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(255,215,0,0.22) 0%,
+        rgba(255,215,0,0.08) 40%,
+        transparent 70%
+      );
+      z-index: 1;
+    }
+    .banner-fb .glow {
+      left: 20%;
+      width: 400px;
+      height: 400px;
+    }
+
+    /* ── Conic burst behind logo ── */
+    .burst {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 900px;
+      height: 900px;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(255,215,0,0.05) 2deg, transparent 4deg,
+        transparent 18deg, rgba(255,215,0,0.04) 20deg, transparent 22deg,
+        transparent 36deg, rgba(255,215,0,0.06) 38deg, transparent 40deg,
+        transparent 54deg, rgba(255,215,0,0.04) 56deg, transparent 58deg,
+        transparent 72deg, rgba(255,215,0,0.05) 74deg, transparent 76deg,
+        transparent 90deg, rgba(255,215,0,0.04) 92deg, transparent 94deg,
+        transparent 108deg, rgba(255,215,0,0.06) 110deg, transparent 112deg,
+        transparent 126deg, rgba(255,215,0,0.04) 128deg, transparent 130deg,
+        transparent 144deg, rgba(255,215,0,0.05) 146deg, transparent 148deg,
+        transparent 162deg, rgba(255,215,0,0.04) 164deg, transparent 166deg,
+        transparent 180deg, rgba(255,215,0,0.06) 182deg, transparent 184deg,
+        transparent 198deg, rgba(255,215,0,0.04) 200deg, transparent 202deg,
+        transparent 216deg, rgba(255,215,0,0.05) 218deg, transparent 220deg,
+        transparent 234deg, rgba(255,215,0,0.04) 236deg, transparent 238deg,
+        transparent 252deg, rgba(255,215,0,0.06) 254deg, transparent 256deg,
+        transparent 270deg, rgba(255,215,0,0.04) 272deg, transparent 274deg,
+        transparent 288deg, rgba(255,215,0,0.05) 290deg, transparent 292deg,
+        transparent 306deg, rgba(255,215,0,0.04) 308deg, transparent 310deg,
+        transparent 324deg, rgba(255,215,0,0.06) 326deg, transparent 328deg,
+        transparent 342deg, rgba(255,215,0,0.04) 344deg, transparent 346deg
+      );
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .banner-fb .burst {
+      left: 20%;
+    }
+
+    /* ── Logo — left-center ── */
+    .logo {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .banner-x .logo { width: 320px; height: 320px; }
+    .banner-fb .logo { width: 190px; height: 190px; left: 20%; }
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: brightness(1.35);
+    }
+
+    /* ── Chromatic aberration ghosts ── */
+    .logo-ghost {
+      position: absolute;
+      top: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9;
+    }
+    .banner-x .logo-ghost { width: 320px; height: 320px; left: 22%; }
+    .banner-fb .logo-ghost { width: 190px; height: 190px; left: 20%; }
+    .logo-ghost img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .logo-ghost.gold {
+      transform: translate(calc(-50% + 4px), calc(-50% - 3px));
+      opacity: 0.15;
+      filter: brightness(2) sepia(1) hue-rotate(10deg) saturate(3);
+    }
+    .logo-ghost.blue {
+      transform: translate(calc(-50% - 3px), calc(-50% + 2px));
+      opacity: 0.07;
+      filter: brightness(2) sepia(1) hue-rotate(180deg) saturate(2);
+    }
+
+    /* ── Concentric rings — around logo ── */
+    .ring {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .banner-fb .ring { left: 20%; }
+    .ring-1 { width: 460px; height: 460px; border: 1px solid rgba(255,215,0,0.20); }
+    .ring-2 { width: 380px; height: 380px; border: 1px solid rgba(255,215,0,0.12); }
+    .ring-3 { width: 550px; height: 550px; border: 1px solid rgba(255,215,0,0.08); }
+    .banner-fb .ring-1 { width: 270px; height: 270px; }
+    .banner-fb .ring-2 { width: 220px; height: 220px; }
+    .banner-fb .ring-3 { width: 320px; height: 320px; }
+
+    /* ── Brand name — large, right side ── */
+    .brand {
+      position: absolute;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .banner-x .brand { top: 50%; right: 80px; transform: translateY(-50%); }
+    .banner-fb .brand { top: 50%; right: 40px; transform: translateY(-50%); }
+
+    .brand-main {
+      font-family: 'Bebas Neue', sans-serif;
+      color: #F8F7F4;
+      line-height: 0.88;
+      letter-spacing: 6px;
+    }
+    .banner-x .brand-main { font-size: 130px; }
+    .banner-fb .brand-main { font-size: 72px; }
+
+    .brand-sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      letter-spacing: 14px;
+      text-transform: uppercase;
+      color: rgba(255,215,0,0.70);
+    }
+    .banner-x .brand-sub { font-size: 20px; margin-top: 6px; }
+    .banner-fb .brand-sub { font-size: 12px; margin-top: 4px; letter-spacing: 8px; }
+
+    /* ── Double-exposure text (chromatic aberration) ── */
+    .dbl {
+      position: relative;
+      display: inline-block;
+    }
+    .dbl::before,
+    .dbl::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    .dbl::before {
+      color: rgba(255,215,0,0.12);
+      transform: translate(3px, -2px);
+    }
+    .dbl::after {
+      color: rgba(80,140,220,0.06);
+      transform: translate(-2px, 2px);
+    }
+
+    /* ── Signal bars — vertical left/right edges ── */
+    .sig-bar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .sig-bar-l {
+      left: 0;
+      width: 4px;
+      background: linear-gradient(180deg, rgba(255,215,0,0.30), rgba(255,215,0,0.06) 30%, transparent 50%, rgba(255,215,0,0.06) 70%, rgba(255,215,0,0.30));
+    }
+    .sig-bar-r {
+      right: 0;
+      width: 4px;
+      background: linear-gradient(180deg, rgba(255,215,0,0.30), rgba(255,215,0,0.06) 30%, transparent 50%, rgba(255,215,0,0.06) 70%, rgba(255,215,0,0.30));
+    }
+
+    /* ── Horizontal border lines — top/bottom ── */
+    .h-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 1px;
+      z-index: 20;
+      pointer-events: none;
+    }
+    .h-line-top {
+      top: 0;
+      background: linear-gradient(90deg, rgba(255,215,0,0.50), rgba(255,215,0,0.10) 30%, transparent 50%, rgba(255,215,0,0.10) 70%, rgba(255,215,0,0.50));
+    }
+    .h-line-bot {
+      bottom: 0;
+      background: linear-gradient(90deg, rgba(255,215,0,0.50), rgba(255,215,0,0.10) 30%, transparent 50%, rgba(255,215,0,0.10) 70%, rgba(255,215,0,0.50));
+    }
+
+    /* ── Glitch bars ── */
+    .glitch {
+      position: absolute;
+      left: 0;
+      right: 0;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* ── Crosshair — centered on logo ── */
+    .cross-h {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.08) 15%, rgba(255,215,0,0.14) 40%, transparent 46%, transparent 54%, rgba(255,215,0,0.14) 60%, rgba(255,215,0,0.08) 85%, transparent);
+      z-index: 5;
+    }
+    .cross-v {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(255,215,0,0.12), rgba(255,215,0,0.06) 25%, transparent 42%, transparent 58%, rgba(255,215,0,0.06) 75%, rgba(255,215,0,0.12));
+      z-index: 5;
+    }
+    .banner-fb .cross-h { left: 20%; }
+    .banner-fb .cross-v { left: 20%; }
+
+    /* ── Corner data blocks ── */
+    .data {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,215,0,0.35);
+      z-index: 45;
+    }
+    .data-tl { top: 18px; left: 24px; }
+    .data-tr { top: 18px; right: 24px; text-align: right; }
+    .data-bl { bottom: 18px; left: 24px; }
+    .data-br { bottom: 18px; right: 24px; text-align: right; }
+
+    /* ── Divider line between logo zone and text ── */
+    .divider {
+      position: absolute;
+      top: 15%;
+      bottom: 15%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(255,215,0,0.25) 20%, rgba(255,215,0,0.25) 80%, transparent);
+      z-index: 15;
+    }
+    .banner-x .divider { left: 42%; }
+    .banner-fb .divider { left: 40%; }
+
+    /* ── Ghost text — filling background ── */
+    .ghost-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 20px;
+      color: rgba(255,215,0,0.04);
+      white-space: nowrap;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* ── Tagline ── */
+    .tagline {
+      position: absolute;
+      z-index: 10;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,215,0,0.45);
+    }
+    .banner-x .tagline { bottom: 70px; right: 80px; }
+    .banner-fb .tagline { bottom: 40px; right: 40px; font-size: 9px; letter-spacing: 3px; }
+
+    /* ── Halftone dot field — subtle texture in the middle ── */
+    .halftone {
+      position: absolute;
+      top: 50%;
+      left: 22%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      z-index: 2;
+      background: radial-gradient(circle, rgba(255,215,0,0.06) 1px, transparent 1px);
+      background-size: 14px 14px;
+      mask-image: radial-gradient(ellipse at center, transparent 35%, black 40%, black 50%, transparent 55%);
+      -webkit-mask-image: radial-gradient(ellipse at center, transparent 35%, black 40%, black 50%, transparent 55%);
+    }
+    .banner-fb .halftone { left: 20%; width: 300px; height: 300px; }
+
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 1 — X / Twitter Banner: 1500 x 500                              -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="banner banner-x grain">
+  <!-- Atmospheric -->
+  <div class="burst"></div>
+  <div class="glow"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="halftone"></div>
+
+  <!-- Edge accents -->
+  <div class="sig-bar sig-bar-l"></div>
+  <div class="sig-bar sig-bar-r"></div>
+  <div class="h-line h-line-top"></div>
+  <div class="h-line h-line-bot"></div>
+
+  <!-- Rings around logo -->
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+
+  <!-- Crosshair on logo -->
+  <div class="cross-h"></div>
+  <div class="cross-v"></div>
+
+  <!-- Divider -->
+  <div class="divider"></div>
+
+  <!-- Glitch bars -->
+  <div class="glitch" style="top:95px; height:2px; background:rgba(255,215,0,0.08); transform:translateX(30px);"></div>
+  <div class="glitch" style="top:240px; height:3px; background:rgba(80,140,220,0.05); transform:translateX(-20px);"></div>
+  <div class="glitch" style="bottom:120px; height:2px; background:rgba(255,215,0,0.10); transform:translateX(15px);"></div>
+  <div class="glitch" style="bottom:60px; height:2px; background:rgba(255,215,0,0.06); transform:translateX(-25px);"></div>
+
+  <!-- Ghost text -->
+  <div class="ghost-text" style="font-size:180px; top:-20px; left:200px; transform:rotate(-5deg);">FEAR THE PHANTOM</div>
+  <div class="ghost-text" style="font-size:140px; bottom:-10px; left:400px; transform:rotate(-5deg);">FANTASMA FANTASMA FANTASMA</div>
+
+  <!-- Corner data -->
+  <div class="data data-tl">SIG // 001</div>
+  <div class="data data-tr">Pittsburgh, PA</div>
+  <div class="data data-bl">@fantasmafootball</div>
+  <div class="data data-br">Est. 2025</div>
+
+  <!-- Logo -->
+  <div class="logo-ghost gold"><img src="../public/fantasma_logo_final.png" alt=""></div>
+  <div class="logo-ghost blue"><img src="../public/fantasma_logo_final.png" alt=""></div>
+  <div class="logo"><img src="../public/fantasma_logo_final.png" alt="Fantasma"></div>
+
+  <!-- Brand text -->
+  <div class="brand">
+    <div class="brand-main"><span class="dbl" data-text="FANTASMA">FANTASMA</span></div>
+    <div class="brand-sub">Football</div>
+  </div>
+
+  <!-- Tagline -->
+  <div class="tagline">Fear the Phantom</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- SLIDE 2 — Facebook Cover: 820 x 312                                   -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="banner banner-fb grain">
+  <!-- Atmospheric -->
+  <div class="burst"></div>
+  <div class="glow"></div>
+  <div class="scanlines"></div>
+  <div class="vignette"></div>
+  <div class="halftone"></div>
+
+  <!-- Edge accents -->
+  <div class="sig-bar sig-bar-l"></div>
+  <div class="sig-bar sig-bar-r"></div>
+  <div class="h-line h-line-top"></div>
+  <div class="h-line h-line-bot"></div>
+
+  <!-- Rings around logo -->
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+
+  <!-- Crosshair on logo -->
+  <div class="cross-h"></div>
+  <div class="cross-v"></div>
+
+  <!-- Divider -->
+  <div class="divider"></div>
+
+  <!-- Glitch bars -->
+  <div class="glitch" style="top:55px; height:2px; background:rgba(255,215,0,0.08); transform:translateX(15px);"></div>
+  <div class="glitch" style="top:150px; height:2px; background:rgba(80,140,220,0.05); transform:translateX(-10px);"></div>
+  <div class="glitch" style="bottom:75px; height:2px; background:rgba(255,215,0,0.10); transform:translateX(10px);"></div>
+  <div class="glitch" style="bottom:35px; height:2px; background:rgba(255,215,0,0.06); transform:translateX(-12px);"></div>
+
+  <!-- Ghost text -->
+  <div class="ghost-text" style="font-size:100px; top:-10px; left:100px; transform:rotate(-5deg);">FEAR THE PHANTOM</div>
+  <div class="ghost-text" style="font-size:80px; bottom:-5px; left:200px; transform:rotate(-5deg);">FANTASMA FANTASMA FANTASMA</div>
+
+  <!-- Corner data -->
+  <div class="data data-tl">SIG // 001</div>
+  <div class="data data-tr">Pittsburgh, PA</div>
+  <div class="data data-bl">@fantasmafootball</div>
+  <div class="data data-br">Est. 2025</div>
+
+  <!-- Logo -->
+  <div class="logo-ghost gold"><img src="../public/fantasma_logo_final.png" alt=""></div>
+  <div class="logo-ghost blue"><img src="../public/fantasma_logo_final.png" alt=""></div>
+  <div class="logo"><img src="../public/fantasma_logo_final.png" alt="Fantasma"></div>
+
+  <!-- Brand text -->
+  <div class="brand">
+    <div class="brand-main"><span class="dbl" data-text="FANTASMA">FANTASMA</span></div>
+    <div class="brand-sub">Football</div>
+  </div>
+
+  <!-- Tagline -->
+  <div class="tagline">Fear the Phantom</div>
+</div>
+
+</body>
+</html>

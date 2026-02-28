@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Fantasma Football — Brand Identity</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: 'Outfit', sans-serif;
+      overflow: hidden;
+    }
+
+    /* Slide Viewer */
+    .viewer {
+      position: relative;
+      width: 1080px;
+      height: 1080px;
+    }
+
+    .slide {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1080px;
+      height: 1080px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+      overflow: hidden;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 24px;
+      user-select: none;
+    }
+
+    .nav button {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav button:hover {
+      border-color: #C5B358;
+      color: #C5B358;
+    }
+
+    .counter {
+      color: rgba(255,255,255,0.5);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background: #C5B358;
+      transform: scale(1.3);
+    }
+
+    /* ==================== SLIDE 1: COVER ==================== */
+    .slide-cover {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .slide-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(197, 179, 88, 0.06) 0%, transparent 60%);
+    }
+
+    .cover-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: rgba(197, 179, 88, 0.6);
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 148px;
+      line-height: 0.9;
+      color: #FFFFFF;
+      text-align: center;
+      letter-spacing: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-subtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      color: #C5B358;
+      letter-spacing: 12px;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-line {
+      width: 80px;
+      height: 2px;
+      background: #C5B358;
+      margin: 48px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-year {
+      position: absolute;
+      bottom: 48px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* Corner marks */
+    .corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      z-index: 1;
+    }
+    .corner::before, .corner::after {
+      content: '';
+      position: absolute;
+      background: rgba(197, 179, 88, 0.25);
+    }
+    .corner-tl { top: 48px; left: 48px; }
+    .corner-tl::before { top: 0; left: 0; width: 40px; height: 1px; }
+    .corner-tl::after { top: 0; left: 0; width: 1px; height: 40px; }
+    .corner-tr { top: 48px; right: 48px; }
+    .corner-tr::before { top: 0; right: 0; width: 40px; height: 1px; }
+    .corner-tr::after { top: 0; right: 0; width: 1px; height: 40px; }
+    .corner-bl { bottom: 48px; left: 48px; }
+    .corner-bl::before { bottom: 0; left: 0; width: 40px; height: 1px; }
+    .corner-bl::after { bottom: 0; left: 0; width: 1px; height: 40px; }
+    .corner-br { bottom: 48px; right: 48px; }
+    .corner-br::before { bottom: 0; right: 0; width: 40px; height: 1px; }
+    .corner-br::after { bottom: 0; right: 0; width: 1px; height: 40px; }
+
+    /* ==================== SLIDE 2: COLOR PALETTE ==================== */
+    .slide-colors {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+    }
+
+    .section-number {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      letter-spacing: 4px;
+      color: rgba(10, 10, 10, 0.3);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-number.light {
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      color: #0A0A0A;
+      letter-spacing: 3px;
+      line-height: 1;
+    }
+
+    .section-title.light {
+      color: #FFFFFF;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 32px 0 48px;
+    }
+
+    .color-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      flex: 1;
+    }
+
+    .color-card {
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .color-swatch {
+      flex: 1;
+      min-height: 160px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 20px 24px;
+      background: #FFFFFF;
+    }
+
+    .color-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #0A0A0A;
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: rgba(10, 10, 10, 0.4);
+      letter-spacing: 1px;
+    }
+
+    .color-card-large {
+      grid-column: 1 / -1;
+    }
+
+    .color-card-large .color-swatch {
+      min-height: 120px;
+    }
+
+    /* ==================== SLIDE 3: TYPOGRAPHY ==================== */
+    .slide-type {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+    }
+
+    .type-showcase {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 64px;
+    }
+
+    .type-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .type-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #C5B358;
+      margin-bottom: 20px;
+    }
+
+    .type-specimen-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 120px;
+      line-height: 0.85;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+    }
+
+    .type-detail {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255,255,255,0.35);
+      margin-top: 16px;
+      letter-spacing: 1px;
+    }
+
+    .type-specimen-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .type-weight-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+    }
+
+    .type-weight-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.25);
+      width: 80px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    .type-weight-sample {
+      font-family: 'Outfit', sans-serif;
+      font-size: 32px;
+      color: #FFFFFF;
+      line-height: 1.2;
+    }
+
+    /* ==================== SLIDE 4: BRAND PILLARS ==================== */
+    .slide-pillars {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+    }
+
+    .pillars-grid {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .pillar-item {
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+      display: flex;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .pillar-item:last-child {
+      border-bottom: none;
+    }
+
+    .pillar-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 64px;
+      color: #C5B358;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 70px;
+    }
+
+    .pillar-content {
+      flex: 1;
+    }
+
+    .pillar-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      color: #0A0A0A;
+      letter-spacing: 2px;
+      line-height: 1;
+      margin-bottom: 12px;
+    }
+
+    .pillar-desc {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(10, 10, 10, 0.5);
+    }
+
+    /* ==================== SLIDE 5: BRAND VOICE ==================== */
+    .slide-voice {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px;
+      text-align: center;
+      position: relative;
+    }
+
+    .slide-voice::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.08);
+    }
+
+    .slide-voice::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.05);
+    }
+
+    .voice-quote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      line-height: 1;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+    }
+
+    .voice-quote .gold {
+      color: #C5B358;
+    }
+
+    .voice-divider {
+      width: 48px;
+      height: 2px;
+      background: #C5B358;
+      margin: 40px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .voice-sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.45);
+      letter-spacing: 2px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+    }
+
+    .voice-label {
+      position: absolute;
+      bottom: 60px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ==================== SLIDE 6: DESIGN ELEMENTS ==================== */
+    .slide-elements {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+    }
+
+    .elements-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      gap: 24px;
+      align-content: center;
+    }
+
+    .element-card {
+      background: #FFFFFF;
+      border-radius: 16px;
+      padding: 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .element-card-dark {
+      background: #040C14;
+    }
+
+    .element-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .element-label.light {
+      color: rgba(255,255,255,0.3);
+    }
+
+    /* Buttons showcase */
+    .btn-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .demo-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 36px;
+      border-radius: 9999px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      border: none;
+      cursor: default;
+    }
+
+    .demo-btn-dark {
+      background: #0A0A0A;
+      color: #FFFFFF;
+    }
+
+    .demo-btn-outline {
+      background: transparent;
+      border: 1.5px solid #0A0A0A;
+      color: #0A0A0A;
+    }
+
+    .demo-btn-gold {
+      background: #C5B358;
+      color: #040C14;
+    }
+
+    /* Radius showcase */
+    .radius-row {
+      display: flex;
+      gap: 24px;
+      align-items: flex-end;
+    }
+
+    .radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .radius-box {
+      width: 72px;
+      height: 72px;
+      background: #C5B358;
+    }
+
+    .radius-val {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: rgba(10,10,10,0.4);
+      letter-spacing: 1px;
+    }
+
+    /* Gold accent showcase */
+    .accent-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .accent-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .accent-bar {
+      width: 4px;
+      height: 36px;
+      background: #C5B358;
+      border-radius: 2px;
+    }
+
+    .accent-bar-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .accent-line-demo {
+      height: 2px;
+      background: linear-gradient(90deg, #C5B358, transparent);
+      width: 200px;
+    }
+
+    .accent-line-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 8px;
+    }
+
+    /* Spacing showcase */
+    .spacing-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .spacing-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .spacing-block {
+      height: 8px;
+      background: rgba(197, 179, 88, 0.3);
+      border-radius: 4px;
+    }
+
+    .spacing-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      color: rgba(10,10,10,0.35);
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    /* Wide card */
+    .element-card-wide {
+      grid-column: 1 / -1;
+    }
+
+    /* ==================== SLIDE 7: CLOSING ==================== */
+    .slide-close {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .slide-close::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, rgba(197, 179, 88, 0.04) 0%, transparent 50%);
+    }
+
+    .close-fear {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 110px;
+      color: #FFFFFF;
+      letter-spacing: 6px;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-train {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 110px;
+      color: #C5B358;
+      letter-spacing: 6px;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-line {
+      width: 60px;
+      height: 2px;
+      background: rgba(197, 179, 88, 0.4);
+      margin: 48px 0 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-socials {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-handle {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 2px;
+    }
+
+    .close-website {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      color: rgba(197, 179, 88, 0.5);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .close-corners .corner::before,
+    .close-corners .corner::after {
+      background: rgba(197, 179, 88, 0.15);
+    }
+
+    /* ==================== PRINT / SCREENSHOT HELPER ==================== */
+    .tip {
+      color: rgba(255,255,255,0.3);
+      font-family: 'Outfit', sans-serif;
+      font-size: 12px;
+      margin-top: 16px;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="viewer">
+
+    <!-- SLIDE 1: COVER -->
+    <div class="slide slide-cover active" data-slide="0">
+      <div class="corner corner-tl"></div>
+      <div class="corner corner-tr"></div>
+      <div class="corner corner-bl"></div>
+      <div class="corner corner-br"></div>
+      <div class="cover-label">Brand Identity</div>
+      <div class="cover-title">FANTASMA</div>
+      <div class="cover-subtitle">FOOTBALL</div>
+      <div class="cover-line"></div>
+      <div class="cover-tagline">Pittsburgh, PA</div>
+      <div class="cover-year">EST. 2025</div>
+    </div>
+
+    <!-- SLIDE 2: COLOR PALETTE -->
+    <div class="slide slide-colors" data-slide="1">
+      <div class="section-number">01 / Color</div>
+      <div class="section-title">COLOR PALETTE</div>
+      <div class="section-divider"></div>
+      <div class="color-grid">
+        <div class="color-card">
+          <div class="color-swatch" style="background: #040C14;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Navy</div>
+            <div class="color-hex">#040C14</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #C5B358;"></div>
+          <div class="color-info">
+            <div class="color-name">Vegas Gold</div>
+            <div class="color-hex">#C5B358</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #F8F7F4;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Cream</div>
+            <div class="color-hex">#F8F7F4</div>
+          </div>
+        </div>
+        <div class="color-card">
+          <div class="color-swatch" style="background: #0A0A0A;"></div>
+          <div class="color-info">
+            <div class="color-name">Rich Black</div>
+            <div class="color-hex">#0A0A0A</div>
+          </div>
+        </div>
+        <div class="color-card color-card-large">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #040C14 0%, #040C14 25%, #C5B358 25%, #C5B358 50%, #F8F7F4 50%, #F8F7F4 75%, #FFFFFF 75%);"></div>
+          <div class="color-info">
+            <div class="color-name">Full Palette Harmony</div>
+            <div class="color-hex">Navy + Gold + Cream + White</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: TYPOGRAPHY -->
+    <div class="slide slide-type" data-slide="2">
+      <div class="section-number light">02 / Type</div>
+      <div class="section-title light">TYPOGRAPHY</div>
+      <div class="section-divider"></div>
+      <div class="type-showcase">
+        <div class="type-block">
+          <div class="type-label">Display — Bebas Neue</div>
+          <div class="type-specimen-display">Aa Bb Cc</div>
+          <div class="type-detail">Headlines &middot; Titles &middot; Hero Text &middot; Brand Statements</div>
+        </div>
+        <div class="type-block">
+          <div class="type-label">Body — Outfit</div>
+          <div class="type-specimen-body">
+            <div class="type-weight-row">
+              <span class="type-weight-label">Light</span>
+              <span class="type-weight-sample" style="font-weight: 300;">Where the poetry meets</span>
+            </div>
+            <div class="type-weight-row">
+              <span class="type-weight-label">Regular</span>
+              <span class="type-weight-sample" style="font-weight: 400;">Where the poetry meets</span>
+            </div>
+            <div class="type-weight-row">
+              <span class="type-weight-label">Semi</span>
+              <span class="type-weight-sample" style="font-weight: 600;">Where the poetry meets</span>
+            </div>
+            <div class="type-weight-row">
+              <span class="type-weight-label">Bold</span>
+              <span class="type-weight-sample" style="font-weight: 800;">Where the poetry meets</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: BRAND PILLARS -->
+    <div class="slide slide-pillars" data-slide="3">
+      <div class="section-number">03 / Foundation</div>
+      <div class="section-title">BRAND PILLARS</div>
+      <div class="section-divider"></div>
+      <div class="pillars-grid">
+        <div class="pillar-item">
+          <div class="pillar-number">01</div>
+          <div class="pillar-content">
+            <div class="pillar-title">PASSION</div>
+            <div class="pillar-desc">Deep, unconditional love for the game. Every session, every drill, every conversation is fueled by a passion that deserves to be pursued with everything.</div>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-number">02</div>
+          <div class="pillar-content">
+            <div class="pillar-title">TACTICAL INTELLIGENCE</div>
+            <div class="pillar-desc">Smart players solve problems. Read the game, see what others miss, and make every decision count. You don't need to be the fastest — you need to think.</div>
+          </div>
+        </div>
+        <div class="pillar-item">
+          <div class="pillar-number">03</div>
+          <div class="pillar-content">
+            <div class="pillar-title">DESIRE</div>
+            <div class="pillar-desc">Show up early. Stay late. Refuse to settle. The players who outwork everyone else are the ones who change the game. Relentless work ethic over raw talent.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: BRAND VOICE -->
+    <div class="slide slide-voice" data-slide="4">
+      <div class="section-number light" style="position: absolute; top: 60px; left: 80px;">04 / Voice</div>
+      <div class="voice-quote">
+        FEAR THE <span class="gold">PHANTOM.</span><br>
+        TRAIN <span class="gold">FANTASMA.</span>
+      </div>
+      <div class="voice-divider"></div>
+      <div class="voice-sub">
+        Where the poetry and grit of football meet.<br>
+        Bold. Editorial. Confident.
+      </div>
+      <div class="voice-label">Brand Tone &middot; Aspirational &middot; Athletic &middot; Poetic</div>
+    </div>
+
+    <!-- SLIDE 6: DESIGN ELEMENTS -->
+    <div class="slide slide-elements" data-slide="5">
+      <div class="section-number">05 / System</div>
+      <div class="section-title">DESIGN ELEMENTS</div>
+      <div class="section-divider"></div>
+      <div class="elements-grid">
+        <div class="element-card">
+          <div class="element-label">Buttons</div>
+          <div class="btn-showcase">
+            <div class="demo-btn demo-btn-dark">Book a Session</div>
+            <div class="demo-btn demo-btn-outline">Learn More</div>
+            <div class="demo-btn demo-btn-gold">Get Started</div>
+          </div>
+        </div>
+        <div class="element-card">
+          <div class="element-label">Border Radius</div>
+          <div class="radius-row">
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius: 0;"></div>
+              <div class="radius-val">0px</div>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius: 12px;"></div>
+              <div class="radius-val">12px</div>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius: 20px;"></div>
+              <div class="radius-val">20px</div>
+            </div>
+            <div class="radius-item">
+              <div class="radius-box" style="border-radius: 9999px;"></div>
+              <div class="radius-val">Pill</div>
+            </div>
+          </div>
+        </div>
+        <div class="element-card element-card-dark element-card-wide">
+          <div class="element-label light">Accent Details</div>
+          <div class="accent-showcase" style="display: flex; flex-direction: row; gap: 64px; align-items: flex-start;">
+            <div>
+              <div class="accent-bar-row">
+                <div class="accent-bar"></div>
+                <div class="accent-bar-label">Vertical gold markers</div>
+              </div>
+              <div style="margin-top: 24px;">
+                <div class="accent-line-demo"></div>
+                <div class="accent-line-label">Gradient line separators</div>
+              </div>
+            </div>
+            <div>
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(197,179,88,0.3);"></div>
+                <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(197,179,88,0.15);"></div>
+                <div style="width: 48px; height: 48px; border-radius: 50%; border: 1.5px solid rgba(197,179,88,0.07);"></div>
+                <span class="accent-bar-label" style="margin-left: 8px;">Radiating circles</span>
+              </div>
+              <div style="margin-top: 24px; display: flex; gap: 4px;">
+                <div style="width: 4px; height: 4px; background: #C5B358; border-radius: 50%;"></div>
+                <div style="width: 12px; height: 4px; background: #C5B358; border-radius: 2px;"></div>
+                <div style="width: 24px; height: 4px; background: #C5B358; border-radius: 2px;"></div>
+                <div style="width: 48px; height: 4px; background: #C5B358; border-radius: 2px;"></div>
+                <span class="accent-bar-label" style="margin-left: 12px;">Progressive scale</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: CLOSING -->
+    <div class="slide slide-close" data-slide="6">
+      <div class="close-corners">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+      </div>
+      <div class="close-fear">FEAR THE PHANTOM.</div>
+      <div class="close-train">TRAIN FANTASMA.</div>
+      <div class="close-line"></div>
+      <div class="close-socials">
+        <div class="close-handle">@fantasmafootball</div>
+        <div class="close-handle">@fantasmafooty</div>
+      </div>
+      <div class="close-website">fantasmafootball.com</div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav">
+    <button onclick="prev()">&#8592;</button>
+    <div class="dots" id="dots"></div>
+    <span class="counter" id="counter">1 / 7</span>
+    <button onclick="next()">&#8594;</button>
+  </div>
+  <div class="tip">Open in browser &middot; Use arrows to navigate &middot; Screenshot each slide at 1080&times;1080</div>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+    const counter = document.getElementById('counter');
+    const dotsContainer = document.getElementById('dots');
+
+    // Create dots
+    for (let i = 0; i < total; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.onclick = () => goTo(i);
+      dotsContainer.appendChild(dot);
+    }
+
+    function goTo(n) {
+      slides[current].classList.remove('active');
+      dotsContainer.children[current].classList.remove('active');
+      current = n;
+      slides[current].classList.add('active');
+      dotsContainer.children[current].classList.add('active');
+      counter.textContent = (current + 1) + ' / ' + total;
+    }
+
+    function next() { goTo((current + 1) % total); }
+    function prev() { goTo((current - 1 + total) % total); }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight' || e.key === ' ') next();
+      if (e.key === 'ArrowLeft') prev();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+name: Daily Research & Post Generation
+
+on:
+  schedule:
+    # 11:30 UTC = 6:30 AM Eastern Time
+    - cron: '30 11 * * *'
+  workflow_dispatch: # Allow manual trigger for testing
+
+permissions:
+  contents: write
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Puppeteer browser
+        run: npx puppeteer browsers install chrome
+
+      - name: Run daily research
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          APPROVE_SECRET: ${{ secrets.APPROVE_SECRET }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: node scripts/daily-research.cjs
+
+      - name: Commit daily plan
+        run: |
+          git config user.name "Fantasma Bot"
+          git config user.email "bot@fantasmafootball.com"
+          git add docs/daily-plans/ social/daily-template.html
+          git diff --cached --quiet || git commit -m "Daily plan: $(date -u +%Y-%m-%d)"
+          git push

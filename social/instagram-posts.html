@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1120, initial-scale=0.35">
+  <title>Fantasma Football - Instagram Posts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #1a1a1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .viewer {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .slide {
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+    }
+
+    /* Watermark */
+    .watermark {
+      position: absolute;
+      bottom: 36px;
+      right: 40px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 2px;
+      z-index: 10;
+    }
+
+    .watermark.dark {
+      color: rgba(255, 255, 255, 0.18);
+    }
+
+    .watermark.light {
+      color: rgba(10, 10, 10, 0.15);
+    }
+
+
+    /* ==========================================
+       POST 1: YOUR FIRST TOUCH IS YOUR FIRST DECISION
+       ========================================== */
+    .post-1 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px;
+      position: relative;
+    }
+
+    .post-1::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.06);
+    }
+
+    .post-1 .kicker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 13px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #C5B358;
+      margin-bottom: 48px;
+    }
+
+    .post-1 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 96px;
+      line-height: 0.95;
+      color: #FFFFFF;
+      letter-spacing: 3px;
+      max-width: 850px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-1 .headline .accent {
+      color: #C5B358;
+    }
+
+    .post-1 .subtext {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-top: 48px;
+      line-height: 1.7;
+      max-width: 500px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-1 .gold-bar {
+      width: 4px;
+      height: 40px;
+      background: #C5B358;
+      margin-top: 40px;
+      border-radius: 2px;
+    }
+
+    /* ==========================================
+       POST 2: SCAN BEFORE YOU RECEIVE
+       ========================================== */
+    .post-2 {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+      position: relative;
+    }
+
+    .post-2 .top-section {
+      margin-bottom: 48px;
+    }
+
+    .post-2 .kicker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .post-2 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 80px;
+      line-height: 0.95;
+      color: #0A0A0A;
+      letter-spacing: 2px;
+    }
+
+    .post-2 .divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 24px 0;
+    }
+
+    .post-2 .pitch-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Pitch diagram */
+    .pitch-mini {
+      width: 500px;
+      height: 500px;
+      position: relative;
+    }
+
+    .pitch-mini .field {
+      width: 100%;
+      height: 100%;
+      border: 2px solid rgba(10, 10, 10, 0.12);
+      border-radius: 12px;
+      position: relative;
+      background: rgba(197, 179, 88, 0.04);
+    }
+
+    .pitch-mini .center-circle {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 2px solid rgba(10, 10, 10, 0.08);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .pitch-mini .center-line {
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background: rgba(10, 10, 10, 0.08);
+      top: 50%;
+    }
+
+    .pitch-mini .center-dot {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #0A0A0A;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Player dot */
+    .pitch-mini .player {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: #C5B358;
+      border-radius: 50%;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+
+    .pitch-mini .player::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 2px solid rgba(197, 179, 88, 0.3);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Scan arrows */
+    .scan-arrow {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .scan-arrow::before {
+      content: '';
+      position: absolute;
+      background: rgba(197, 179, 88, 0.25);
+    }
+
+    .scan-label {
+      position: absolute;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.35);
+      z-index: 4;
+    }
+
+    .scan-zone {
+      position: absolute;
+      border: 1.5px dashed rgba(197, 179, 88, 0.3);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .scan-zone-1 {
+      width: 180px;
+      height: 180px;
+      top: 20%;
+      left: 10%;
+    }
+
+    .scan-zone-2 {
+      width: 160px;
+      height: 160px;
+      top: 15%;
+      right: 12%;
+    }
+
+    .scan-zone-3 {
+      width: 140px;
+      height: 140px;
+      bottom: 12%;
+      left: 30%;
+    }
+
+    .scan-line {
+      position: absolute;
+      height: 1.5px;
+      background: linear-gradient(90deg, #C5B358, transparent);
+      z-index: 2;
+      transform-origin: left center;
+    }
+
+    .scan-line-1 {
+      width: 120px;
+      top: 48%;
+      left: 56%;
+      transform: rotate(-35deg);
+    }
+
+    .scan-line-2 {
+      width: 130px;
+      top: 48%;
+      left: 44%;
+      transform: rotate(-145deg);
+    }
+
+    .scan-line-3 {
+      width: 100px;
+      top: 60%;
+      left: 44%;
+      transform: rotate(210deg);
+    }
+
+    .post-2 .bottom-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      color: rgba(10, 10, 10, 0.45);
+      line-height: 1.7;
+      max-width: 420px;
+      margin-top: 32px;
+    }
+
+    /* ==========================================
+       POST 3: OUTWORK YESTERDAY
+       ========================================== */
+    .post-3 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .post-3 .bg-text {
+      position: absolute;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 300px;
+      color: rgba(255, 255, 255, 0.02);
+      letter-spacing: 20px;
+      line-height: 0.8;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap;
+    }
+
+    .post-3 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 140px;
+      color: #FFFFFF;
+      letter-spacing: 6px;
+      line-height: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-3 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-3 .line {
+      width: 60px;
+      height: 2px;
+      background: #C5B358;
+      margin: 40px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-3 .sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================
+       POST 4: 1000 TOUCHES A DAY
+       ========================================== */
+    .post-4 {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+      position: relative;
+    }
+
+    .post-4 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 120px;
+      color: #0A0A0A;
+      line-height: 0.85;
+      letter-spacing: 2px;
+    }
+
+    .post-4 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-4 .kicker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .post-4 .divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 28px 0 36px;
+    }
+
+    .post-4 .drill-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Cone drill diagram */
+    .drill-diagram {
+      position: relative;
+      width: 600px;
+      height: 400px;
+    }
+
+    .cone {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-bottom: 24px solid #C5B358;
+    }
+
+    .cone::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: -10px;
+      width: 20px;
+      height: 4px;
+      background: rgba(197, 179, 88, 0.6);
+      border-radius: 2px;
+    }
+
+    .cone-1 { top: 40px; left: 80px; }
+    .cone-2 { top: 40px; left: 260px; }
+    .cone-3 { top: 40px; left: 440px; }
+    .cone-4 { bottom: 60px; left: 170px; }
+    .cone-5 { bottom: 60px; left: 350px; }
+
+    .drill-path {
+      position: absolute;
+      border: 2px dashed rgba(10, 10, 10, 0.12);
+      border-radius: 0;
+      z-index: 1;
+    }
+
+    .drill-path-1 {
+      top: 64px;
+      left: 94px;
+      width: 166px;
+      height: 200px;
+      border-right: none;
+      border-top: none;
+      border-radius: 0 0 0 20px;
+    }
+
+    .drill-path-2 {
+      top: 64px;
+      left: 184px;
+      width: 166px;
+      height: 200px;
+      border-left: none;
+      border-bottom: none;
+      border-radius: 0 20px 0 0;
+    }
+
+    .drill-path-3 {
+      top: 64px;
+      left: 274px;
+      width: 166px;
+      height: 200px;
+      border-right: none;
+      border-top: none;
+      border-radius: 0 0 0 20px;
+    }
+
+    .drill-player {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: #040C14;
+      border-radius: 50%;
+      bottom: 30px;
+      left: 68px;
+      z-index: 2;
+    }
+
+    .drill-arrow {
+      position: absolute;
+      top: 30px;
+      right: 60px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 28px;
+      color: rgba(10, 10, 10, 0.15);
+    }
+
+    .drill-labels {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .drill-label {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+    }
+
+    .post-4 .bottom-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      color: rgba(10, 10, 10, 0.45);
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    /* ==========================================
+       POST 5: SEE THE PASS BEFORE IT EXISTS
+       ========================================== */
+    .post-5 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+      position: relative;
+    }
+
+    .post-5 .kicker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(197, 179, 88, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .post-5 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 76px;
+      color: #FFFFFF;
+      line-height: 0.95;
+      letter-spacing: 2px;
+    }
+
+    .post-5 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-5 .divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 24px 0 0;
+    }
+
+    .post-5 .pass-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Passing lanes diagram */
+    .pass-diagram {
+      position: relative;
+      width: 700px;
+      height: 500px;
+    }
+
+    .pass-diagram .half-pitch {
+      width: 100%;
+      height: 100%;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .pass-diagram .box {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 360px;
+      height: 180px;
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .pass-diagram .arc {
+      position: absolute;
+      bottom: 170px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 60px;
+      border: 1.5px solid rgba(255, 255, 255, 0.06);
+      border-bottom: none;
+      border-radius: 60px 60px 0 0;
+    }
+
+    .pass-player {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      z-index: 3;
+    }
+
+    .pass-player.main {
+      background: #C5B358;
+      width: 28px;
+      height: 28px;
+    }
+
+    .pass-player.teammate {
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .pass-player.opponent {
+      background: transparent;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .pp-1 { bottom: 240px; left: 50%; transform: translateX(-50%); }
+    .pp-t1 { top: 80px; left: 20%; }
+    .pp-t2 { top: 120px; right: 18%; }
+    .pp-t3 { bottom: 100px; left: 28%; }
+    .pp-o1 { top: 160px; left: 38%; }
+    .pp-o2 { bottom: 180px; right: 32%; }
+    .pp-o3 { top: 200px; left: 55%; }
+
+    .pass-lane {
+      position: absolute;
+      height: 1.5px;
+      z-index: 2;
+      transform-origin: left center;
+    }
+
+    .pass-lane.open {
+      background: linear-gradient(90deg, rgba(197, 179, 88, 0.6), rgba(197, 179, 88, 0.1));
+    }
+
+    .pass-lane.blocked {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.03));
+      border-top: 1.5px dashed rgba(255, 255, 255, 0.1);
+      background: none;
+    }
+
+    .pl-1 {
+      width: 200px;
+      bottom: 280px;
+      left: 48%;
+      transform: rotate(-55deg);
+    }
+
+    .pl-2 {
+      width: 180px;
+      bottom: 270px;
+      left: 52%;
+      transform: rotate(30deg);
+    }
+
+    .pl-3 {
+      width: 140px;
+      bottom: 258px;
+      left: 40%;
+      transform: rotate(-120deg);
+    }
+
+    .pass-legend {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .legend-line-open {
+      width: 24px;
+      height: 2px;
+      background: #C5B358;
+    }
+
+    .legend-line-blocked {
+      width: 24px;
+      height: 0;
+      border-top: 1.5px dashed rgba(255, 255, 255, 0.2);
+    }
+
+    .legend-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 1px;
+    }
+
+    /* ==========================================
+       POST 6: TALENT IS COMMON. DESIRE IS RARE.
+       ========================================== */
+    .post-6 {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px;
+      position: relative;
+    }
+
+    .post-6::before {
+      content: '';
+      position: absolute;
+      top: 80px;
+      left: 80px;
+      right: 80px;
+      bottom: 80px;
+      border: 1px solid rgba(10, 10, 10, 0.06);
+      border-radius: 20px;
+    }
+
+    .post-6 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 108px;
+      line-height: 0.92;
+      color: #0A0A0A;
+      letter-spacing: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-6 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-6 .line {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 44px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-6 .sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 18px;
+      color: rgba(10, 10, 10, 0.4);
+      line-height: 1.8;
+      max-width: 500px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ==========================================
+       POST 7: CONTROL THE BALL. CONTROL THE GAME.
+       ========================================== */
+    .post-7 {
+      background: #040C14;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      text-align: center;
+      padding: 80px;
+    }
+
+    .post-7 .rings {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .post-7 .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 179, 88, 0.06);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .post-7 .ring-1 { width: 300px; height: 300px; }
+    .post-7 .ring-2 { width: 500px; height: 500px; }
+    .post-7 .ring-3 { width: 700px; height: 700px; }
+    .post-7 .ring-4 { width: 900px; height: 900px; }
+
+    .post-7 .ball-icon {
+      width: 48px;
+      height: 48px;
+      border: 2px solid #C5B358;
+      border-radius: 50%;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-7 .ball-icon::before {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #C5B358;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .post-7 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 100px;
+      line-height: 0.92;
+      color: #FFFFFF;
+      letter-spacing: 4px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-7 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-7 .steps {
+      display: flex;
+      gap: 48px;
+      margin-top: 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .post-7 .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .post-7 .step-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #C5B358;
+    }
+
+    .post-7 .step-text {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================
+       POST 8: THE GAME REWARDS THE PREPARED
+       ========================================== */
+    .post-8 {
+      background: #F8F7F4;
+      display: flex;
+      flex-direction: column;
+      padding: 80px;
+      position: relative;
+    }
+
+    .post-8 .kicker {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 12px;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: rgba(10, 10, 10, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .post-8 .headline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 84px;
+      color: #0A0A0A;
+      line-height: 0.92;
+      letter-spacing: 2px;
+      max-width: 700px;
+    }
+
+    .post-8 .headline .gold {
+      color: #C5B358;
+    }
+
+    .post-8 .divider {
+      width: 48px;
+      height: 3px;
+      background: #C5B358;
+      margin: 28px 0 0;
+    }
+
+    .post-8 .checklist-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .checklist {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      width: 100%;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(10, 10, 10, 0.06);
+    }
+
+    .check-item:last-child {
+      border-bottom: none;
+    }
+
+    .check-box {
+      width: 36px;
+      height: 36px;
+      border: 2px solid #C5B358;
+      border-radius: 8px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .check-box::after {
+      content: '';
+      width: 12px;
+      height: 6px;
+      border-left: 2.5px solid #C5B358;
+      border-bottom: 2.5px solid #C5B358;
+      transform: rotate(-45deg);
+      margin-top: -3px;
+    }
+
+    .check-content {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .check-title {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: #0A0A0A;
+    }
+
+    .check-desc {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 14px;
+      color: rgba(10, 10, 10, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="viewer">
+
+    <!-- POST 1 -->
+    <div class="slide post-1" data-slide="0">
+      <div class="kicker">Training Tip</div>
+      <div class="headline">YOUR FIRST TOUCH<br>IS YOUR FIRST<br><span class="accent">DECISION</span></div>
+      <div class="subtext">A great first touch doesn't just control the ball. It eliminates a defender, creates space, and sets up your next move before anyone reacts.</div>
+      <div class="gold-bar"></div>
+      <span class="watermark dark">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 2 -->
+    <div class="slide post-2" data-slide="1">
+      <div class="top-section">
+        <div class="kicker">Vision & Awareness</div>
+        <div class="headline">SCAN BEFORE<br>YOU RECEIVE</div>
+        <div class="divider"></div>
+      </div>
+      <div class="pitch-area">
+        <div class="pitch-mini">
+          <div class="field">
+            <div class="center-line"></div>
+            <div class="center-circle"></div>
+            <div class="center-dot"></div>
+            <div class="player"></div>
+            <div class="scan-zone scan-zone-1"></div>
+            <div class="scan-zone scan-zone-2"></div>
+            <div class="scan-zone scan-zone-3"></div>
+            <div class="scan-line scan-line-1"></div>
+            <div class="scan-line scan-line-2"></div>
+            <div class="scan-line scan-line-3"></div>
+            <div class="scan-label" style="top: 22%; left: 12%; transform: rotate(-8deg);">Check shoulder</div>
+            <div class="scan-label" style="top: 18%; right: 10%;">Find space</div>
+            <div class="scan-label" style="bottom: 10%; left: 28%;">Escape route</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-text">The best players in the world scan the field 3-4 times before the ball arrives. Know your options before you need them.</div>
+      <span class="watermark light">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 3 -->
+    <div class="slide post-3" data-slide="2">
+      <div class="bg-text">GRIND</div>
+      <div class="headline">OUTWORK<br><span class="gold">YESTERDAY</span></div>
+      <div class="line"></div>
+      <div class="sub">No shortcuts. No excuses.</div>
+      <span class="watermark dark">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 4 -->
+    <div class="slide post-4" data-slide="3">
+      <div class="kicker">Daily Discipline</div>
+      <div class="headline"><span class="gold">1000</span><br>TOUCHES<br>A DAY</div>
+      <div class="divider"></div>
+      <div class="drill-area">
+        <div class="drill-diagram">
+          <div class="cone cone-1"></div>
+          <div class="cone cone-2"></div>
+          <div class="cone cone-3"></div>
+          <div class="cone cone-4"></div>
+          <div class="cone cone-5"></div>
+          <div class="drill-path drill-path-1"></div>
+          <div class="drill-path drill-path-2"></div>
+          <div class="drill-path drill-path-3"></div>
+          <div class="drill-player"></div>
+          <div class="drill-arrow">&rarr;</div>
+          <div class="drill-labels">
+            <div class="drill-label">Inside-outside</div>
+            <div class="drill-label">Weave pattern</div>
+            <div class="drill-label">Both feet</div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-text">Repetition builds muscle memory. Muscle memory builds confidence. Confidence builds players who dominate.</div>
+      <span class="watermark light">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 5 -->
+    <div class="slide post-5" data-slide="4">
+      <div class="kicker">Tactical Intelligence</div>
+      <div class="headline">SEE THE <span class="gold">PASS</span><br>BEFORE IT<br><span class="gold">EXISTS</span></div>
+      <div class="divider"></div>
+      <div class="pass-area">
+        <div class="pass-diagram">
+          <div class="half-pitch">
+            <div class="box"></div>
+            <div class="arc"></div>
+            <div class="pass-player main pp-1"></div>
+            <div class="pass-player teammate pp-t1"></div>
+            <div class="pass-player teammate pp-t2"></div>
+            <div class="pass-player teammate pp-t3"></div>
+            <div class="pass-player opponent pp-o1"></div>
+            <div class="pass-player opponent pp-o2"></div>
+            <div class="pass-player opponent pp-o3"></div>
+            <div class="pass-lane open pl-1"></div>
+            <div class="pass-lane blocked pl-2"></div>
+            <div class="pass-lane open pl-3"></div>
+            <div class="pass-legend">
+              <div class="legend-item">
+                <div class="legend-line-open"></div>
+                <div class="legend-text">Open lane</div>
+              </div>
+              <div class="legend-item">
+                <div class="legend-line-blocked"></div>
+                <div class="legend-text">Blocked</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="watermark dark">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 6 -->
+    <div class="slide post-6" data-slide="5">
+      <div class="headline">COMFORTABLE<br>IS THE ENEMY<br>OF <span class="gold">ELITE</span></div>
+      <div class="line"></div>
+      <div class="sub">Growth only happens when you're uncomfortable. Push past what feels safe. That's where the real work begins.</div>
+      <span class="watermark light">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 7 -->
+    <div class="slide post-7" data-slide="6">
+      <div class="rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="ring ring-4"></div>
+      </div>
+      <div class="ball-icon"></div>
+      <div class="headline">CONTROL<br>THE <span class="gold">BALL.</span><br>CONTROL<br>THE <span class="gold">GAME.</span></div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-text">Receive</div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-text">Protect</div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-text">Decide</div>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <div class="step-text">Execute</div>
+        </div>
+      </div>
+      <span class="watermark dark">@fantasmafootball</span>
+    </div>
+
+    <!-- POST 8 -->
+    <div class="slide post-8" data-slide="7">
+      <div class="kicker">Mentality</div>
+      <div class="headline">THE GAME<br>REWARDS THE<br><span class="gold">PREPARED</span></div>
+      <div class="divider"></div>
+      <div class="checklist-area">
+        <div class="checklist">
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-content">
+              <div class="check-title">Film study before every match</div>
+              <div class="check-desc">Know the opponent before you step on the pitch</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-content">
+              <div class="check-title">Visualize your movement patterns</div>
+              <div class="check-desc">See the runs, the space, the timing before kickoff</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-content">
+              <div class="check-title">Arrive early, warm up with purpose</div>
+              <div class="check-desc">First on the field, last to leave. Every single time.</div>
+            </div>
+          </div>
+          <div class="check-item">
+            <div class="check-box"></div>
+            <div class="check-content">
+              <div class="check-title">Recover like a professional</div>
+              <div class="check-desc">Sleep, nutrition, stretching. The work never stops.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <span class="watermark light">@fantasmafootball</span>
+    </div>
+
+  </div>
+
+  <div class="tip" style="color: rgba(255,255,255,0.3); font-size: 12px; letter-spacing: 1px; padding: 20px;">Scroll to view all 8 posts</div>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+name: Implement Approved Daily Plan
+
+on:
+  repository_dispatch:
+    types: [approve-daily-plan]
+
+permissions:
+  contents: write
+
+jobs:
+  implement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run implementation
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          INSTAGRAM_USER_ID: ${{ secrets.INSTAGRAM_USER_ID }}
+          INSTAGRAM_ACCESS_TOKEN: ${{ secrets.INSTAGRAM_ACCESS_TOKEN }}
+          FACEBOOK_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+          FACEBOOK_PAGE_ACCESS_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+        run: |
+          DATE="${{ github.event.client_payload.date }}"
+          ACTION="${{ github.event.client_payload.action }}"
+          echo "Implementing plan for $DATE (action: $ACTION)"
+          node scripts/daily-implement.cjs "$DATE" "$ACTION"
+
+      - name: Commit site changes
+        run: |
+          git config user.name "Fantasma Bot"
+          git config user.email "bot@fantasmafootball.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Implement daily plan: $(date -u +%Y-%m-%d)"
+          git push
+
+      - name: Send confirmation email
+        env:
+          GMAIL_USER: ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+        run: |
+          DATE="${{ github.event.client_payload.date }}"
+          ACTION="${{ github.event.client_payload.action }}"
+          node -e "
+            const nodemailer = require('nodemailer');
+            const t = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD } });
+            t.sendMail({
+              from: process.env.GMAIL_USER,
+              to: process.env.GMAIL_USER,
+              subject: 'Fantasma Daily Plan Implemented - ${DATE}',
+              html: '<div style=\"font-family:sans-serif;padding:20px;background:#040C14;color:#F8F7F4;min-height:200px\"><h1 style=\"color:#C5B358\">Plan Implemented</h1><p>Your daily plan for <strong>${DATE}</strong> has been implemented.</p><p>Action: <strong>${ACTION}</strong></p><p style=\"margin-top:20px;color:rgba(248,247,244,0.5)\">— Fantasma Bot</p></div>'
+            }).then(() => console.log('Confirmation email sent')).catch(e => console.error(e.message));
+          "
