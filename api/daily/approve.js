@@ -1,9 +1,9 @@
 // Vercel Serverless Function — /api/daily/approve
 // Validates the approve token, triggers GitHub Actions via repository_dispatch
 
-const https = require('https');
+import https from 'https';
 
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   const { date, action, token } = req.query;
 
   // Validate token
@@ -53,7 +53,7 @@ module.exports = async (req, res) => {
     res.setHeader('Content-Type', 'text/html');
     return res.status(500).send(page('Error', `Failed to trigger implementation: ${err.message}`, 'red'));
   }
-};
+}
 
 function triggerDispatch(token, repo, body) {
   const data = JSON.stringify(body);
