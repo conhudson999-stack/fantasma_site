@@ -480,7 +480,9 @@ async function screenshotPost() {
   if (!slide) throw new Error('No .slide element found in template');
 
   const clip = await slide.boundingBox();
-  const outPath = path.join(__dirname, '..', 'posts', `daily-${TODAY}.png`);
+  const postsDir = path.join(__dirname, '..', 'posts');
+  if (!fs.existsSync(postsDir)) fs.mkdirSync(postsDir, { recursive: true });
+  const outPath = path.join(postsDir, `daily-${TODAY}.png`);
   await page.screenshot({
     path: outPath,
     clip: { x: clip.x, y: clip.y, width: 1080, height: 1080 },
