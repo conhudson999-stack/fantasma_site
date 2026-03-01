@@ -1,0 +1,83 @@
+{
+  "date": "2026-03-01",
+  "generated_at": "2026-03-01T11:51:11.425Z",
+  "research": {
+    "focus": "Week-ahead planning: content calendar preview and strategy for the coming week",
+    "competitors": [
+      {
+        "name": "Curran Soccer Academy",
+        "insight": "Offering specialized training sessions focused on skill development for various age groups."
+      },
+      {
+        "name": "Pittsburgh Soccer Academy",
+        "insight": "Promoting youth camps and 1-on-1 training sessions with a strong emphasis on player development."
+      },
+      {
+        "name": "Riverhounds Development Academy",
+        "insight": "Highlighting pathways to professional soccer, attracting parents interested in long-term development for their children."
+      }
+    ],
+    "seasonal": "March marks the beginning of spring soccer season, with many teams holding tryouts and camps for upcoming leagues and tournaments.",
+    "content_opportunities": [
+      "Tips for preparing for tryouts",
+      "Highlighting success stories of past players",
+      "Training drills to enhance skills before the season starts"
+    ],
+    "keywords": [
+      {
+        "term": "soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "private soccer coaching Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer camps Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer tryouts tips",
+        "opportunity": "medium"
+      },
+      {
+        "term": "1-on-1 soccer training",
+        "opportunity": "high"
+      }
+    ],
+    "recommended_action": "Create and share a video post on social media showcasing effective drills for tryout preparation.",
+    "reasoning": "This aligns with the current seasonal context and addresses the immediate needs of parents and players, enhancing engagement and positioning Fantasma as a go-to resource for training."
+  },
+  "social": {
+    "recommended": true,
+    "type": "training-tip",
+    "content": {
+      "number": "DRILL // 001",
+      "headline": "TRYOUT PREP DRILL",
+      "steps": [
+        "Start with 10 minutes of dynamic stretching to enhance flexibility.",
+        "Perform 5 reps of dribbling through cones at speed.",
+        "Finish with 10 minutes of shooting practice from different angles."
+      ]
+    },
+    "caption": "Get ready for tryouts! Maximize your performance with this essential drill. ⚽️ #SoccerTraining #PittsburghSoccer #YouthSoccer #PrivateCoaching #Tryouts2023",
+    "image_url": "https://i.ibb.co/fYP4fNJt/b8ae92ec0db0.png"
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include keywords related to soccer training and tryouts, enhancing SEO and attracting more clicks.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"\">",
+      "replace": "<meta name=\"description\" content=\"Expert private soccer training in Pittsburgh. Get ready for tryouts with our specialized drills and coaching. Join our youth soccer camps for skill development!\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a section highlighting tips for preparing for tryouts, which aligns with current seasonal needs and can improve user engagement.",
+      "type": "text_update",
+      "search": "<div class=\"services\">",
+      "replace": "<div class=\"services\"><h2>Tryout Preparation Tips</h2><p>Check out our expert tips for preparing for soccer tryouts to ensure you stand out on the field!</p></div>"
+    }
+  ],
+  "status": "pending"
+}
