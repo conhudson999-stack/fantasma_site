@@ -153,6 +153,10 @@ body::after {
 }
 
 .nav-pill {
+  display: none;
+}
+
+.nav-menu {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
@@ -160,9 +164,6 @@ body::after {
   border: 1px solid rgba(10, 10, 10, 0.06);
   border-radius: var(--radius-pill);
   padding: 4px;
-}
-
-.nav-menu {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -2204,7 +2205,7 @@ body::after {
 
   .nav-logo-img { height: 48px; }
 
-  .nav-pill { background: none; border: none; padding: 0; position: static; }
+  .nav-pill { display: none; }
   .nav-cta { display: none; }
   .nav-toggle { display: flex; }
 
@@ -2241,11 +2242,15 @@ body::after {
   .nav-menu {
     display: flex;
     position: fixed;
+    left: auto;
+    transform: none;
     top: 0; right: -100%;
     width: 280px;
     height: 100vh;
     z-index: 1002;
     background: var(--cream);
+    border: none;
+    border-radius: 0;
     flex-direction: column;
     justify-content: center;
     gap: 8px;
@@ -3751,7 +3756,7 @@ body.ghost-mode .navbar.scrolled {
   box-shadow: 0 1px 0 rgba(0, 255, 200, 0.08);
 }
 
-body.ghost-mode .nav-pill {
+body.ghost-mode .nav-menu {
   background: rgba(0, 255, 200, 0.04);
   border-color: rgba(0, 255, 200, 0.08);
 }
