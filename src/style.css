@@ -2199,7 +2199,10 @@ body::after {
   :root { --section-padding: 100px 0; }
 
   .top-bar { display: none; }
-  .navbar { top: 0; }
+  .navbar { top: 0; padding: 8px 0; }
+  .navbar.scrolled { padding: 6px 0; }
+
+  .nav-logo-img { height: 48px; }
 
   .nav-pill { display: none; }
   .nav-cta { display: none; }
@@ -2865,7 +2868,7 @@ body::after {
 
 @media (max-width: 768px) {
   .booking-hero {
-    padding: 130px 0 60px;
+    padding: 100px 0 32px;
   }
 
   .booking-section {
@@ -2893,7 +2896,7 @@ body::after {
 
 @media (max-width: 480px) {
   .booking-hero {
-    padding: 110px 0 48px;
+    padding: 90px 0 24px;
   }
 
   .booking-section {
