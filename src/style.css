@@ -211,7 +211,7 @@ body::after {
   border: none;
   cursor: pointer;
   padding: 4px;
-  z-index: 1001;
+  z-index: 1003;
 }
 
 .nav-toggle span {
