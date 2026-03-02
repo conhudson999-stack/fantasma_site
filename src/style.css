@@ -2204,7 +2204,7 @@ body::after {
 
   .nav-logo-img { height: 48px; }
 
-  .nav-pill { display: none; }
+  .nav-pill { background: none; border: none; padding: 0; position: static; }
   .nav-cta { display: none; }
   .nav-toggle { display: flex; }
 
