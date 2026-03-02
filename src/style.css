@@ -2239,10 +2239,12 @@ body::after {
   }
 
   .nav-menu {
+    display: flex;
     position: fixed;
     top: 0; right: -100%;
     width: 280px;
     height: 100vh;
+    z-index: 1002;
     background: var(--cream);
     flex-direction: column;
     justify-content: center;
