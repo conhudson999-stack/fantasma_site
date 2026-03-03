@@ -84,5 +84,6 @@
       "replace": "<h2>Our Training Programs</h2><p>Looking to excel in your soccer tryouts? Check out our guide on <a href=\"/blog/soccer-tryout-preparation\">how to prepare for soccer tryouts</a> and give yourself the best chance to succeed!</p>"
     }
   ],
-  "status": "pending"
+  "status": "implemented-site",
+  "implemented_at": "2026-03-03T14:53:49.513Z"
 }
