@@ -1,0 +1,104 @@
+{
+  "date": "2026-03-04",
+  "generated_at": "2026-03-04T12:02:41.187Z",
+  "research": {
+    "focus": "Analyzing current successful Instagram content strategies for soccer training.",
+    "competitors": [
+      {
+        "name": "Curran Soccer Academy",
+        "insight": "Utilizes video testimonials from parents and players to build trust and showcase success stories."
+      },
+      {
+        "name": "Pittsburgh Soccer Academy",
+        "insight": "Posts engaging training tips and drills, encouraging user-generated content through challenges."
+      },
+      {
+        "name": "Riverhounds Development Academy",
+        "insight": "Features behind-the-scenes content from training sessions and showcases player progress to create a community feel."
+      }
+    ],
+    "seasonal": "Spring soccer season is approaching, with tryouts for school teams and youth leagues happening soon, along with pre-season training camps starting.",
+    "content_opportunities": [
+      "Behind-the-scenes training videos",
+      "Player success stories and testimonials",
+      "Interactive Q&A sessions with trainers"
+    ],
+    "keywords": [
+      {
+        "term": "Pittsburgh soccer tryouts",
+        "opportunity": "high"
+      },
+      {
+        "term": "private soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer camps Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer drills for kids",
+        "opportunity": "medium"
+      },
+      {
+        "term": "1-on-1 soccer coaching Pittsburgh",
+        "opportunity": "high"
+      }
+    ],
+    "recommended_action": "Create and post a video showcasing a unique training drill along with a call-to-action for private sessions.",
+    "reasoning": "This aligns with current interests in training as the season approaches, highlights Fantasma's personalized approach, and engages potential clients through visually appealing content."
+  },
+  "social": {
+    "recommended": true,
+    "type": "data-blocks",
+    "content": {
+      "label": "BY THE NUMBERS",
+      "headline": "FANTASMA FOOTBALL STATS",
+      "blocks": [
+        {
+          "value": "12+",
+          "label": "TRAINING DRILLS"
+        },
+        {
+          "value": "$60",
+          "label": "PER SESSION"
+        },
+        {
+          "value": "1:1",
+          "label": "COACHING FOCUS"
+        },
+        {
+          "value": "87%",
+          "label": "SUCCESS RATE"
+        }
+      ]
+    },
+    "caption": "Unlock your potential with elite training! Join us and elevate your game. #PittsburghSoccer #SoccerTraining #FantasmaFootball #PrivateCoaching #YouthSoccer",
+    "hashtags": [
+      "#PittsburghSoccer",
+      "#SoccerTraining",
+      "#PrivateCoaching",
+      "#YouthSoccer",
+      "#SoccerDrills",
+      "#SpringSeason"
+    ],
+    "image_url": "https://i.ibb.co/VWnVShQp/0f60d0d03dba.png"
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include keywords related to upcoming soccer tryouts and training, enhancing SEO for seasonal searches.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh\">",
+      "replace": "<meta name=\"description\" content=\"Expert private soccer training in Pittsburgh, perfect for upcoming tryouts and youth soccer camps. Join us for personalized coaching and drills!\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a section highlighting player success stories and testimonials to build trust and encourage bookings.",
+      "type": "text_update",
+      "search": "<h2>Welcome to Fantasma Football</h2>",
+      "replace": "<h2>Welcome to Fantasma Football</h2><p>Hear from our players and parents about their success stories and experiences with our training programs!</p>"
+    }
+  ],
+  "status": "pending"
+}
