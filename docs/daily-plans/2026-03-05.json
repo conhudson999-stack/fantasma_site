@@ -1,0 +1,79 @@
+{
+  "date": "2026-03-05",
+  "generated_at": "2026-03-05T14:10:36.456Z",
+  "research": {
+    "focus": "Researching local soccer news, club announcements, tryout dates, and tournaments in the Pittsburgh area.",
+    "competitors": [
+      {
+        "name": "Curran Soccer Academy",
+        "insight": "Offering specialized training programs tailored to different skill levels, enhancing their appeal to a broad audience."
+      },
+      {
+        "name": "Pittsburgh Soccer Academy",
+        "insight": "Promoting youth camps and 1-on-1 training sessions through targeted social media ads, effectively reaching parents."
+      },
+      {
+        "name": "Riverhounds Development Academy",
+        "insight": "Emphasizing a professional pathway for players, which attracts serious athletes and their families."
+      }
+    ],
+    "seasonal": "Spring soccer season is starting; many clubs are holding tryouts for teams and camps are being announced for summer training.",
+    "content_opportunities": [
+      "Share tips for preparing for tryouts",
+      "Highlight success stories of past trainees who made their teams"
+    ],
+    "keywords": [
+      {
+        "term": "Pittsburgh soccer tryouts",
+        "opportunity": "high"
+      },
+      {
+        "term": "private soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer camps Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer skills training Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer training for kids Pittsburgh",
+        "opportunity": "high"
+      }
+    ],
+    "recommended_action": "Create and share a blog post or video on how to excel in soccer tryouts, along with a call-to-action for private training sessions.",
+    "reasoning": "This content will position Fantasma Football as an authority in the local market, attract parents looking for guidance, and drive inquiries for training services."
+  },
+  "social": {
+    "recommended": true,
+    "type": "cta",
+    "content": {
+      "label": "LIMITED SPOTS!",
+      "headline": "EXCEL IN TRYOUTS",
+      "body": "Unlock your potential this spring—secure your private training session with us today!",
+      "button": "BOOK NOW"
+    },
+    "caption": "Ready to stand out at tryouts? Train with the elite! ⚽️ #PittsburghSoccer #PrivateTraining #SoccerSkills #YouthSoccer #SoccerTryouts",
+    "image_url": "https://i.ibb.co/xSyh58Ky/8e7704c2a0d0.png"
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include keywords related to Pittsburgh soccer tryouts and private training, improving SEO and attracting local traffic.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh\">",
+      "replace": "<meta name=\"description\" content=\"Expert private soccer training in Pittsburgh. Get ready for soccer tryouts with tailored coaching and skills development. Join our youth camps and excel in your game!\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a call-to-action section highlighting tips for preparing for tryouts, which can increase engagement and conversion rates.",
+      "type": "text_update",
+      "search": "<h2>Welcome to Fantasma Football</h2>",
+      "replace": "<h2>Welcome to Fantasma Football</h2><p>Preparing for soccer tryouts? Check out our top tips for success and consider our private training sessions to enhance your skills!</p>"
+    }
+  ],
+  "status": "pending"
+}
