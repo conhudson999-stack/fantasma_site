@@ -1,11 +1,11 @@
 {
   "date": "2026-03-07",
-  "generated_at": "2026-03-07T03:58:51.248Z",
+  "generated_at": "2026-03-07T11:52:40.284Z",
   "research": {
-    "focus": "Community engagement: Facebook groups, local events, partnership opportunities",
+    "focus": "Weekly performance summary: assessing what worked this week and analyzing engagement to derive key takeaways.",
     "content_opportunities": [
-      "Create engaging posts in local Facebook groups about soccer training tips for youth players, emphasizing personalized coaching.",
-      "Host a free community soccer clinic or workshop to showcase training techniques and attract potential clients."
+      "Success stories and testimonials from current and past students showcasing their improvement and achievements.",
+      "Interactive posts or polls asking parents about their children's training needs and preferences to foster community engagement."
     ],
     "keywords": [
       {
@@ -13,36 +13,78 @@
         "opportunity": "high"
       },
       {
-        "term": "youth soccer clinics Pittsburgh",
+        "term": "youth soccer coaching Pittsburgh",
         "opportunity": "medium"
+      },
+      {
+        "term": "1-on-1 soccer lessons Pittsburgh",
+        "opportunity": "high"
       },
       {
         "term": "soccer training for kids Pittsburgh",
         "opportunity": "high"
       },
       {
-        "term": "elite soccer coaching Pittsburgh",
+        "term": "elite soccer training Pittsburgh",
         "opportunity": "medium"
-      },
-      {
-        "term": "Pittsburgh soccer events",
-        "opportunity": "low"
       }
     ],
-    "recommended_action": "Post an engaging video on social media showcasing a recent training session and invite parents to a free trial session.",
-    "reasoning": "This approach will increase visibility, engage the community, and attract potential clients by demonstrating the value of personalized training."
+    "recommended_action": "Create and share a compelling video testimonial from a satisfied parent or student highlighting the benefits of training with Fantasma Football.",
+    "reasoning": "Video testimonials can significantly enhance credibility and trust, resonate with potential clients, and drive engagement on social media platforms, especially given the premium brand image of Fantasma Football."
   },
   "social": {
     "options": [
       {
-        "type": "stat-highlight",
+        "type": "training-tip",
         "content": {
-          "label": "ONLY THE HUNGRY",
-          "stat": "85%",
-          "headline": "TRAINING BEATS TALENT",
-          "body": "85% of our players report improved skills with just one month of training — because hard work always outweighs raw talent."
+          "number": "DRILL // 001",
+          "headline": "PRESSURE RELIEF PASS",
+          "steps": [
+            "Set up a triangle with two players and a third in the middle.",
+            "The middle player receives pressure; practice quick, one-touch passes to escape.",
+            "Rotate roles to build awareness and speed under pressure."
+          ]
         },
-        "caption": "Steel City: are you ready to outwork everyone? Join us and elevate your game. This is where real training happens. 💪⚽️",
+        "caption": "Feel the weight of the game. Can you break free when it counts? Train harder, play smarter. Book your session — don’t get left behind.",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#SteelCity",
+          "#GameChangers",
+          "#SoccerDrills"
+        ],
+        "image_url": "https://i.ibb.co/xSKwL6z2/c3796b81127d.png"
+      },
+      {
+        "type": "cta",
+        "content": {
+          "label": "LIMITED SPOTS AVAILABLE",
+          "headline": "UNLEASH YOUR POTENTIAL",
+          "body": "With a 90% increase in skill levels reported among our trainees, now's the time to elevate your game.",
+          "button": "RESERVE YOUR SESSION"
+        },
+        "caption": "It’s time to step up! Don’t let your child get left behind in the Steel City soccer scene. The first move starts here. #TrainFantasma",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#FearThePhantom",
+          "#EliteTraining",
+          "#PittsburghPride"
+        ],
+        "image_url": "https://i.ibb.co/d4qLznqC/5abf5cfd24f8.png"
+      },
+      {
+        "type": "local-callout",
+        "content": {
+          "badge": "PITTSBURGH",
+          "headline": "NORTH SIDE TALENT RISING",
+          "body": "From the streets of Allegheny to the pitch, our players turn grit into goals every single week."
+        },
+        "caption": "Steel City kids are ready to grind. Are you in? Book your 1-on-1 today and step up your game.",
         "hashtags": [
           "#PittsburghSoccer",
           "#SoccerTraining",
@@ -50,68 +92,26 @@
           "#YouthSoccer",
           "#FearThePhantom",
           "#SteelCity",
-          "#SoccerLife"
+          "#NorthSide"
         ],
-        "image_url": "https://i.ibb.co/3mp1Q4P7/a21bff9d734a.png"
-      },
-      {
-        "type": "training-tip",
-        "content": {
-          "number": "DRILL // 001",
-          "headline": "FOOTWORK FOCUS DRILL",
-          "steps": [
-            "Set up 5 cones in a zig-zag pattern, 2 yards apart.",
-            "Dribble through the cones using quick, light touches — keep your head up.",
-            "Once at the last cone, sprint to a target 10 yards away, working on acceleration."
-          ]
-        },
-        "caption": "Footwork is the foundation of dominance. Master it, and the game bends to your will. Ready to elevate your child's game? Let's work.",
-        "hashtags": [
-          "#PittsburghSoccer",
-          "#SoccerTraining",
-          "#TrainFantasma",
-          "#YouthSoccer",
-          "#SteelCitySkills",
-          "#EliteTraining"
-        ],
-        "image_url": "https://i.ibb.co/HLLvkKXB/ed683a400186.png"
-      },
-      {
-        "type": "cta",
-        "content": {
-          "label": "LIMITED SPOTS AVAILABLE",
-          "headline": "UNLEASH YOUR POTENTIAL",
-          "body": "Kick off your journey with a free session that’ll reshape your game and elevate your skills.",
-          "button": "RESERVE YOUR SPOT"
-        },
-        "caption": "Steel City, it’s time to elevate your game. Join us for a free session and see what sets us apart. Your future on the pitch starts now.",
-        "hashtags": [
-          "#PittsburghSoccer",
-          "#SoccerTraining",
-          "#TrainFantasma",
-          "#YouthSoccer",
-          "#FearThePhantom",
-          "#SteelCityGrit",
-          "#PittsburghPride"
-        ],
-        "image_url": "https://i.ibb.co/svfX2wvB/3c181336b417.png"
+        "image_url": "https://i.ibb.co/84XYjRzv/ae392d6d8367.png"
       }
     ]
   },
   "site_changes": [
     {
       "file": "index.html",
-      "description": "Update the meta description to include keywords related to youth soccer training and community engagement to improve SEO and attract local clients.",
-      "type": "meta_tag",
-      "search": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh\">",
-      "replace": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh, offering personalized coaching and youth soccer clinics to engage the community and develop young talent.\">"
+      "description": "Add a video testimonial section to enhance credibility and trust, featuring a satisfied parent or student to resonate with potential clients.",
+      "type": "text_update",
+      "search": "<!-- Testimonials Section -->",
+      "replace": "<!-- Testimonials Section -->\n<div class='video-testimonial'>\n  <h2>What Our Clients Say</h2>\n  <iframe src='https://www.youtube.com/embed/example' title='Testimonial Video' allowfullscreen></iframe>\n  <p>Hear from our satisfied students and parents about their experiences with Fantasma Football!</p>\n</div>"
     },
     {
       "file": "index.html",
-      "description": "Add a call-to-action for a free community soccer clinic to encourage conversions and engage local families.",
-      "type": "text_update",
-      "search": "<h1>Welcome to Fantasma Football</h1>",
-      "replace": "<h1>Welcome to Fantasma Football</h1><p>Join us for a free community soccer clinic to learn training techniques and see how our personalized coaching can benefit your child!</p>"
+      "description": "Update the meta description to include targeted keywords for better SEO performance.",
+      "type": "meta_tag",
+      "search": "<meta name='description' content='Private soccer training in Pittsburgh'>",
+      "replace": "<meta name='description' content='Private soccer training in Pittsburgh, offering youth soccer coaching, 1-on-1 soccer lessons, and elite training for kids. Join us to elevate your game!'>"
     }
   ],
   "status": "pending"
