@@ -303,16 +303,19 @@ if (contactForm) {
     e.preventDefault()
 
     const submitBtn = contactForm.querySelector('button[type="submit"]')
-    const formData = new FormData(contactForm)
-    const name = formData.get('name')
+    const name = contactForm.querySelector('#name').value
+    const email = contactForm.querySelector('#email').value
+    const phone = contactForm.querySelector('#phone').value
+    const message = contactForm.querySelector('#message').value
 
     submitBtn.disabled = true
     submitBtn.textContent = 'Sending...'
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        body: formData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, phone, message }),
       })
       const result = await response.json()
 
@@ -320,13 +323,13 @@ if (contactForm) {
         contactForm.innerHTML = `
           <div class="form-success">
             <h3>MESSAGE SENT!</h3>
-            <p>Thanks ${name}! We'll get back to you within 24 hours.</p>
+            <p>Thanks ${name}! We'll get back to you within 24 hours. Check your email for a confirmation.</p>
           </div>
         `
       } else {
         submitBtn.disabled = false
         submitBtn.textContent = 'Send Message'
-        alert('Something went wrong. Please try again or email us directly.')
+        alert(result.error || 'Something went wrong. Please try again or email us directly.')
       }
     } catch {
       submitBtn.disabled = false

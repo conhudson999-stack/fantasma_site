@@ -152,9 +152,10 @@ function applySiteChanges(changes) {
 (async () => {
   const date = process.argv[2];
   const action = process.argv[3];
+  const option = process.argv[4]; // 1, 2, or 3
 
   if (!date || !action) {
-    console.error('Usage: node daily-implement.cjs <date> <action>');
+    console.error('Usage: node daily-implement.cjs <date> <action> [option]');
     process.exit(1);
   }
 
@@ -170,24 +171,42 @@ function applySiteChanges(changes) {
   const doSocial = action === 'all' || action === 'social';
   const doSite = action === 'all' || action === 'site';
 
-  // Social: Post to Instagram + Facebook
-  if (doSocial && plan.social?.recommended && plan.social?.image_url) {
-    console.log('--- SOCIAL MEDIA ---');
-    const caption = plan.social.caption + '\n\n' + (plan.social.hashtags || []).join(' ');
-
-    try {
-      await postToInstagram(plan.social.image_url, caption);
-    } catch (err) {
-      console.error('Instagram post failed:', err.message);
+  // Social: Post selected option to Instagram + Facebook
+  if (doSocial) {
+    // Support both new format (social.options[]) and legacy (social.image_url)
+    let selected;
+    if (plan.social?.options && option) {
+      const idx = parseInt(option, 10) - 1;
+      selected = plan.social.options[idx];
+      if (!selected) {
+        console.error(`Invalid option ${option} — plan has ${plan.social.options.length} options`);
+        process.exit(1);
+      }
+      console.log(`--- SOCIAL MEDIA (Option ${option}: ${selected.type}) ---`);
+    } else if (plan.social?.image_url) {
+      // Legacy single-post format
+      selected = plan.social;
+      console.log('--- SOCIAL MEDIA ---');
+    } else {
+      console.log('No social post available.');
+      selected = null;
     }
 
-    try {
-      await postToFacebook(plan.social.image_url, caption);
-    } catch (err) {
-      console.error('Facebook post failed:', err.message);
+    if (selected?.image_url) {
+      const caption = selected.caption + '\n\n' + (selected.hashtags || []).join(' ');
+
+      try {
+        await postToInstagram(selected.image_url, caption);
+      } catch (err) {
+        console.error('Instagram post failed:', err.message);
+      }
+
+      try {
+        await postToFacebook(selected.image_url, caption);
+      } catch (err) {
+        console.error('Facebook post failed:', err.message);
+      }
     }
-  } else if (doSocial) {
-    console.log('No social post recommended today.');
   }
 
   // Site: Apply changes
@@ -201,6 +220,7 @@ function applySiteChanges(changes) {
 
   // Update plan status
   plan.status = action === 'all' ? 'implemented' : `implemented-${action}`;
+  if (option) plan.selected_option = parseInt(option, 10);
   plan.implemented_at = new Date().toISOString();
   fs.writeFileSync(planPath, JSON.stringify(plan, null, 2), 'utf-8');
 

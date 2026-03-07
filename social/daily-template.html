@@ -418,19 +418,207 @@
       font-size: 18px;
       color: #C5B358;
     }
+
+    /* ══════════════════════════════════════════════════════════════
+       THEME OVERLAY ELEMENTS (always in HTML, styled per theme)
+    ══════════════════════════════════════════════════════════════ */
+    .theme-glow, .theme-grain, .theme-scanlines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .theme-decor, .theme-decor-2 {
+      position: absolute;
+      pointer-events: none;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       THEME: Dark Phantom
+       Navy bg · gold radial glow · scanlines · grain · gold circles
+    ══════════════════════════════════════════════════════════════ */
+    .theme-dark {
+      background: #040C14;
+    }
+    .theme-dark .theme-glow {
+      background: radial-gradient(ellipse at 50% 35%, rgba(197,179,88,0.07) 0%, transparent 55%);
+      z-index: 0;
+    }
+    .theme-dark .theme-grain {
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+      z-index: 4;
+    }
+    .theme-dark .theme-scanlines {
+      background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+      z-index: 5;
+    }
+    .theme-dark .theme-decor {
+      width: 500px; height: 500px;
+      border: 2px solid rgba(197,179,88,0.08);
+      border-radius: 50%;
+      bottom: -100px; right: -80px;
+      z-index: 1;
+    }
+    .theme-dark .theme-decor-2 {
+      width: 300px; height: 300px;
+      border: 1px solid rgba(197,179,88,0.05);
+      border-radius: 50%;
+      bottom: 0; right: 20px;
+      z-index: 1;
+    }
+    .theme-dark .corner { display: block; }
+    .theme-dark .corner::before,
+    .theme-dark .corner::after { background: rgba(197,179,88,0.25); }
+    .theme-dark .headline { color: #FFFFFF; }
+    .theme-dark .label { color: #C5B358; }
+    .theme-dark .body-text { color: rgba(255,255,255,0.5); }
+    .theme-dark .stat-number { color: #C5B358; }
+    .theme-dark .stat-suffix { color: rgba(197,179,88,0.6); }
+    .theme-dark .gold-bar { background: #C5B358; }
+    .theme-dark .watermark { color: rgba(255,255,255,0.2); }
+    .theme-dark .tip-number { color: rgba(197,179,88,0.5); }
+    .theme-dark .step-marker { background: #C5B358; }
+    .theme-dark .step-text { color: rgba(255,255,255,0.7); }
+    .theme-dark .quote-marks { color: rgba(197,179,88,0.15); }
+    .theme-dark .quote-text { color: #FFFFFF; }
+    .theme-dark .quote-attr { color: rgba(197,179,88,0.6); }
+    .theme-dark .callout-badge { border-color: rgba(197,179,88,0.3); }
+    .theme-dark .callout-badge-dot { background: #C5B358; }
+    .theme-dark .callout-badge-text { color: #C5B358; }
+    .theme-dark .data-block { background: rgba(197,179,88,0.04); border-color: rgba(197,179,88,0.1); }
+    .theme-dark .data-value { color: #C5B358; }
+    .theme-dark .data-label { color: rgba(255,255,255,0.5); }
+    .theme-dark .cta-button { border-color: #C5B358; }
+    .theme-dark .cta-button-text { color: #C5B358; }
+    .theme-dark .cta-arrow { color: #C5B358; }
+
+    /* ══════════════════════════════════════════════════════════════
+       THEME: Cream Editorial
+       Cream bg · gold left sidebar · faint circle · clean / no texture
+    ══════════════════════════════════════════════════════════════ */
+    .theme-cream {
+      background: #F8F7F4;
+    }
+    .theme-cream .theme-glow { display: none; }
+    .theme-cream .theme-grain { display: none; }
+    .theme-cream .theme-scanlines { display: none; }
+    .theme-cream .theme-decor {
+      width: 8px; height: 100%;
+      background: #C5B358;
+      top: 0; left: 0;
+      z-index: 10;
+    }
+    .theme-cream .theme-decor-2 {
+      width: 450px; height: 450px;
+      border: 50px solid rgba(4,12,20,0.025);
+      border-radius: 50%;
+      top: -140px; right: -120px;
+      z-index: 0;
+    }
+    .theme-cream .corner { display: none; }
+    .theme-cream .headline { color: #040C14; }
+    .theme-cream .label { color: #9A8A3D; }
+    .theme-cream .body-text { color: rgba(4,12,20,0.55); }
+    .theme-cream .stat-number { color: #040C14; }
+    .theme-cream .stat-suffix { color: rgba(4,12,20,0.3); }
+    .theme-cream .gold-bar { background: #C5B358; }
+    .theme-cream .watermark { color: rgba(4,12,20,0.12); }
+    .theme-cream .tip-number { color: #9A8A3D; }
+    .theme-cream .step-marker { background: #C5B358; }
+    .theme-cream .step-text { color: rgba(4,12,20,0.65); }
+    .theme-cream .quote-marks { color: rgba(197,179,88,0.25); }
+    .theme-cream .quote-text { color: #040C14; }
+    .theme-cream .quote-attr { color: #9A8A3D; }
+    .theme-cream .callout-badge { border-color: rgba(4,12,20,0.15); }
+    .theme-cream .callout-badge-dot { background: #C5B358; }
+    .theme-cream .callout-badge-text { color: #9A8A3D; }
+    .theme-cream .data-block { background: rgba(4,12,20,0.035); border-color: rgba(4,12,20,0.08); }
+    .theme-cream .data-value { color: #040C14; }
+    .theme-cream .data-label { color: rgba(4,12,20,0.45); }
+    .theme-cream .cta-button { border-color: #040C14; border-width: 2px; }
+    .theme-cream .cta-button-text { color: #040C14; }
+    .theme-cream .cta-arrow { color: #040C14; }
+
+    /* ══════════════════════════════════════════════════════════════
+       THEME: Gold Blitz
+       Black bg · diagonal gold stripes · gold borders · heavy glow
+    ══════════════════════════════════════════════════════════════ */
+    .theme-bold {
+      background: #0A0A0A;
+      border-top: 5px solid #C5B358;
+      border-bottom: 5px solid #C5B358;
+    }
+    .theme-bold .theme-glow {
+      background: radial-gradient(ellipse at 20% 80%, rgba(197,179,88,0.12) 0%, transparent 50%);
+      z-index: 0;
+    }
+    .theme-bold .theme-grain {
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 128px;
+      z-index: 4;
+    }
+    .theme-bold .theme-scanlines { display: none; }
+    .theme-bold .theme-decor {
+      width: 200px; height: 160%;
+      background: rgba(197,179,88,0.06);
+      transform: rotate(-20deg);
+      top: -30%; left: 80px;
+      z-index: 1;
+    }
+    .theme-bold .theme-decor-2 {
+      width: 120px; height: 160%;
+      background: rgba(197,179,88,0.03);
+      transform: rotate(-20deg);
+      top: -30%; left: 340px;
+      z-index: 1;
+    }
+    .theme-bold .corner { display: none; }
+    .theme-bold .headline { color: #FFFFFF; }
+    .theme-bold .label { color: #C5B358; }
+    .theme-bold .body-text { color: rgba(255,255,255,0.6); }
+    .theme-bold .stat-number { color: #C5B358; font-size: 240px; }
+    .theme-bold .stat-suffix { color: rgba(197,179,88,0.5); }
+    .theme-bold .gold-bar { background: #C5B358; width: 80px; height: 4px; }
+    .theme-bold .watermark { color: rgba(197,179,88,0.15); }
+    .theme-bold .tip-number { color: rgba(197,179,88,0.5); }
+    .theme-bold .step-marker { background: #C5B358; width: 6px; height: 6px; }
+    .theme-bold .step-text { color: rgba(255,255,255,0.75); font-size: 22px; }
+    .theme-bold .quote-marks { color: rgba(197,179,88,0.25); }
+    .theme-bold .quote-text { color: #FFFFFF; font-size: 88px; }
+    .theme-bold .quote-attr { color: rgba(197,179,88,0.7); }
+    .theme-bold .callout-badge { border-color: #C5B358; background: rgba(197,179,88,0.1); }
+    .theme-bold .callout-badge-dot { background: #C5B358; }
+    .theme-bold .callout-badge-text { color: #C5B358; }
+    .theme-bold .data-block { background: rgba(197,179,88,0.06); border-color: rgba(197,179,88,0.15); }
+    .theme-bold .data-value { color: #C5B358; font-size: 64px; }
+    .theme-bold .data-label { color: rgba(255,255,255,0.5); }
+    .theme-bold .cta-button { border-color: #C5B358; background: rgba(197,179,88,0.1); }
+    .theme-bold .cta-button-text { color: #C5B358; }
+    .theme-bold .cta-arrow { color: #C5B358; }
   </style>
 </head>
 <body>
 
-<div class="slide" id="slide-stat">
-  <div class="slide-inner bg-navy scanlines grain layout-stat">
+<div class="slide">
+  <div class="slide-inner theme-bold layout-cta">
+    <div class="theme-glow"></div>
+    <div class="theme-grain"></div>
+    <div class="theme-scanlines"></div>
+    <div class="theme-decor"></div>
+    <div class="theme-decor-2"></div>
     <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
     <div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="label text-gold">PREPARE FOR TRYOUTS</div>
-    <div class="stat-number">80%</div>
-    <div class="headline headline-md text-white">OF PLAYERS TRAINED PROPERLY</div>
+
+    <div class="label">LIMITED SPOTS AVAILABLE</div>
+    <div class="headline headline-xl">UNLEASH YOUR POTENTIAL</div>
     <div class="gold-bar"></div>
-    <div class="body-text text-muted">Ensure your child is ready for youth soccer tryouts in Pittsburgh with elite training.</div>
+    <div class="body-text">Kick off your journey with a free session that’ll reshape your game and elevate your skills.</div>
+    <div class="cta-button">
+      <span class="cta-button-text">RESERVE YOUR SPOT</span>
+      <span class="cta-arrow">&rarr;</span>
+    </div>
     <div class="watermark">@FANTASMAFOOTBALL</div>
   </div>
 </div>

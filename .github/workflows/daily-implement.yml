@@ -37,8 +37,9 @@ jobs:
         run: |
           DATE="${{ github.event.client_payload.date }}"
           ACTION="${{ github.event.client_payload.action }}"
-          echo "Implementing plan for $DATE (action: $ACTION)"
-          node scripts/daily-implement.cjs "$DATE" "$ACTION"
+          OPTION="${{ github.event.client_payload.option }}"
+          echo "Implementing plan for $DATE (action: $ACTION, option: $OPTION)"
+          node scripts/daily-implement.cjs "$DATE" "$ACTION" "$OPTION"
 
       - name: Commit site changes
         run: |
@@ -55,13 +56,15 @@ jobs:
         run: |
           DATE="${{ github.event.client_payload.date }}"
           ACTION="${{ github.event.client_payload.action }}"
+          OPTION="${{ github.event.client_payload.option }}"
           node -e "
             const nodemailer = require('nodemailer');
             const t = nodemailer.createTransport({ service: 'gmail', auth: { user: process.env.GMAIL_USER, pass: process.env.GMAIL_APP_PASSWORD } });
+            const optText = '${OPTION}' ? ' (Option ${OPTION})' : '';
             t.sendMail({
               from: process.env.GMAIL_USER,
               to: process.env.GMAIL_USER,
               subject: 'Fantasma Daily Plan Implemented - ${DATE}',
-              html: '<div style=\"font-family:sans-serif;padding:20px;background:#040C14;color:#F8F7F4;min-height:200px\"><h1 style=\"color:#C5B358\">Plan Implemented</h1><p>Your daily plan for <strong>${DATE}</strong> has been implemented.</p><p>Action: <strong>${ACTION}</strong></p><p style=\"margin-top:20px;color:rgba(248,247,244,0.5)\">— Fantasma Bot</p></div>'
+              html: '<div style=\"font-family:sans-serif;padding:20px;background:#040C14;color:#F8F7F4;min-height:200px\"><h1 style=\"color:#C5B358\">Plan Implemented</h1><p>Your daily plan for <strong>${DATE}</strong> has been implemented.</p><p>Action: <strong>${ACTION}' + optText + '</strong></p><p style=\"margin-top:20px;color:rgba(248,247,244,0.5)\">— Fantasma Bot</p></div>'
             }).then(() => console.log('Confirmation email sent')).catch(e => console.error(e.message));
           "

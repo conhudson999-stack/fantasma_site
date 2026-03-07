@@ -4,7 +4,7 @@
 import https from 'https';
 
 export default async function handler(req, res) {
-  const { date, action, token } = req.query;
+  const { date, action, token, option } = req.query;
 
   // Validate token
   if (!token || token !== process.env.APPROVE_SECRET) {
@@ -24,6 +24,12 @@ export default async function handler(req, res) {
     return res.status(400).send(page('Bad Request', `Invalid action: ${action}`, 'red'));
   }
 
+  // For social posts, require an option selection (1, 2, or 3)
+  if ((action === 'social' || action === 'all') && (!option || !['1', '2', '3'].includes(option))) {
+    res.setHeader('Content-Type', 'text/html');
+    return res.status(400).send(page('Bad Request', 'Please select a post option (1, 2, or 3).', 'red'));
+  }
+
   // Trigger GitHub Actions repository_dispatch
   const ghPat = process.env.GITHUB_PAT;
   const ghRepo = process.env.GITHUB_REPO; // e.g. "conhudson999-stack/fantasma_site"
@@ -36,12 +42,11 @@ export default async function handler(req, res) {
   try {
     await triggerDispatch(ghPat, ghRepo, {
       event_type: 'approve-daily-plan',
-      client_payload: { date, action }
+      client_payload: { date, action, option: option || '' }
     });
 
-    const actionLabel = action === 'all' ? 'Site + Social Media'
-      : action === 'social' ? 'Social Media Only'
-      : 'Site Changes Only';
+    const actionLabel = action === 'site' ? 'Site Changes Only'
+      : `Post Option ${option}${action === 'all' ? ' + Site Changes' : ''}`;
 
     res.setHeader('Content-Type', 'text/html');
     return res.status(200).send(page(

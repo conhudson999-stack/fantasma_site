@@ -1,0 +1,118 @@
+{
+  "date": "2026-03-07",
+  "generated_at": "2026-03-07T03:58:51.248Z",
+  "research": {
+    "focus": "Community engagement: Facebook groups, local events, partnership opportunities",
+    "content_opportunities": [
+      "Create engaging posts in local Facebook groups about soccer training tips for youth players, emphasizing personalized coaching.",
+      "Host a free community soccer clinic or workshop to showcase training techniques and attract potential clients."
+    ],
+    "keywords": [
+      {
+        "term": "private soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer clinics Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer training for kids Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "elite soccer coaching Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "Pittsburgh soccer events",
+        "opportunity": "low"
+      }
+    ],
+    "recommended_action": "Post an engaging video on social media showcasing a recent training session and invite parents to a free trial session.",
+    "reasoning": "This approach will increase visibility, engage the community, and attract potential clients by demonstrating the value of personalized training."
+  },
+  "social": {
+    "options": [
+      {
+        "type": "stat-highlight",
+        "content": {
+          "label": "ONLY THE HUNGRY",
+          "stat": "85%",
+          "headline": "TRAINING BEATS TALENT",
+          "body": "85% of our players report improved skills with just one month of training — because hard work always outweighs raw talent."
+        },
+        "caption": "Steel City: are you ready to outwork everyone? Join us and elevate your game. This is where real training happens. 💪⚽️",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#FearThePhantom",
+          "#SteelCity",
+          "#SoccerLife"
+        ],
+        "image_url": "https://i.ibb.co/3mp1Q4P7/a21bff9d734a.png"
+      },
+      {
+        "type": "training-tip",
+        "content": {
+          "number": "DRILL // 001",
+          "headline": "FOOTWORK FOCUS DRILL",
+          "steps": [
+            "Set up 5 cones in a zig-zag pattern, 2 yards apart.",
+            "Dribble through the cones using quick, light touches — keep your head up.",
+            "Once at the last cone, sprint to a target 10 yards away, working on acceleration."
+          ]
+        },
+        "caption": "Footwork is the foundation of dominance. Master it, and the game bends to your will. Ready to elevate your child's game? Let's work.",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#SteelCitySkills",
+          "#EliteTraining"
+        ],
+        "image_url": "https://i.ibb.co/HLLvkKXB/ed683a400186.png"
+      },
+      {
+        "type": "cta",
+        "content": {
+          "label": "LIMITED SPOTS AVAILABLE",
+          "headline": "UNLEASH YOUR POTENTIAL",
+          "body": "Kick off your journey with a free session that’ll reshape your game and elevate your skills.",
+          "button": "RESERVE YOUR SPOT"
+        },
+        "caption": "Steel City, it’s time to elevate your game. Join us for a free session and see what sets us apart. Your future on the pitch starts now.",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#FearThePhantom",
+          "#SteelCityGrit",
+          "#PittsburghPride"
+        ],
+        "image_url": "https://i.ibb.co/svfX2wvB/3c181336b417.png"
+      }
+    ]
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include keywords related to youth soccer training and community engagement to improve SEO and attract local clients.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh\">",
+      "replace": "<meta name=\"description\" content=\"Private soccer training in Pittsburgh, offering personalized coaching and youth soccer clinics to engage the community and develop young talent.\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a call-to-action for a free community soccer clinic to encourage conversions and engage local families.",
+      "type": "text_update",
+      "search": "<h1>Welcome to Fantasma Football</h1>",
+      "replace": "<h1>Welcome to Fantasma Football</h1><p>Join us for a free community soccer clinic to learn training techniques and see how our personalized coaching can benefit your child!</p>"
+    }
+  ],
+  "status": "pending"
+}

@@ -2,23 +2,27 @@
 
 ## Project Overview
 
-**Fantasma Football Training** is an elite soccer development and coaching business based in Pittsburgh, PA. The website is a modern one-page marketing site designed to attract players and parents, showcase training programs, and drive bookings.
+**Fantasma Football Training** is an elite soccer development and coaching business based in Pittsburgh, PA. The website is a multi-page marketing site with a live booking system, interactive formation builder, and automated daily research/content pipeline — designed to attract players and parents, showcase training programs, and drive bookings.
 
 - **Tagline:** "Fear the Phantom. Train Fantasma"
 - **Positioning:** Where the poetry and grit of football meet.
-- **Founded by:** Coach Connor Hudson - former NCAA Division 1 and semi-professional player
+- **Founded by:** Coach Connor Hudson — former NCAA Division 1 and semi-professional player
 - **Core pillars:** Passion, tactical intelligence, desire
+- **Live URL:** https://fantasmafootball.com
 
 ---
 
 ## Tech Stack
 
-- **Build tool:** Vite (vanilla setup, no framework)
+- **Build tool:** Vite 7.x (vanilla setup, no framework, multi-page config via `vite.config.js`)
 - **Languages:** HTML, CSS, JavaScript (no libraries or frameworks)
 - **Fonts:** Google Fonts via CDN — Bebas Neue (display/headlines) + Outfit (body text)
-- **Assets:** Custom wraith artwork (PNG), Fantasma F logo (`fantasma_logo_final.png`, transparent background), team logos (PNG), coach profile photo (`gcc_profile.webp`)
-- **Image generation:** Gemini API script (`tools/generate-image.cjs`) for on-demand asset creation
-- **Dependencies:** Vite only (no npm runtime dependencies)
+- **Hosting:** Vercel (static site + serverless API functions)
+- **Assets:** Custom wraith artwork (PNG/SVG), Fantasma F logo (`fantasma_logo_final.png`, transparent background), team logos (PNG), coach profile photos
+- **Image generation:** Script (`scripts/generate-image.cjs`) for on-demand asset creation
+- **Dependencies:**
+  - **Dev:** Vite
+  - **Runtime:** dotenv, googleapis (Google Calendar integration), nodemailer (email), pdfkit, puppeteer (screenshotting social posts)
 
 ---
 
@@ -49,9 +53,11 @@ Inspired by the **Dayos** website aesthetic — ultra-bold editorial typography,
 ### Navigation
 - Fixed at top, sits below the top bar (`top: 36px`, transitions to `top: 0` when scrolled)
 - Frosted glass effect (`backdrop-filter: blur`) on scroll
-- **Centered pill-shaped nav bar** with rounded corners containing page links
+- **Centered pill-shaped nav menu** (`<ul class="nav-menu">` styled as pill, separate from the empty `<div class="nav-pill">`) with rounded corners containing page links
 - Fantasma "F" logo image (`fantasma_logo_final.png`) on the left (transparent background), "Book a Session" CTA button on the right
-- Mobile: hamburger toggle with slide-out panel (cream background), includes social media icons at the bottom with a border-top separator
+- Links: About, Programs, Coaches, FAQ, Contact, Book a Session, Formation Builder
+- **Mobile:** Hamburger toggle (3-line button, z-index 1003) with slide-out panel (cream background, z-index 1002, slides from right). Includes all nav links plus social media icons at the bottom with a border-top separator. Logo scales down to 48px on mobile. Navbar padding reduces to 8px (6px when scrolled).
+- Shared across all pages via consistent HTML (booking.html and formation.html use `/#about` style links to route back to index sections)
 
 ### Hero
 - **Split layout:** massive headline text on the left, dark visual panel on the right
@@ -150,6 +156,38 @@ Inspired by the **Dayos** website aesthetic — ultra-bold editorial typography,
 
 ---
 
+## Additional Pages
+
+### Booking Page (`booking.html`)
+A dedicated session booking page with Google Calendar integration.
+
+- **Hero:** Dark navy background with "BOOK YOUR SESSION." headline (gold accent on "SESSION."), section tag "Schedule Training"
+- **Calendar:** Interactive month-view calendar rendered in JS (`src/booking.js`). Navigate months with prev/next arrows. Days with availability are clickable; past dates and Sundays are disabled.
+- **Session Types:** Toggle between "1-on-1" (60 min) and "Small Group" (90 min) via pill buttons
+- **Time Slots:** Fetched from Vercel serverless API (`/api/availability`) which checks Google Calendar for existing events. Available hours: Mon–Fri 3pm–8pm, Sat 9am–2pm, Sun closed.
+- **Booking Form:** After selecting a time, form collects name, email, phone. Submits to `/api/book` which creates a Google Calendar event and sends confirmation email via nodemailer.
+- **JS:** `src/booking.js` — imports `shared.js` for nav/scroll behavior, handles calendar rendering, API calls, form submission
+- **Layout:** Two-column on desktop (calendar left, panel right), stacks on mobile
+
+### Formation Builder Page (`formation.html`)
+An interactive soccer formation builder tool.
+
+- **Hero:** Dark navy background with "FORMATION BUILDER." headline, section tag "Build Your Lineup"
+- **Formation Selector:** Grid of formation buttons (4-4-2, 4-3-3, 3-5-2, 4-2-3-1, etc.) — clicking renders player dots on the pitch
+- **Pitch:** CSS-rendered soccer field with markings (half line, center circle, penalty areas, goal areas, corner arcs). Player dots are draggable.
+- **Place Yourself:** Click any player dot to mark it as "YOU" (gold highlight with badge)
+- **Opposing Team:** Checkbox to toggle a second formation in a different color
+- **Tactical Arrows:** Toolbar with Pass (dashed gold), Dribble (wavy blue), Run (solid orange) — click two points on the pitch to draw an arrow between them
+- **Position Info Panel:** Clicking a position shows its name, role description, key skills, recommended training, and a "Book a Session" CTA
+- **Actions:** Reset Formation, Share Formation (URL-based sharing)
+- **JS:** `src/formation.js` — imports `shared.js`, handles formation data, drag-and-drop, arrow drawing, position info
+- **Layout:** Two-column on desktop (controls left, pitch right), stacks on mobile
+
+### Privacy Policy Page (`privacy.html`)
+Simple standalone page with self-contained inline styles (not using the main CSS). Covers data handling for the website and social media automation. Last updated February 27, 2026.
+
+---
+
 ## Design System
 
 ### Typography
@@ -209,10 +247,105 @@ A hooded specter/ghost figure cradling a soccer ball, serving as the brand masco
 - **Contact gold line:** A 3px gold horizontal line animates from 0 to 80px width when the contact section scrolls into view (IntersectionObserver, `.is-visible` class toggle)
 - **Contact form underline focus:** Each form field has a gold `::after` line that expands from 0 to full width on focus via `width` transition
 - **Contact form:** Client-side handling with styled success message
-- **Mobile navigation:** Hamburger menu with slide-out cream panel
+- **Mobile navigation:** Hamburger menu with slide-out cream panel (280px width, slides from right)
 - **Instagram carousel:** Tinder-style card stack with CSS 3D transforms (perspective, rotateY, scale, opacity transitions). Circular navigation via arrows, dots, keyboard, touch swipe, and side-card clicks. Responsive card sizing scales with container width
 - **Instagram lightbox:** Full-screen overlay for viewing posts/playing videos, close via button, backdrop click, or Escape key
 - **Smooth scroll:** Anchor links scroll smoothly to target sections
+- **Ghost Mode Easter Egg:** Type "ghost" on keyboard to toggle phantom mode — adds green particle canvas overlay, scanline effect, and a floating toggle button. Persisted via `localStorage`. Implemented in `src/shared.js` as an IIFE.
+- **Booking calendar:** Interactive month navigation with real-time availability fetched from Google Calendar API
+- **Formation builder:** Drag-and-drop player positioning, tactical arrow drawing (pass/dribble/run), position info panels, formation sharing via URL
+
+---
+
+## Vercel Serverless API (`api/`)
+
+### `GET /api/availability`
+Returns available time slots for a given date and session type. Checks Google Calendar for existing events and computes free slots within general business hours (Mon–Fri 3–8pm, Sat 9am–2pm, Sun closed). Session durations: 1-on-1 = 60min, small-group = 90min.
+
+### `POST /api/book`
+Creates a booking: adds a Google Calendar event for the selected slot and sends a confirmation email to both the client and Connor via nodemailer/Gmail.
+
+### `GET /api/daily/approve`
+Approval endpoint for the daily research pipeline. Validates a secret token, then triggers a GitHub Actions `repository_dispatch` event to implement the approved plan (post to Instagram, apply site changes, etc.). Returns a mobile-friendly HTML confirmation page. Actions: `all`, `social`, `site`.
+
+---
+
+## Social Media Post System
+
+### Design Templates (`social/`)
+HTML templates for generating social media assets, all following the Fantasma "Interference" design system (corner marks, radial glow, grain texture, scan lines, Bebas Neue + Outfit fonts, Navy/Gold/Cream palette):
+
+- `social/post-draft.html` — Single post design workspace
+- `social/post-batch.html` — Multi-post batch layout
+- `social/instagram-posts.html` — Instagram post collection view
+- `social/brand-portfolio.html` — Brand reference / design language guide (**always reference this for post design**)
+- `social/daily-template.html` — Auto-generated daily post template (multiple layout variants: stat-highlight, training-tip, quote, local-callout, testimonial)
+- `social/profile-banner.html` — Profile banner design
+- `social/profile-pic.html` — Profile picture design
+
+### Post Pipeline
+1. Design post in `social/post-draft.html`
+2. Run `node scripts/publish-post.cjs --caption "..."` which:
+   - Screenshots with Puppeteer (1080x1080)
+   - Uploads to ImgBB
+   - Posts to Instagram via Facebook Graph API
+3. `--dry-run` flag skips upload/post, just screenshots
+4. Post size: 1080x1080px, watermark: @fantasmafootball
+
+### Automation Scripts (`scripts/`)
+| Script | Purpose |
+|--------|---------|
+| `publish-post.cjs` | Screenshot → ImgBB → Instagram Graph API pipeline |
+| `screenshot-posts.cjs` | Batch screenshot social post HTML files |
+| `screenshot-banner.cjs` | Screenshot profile banner |
+| `screenshot-pfp.cjs` | Screenshot profile picture |
+| `generate-brandkit.cjs` | Generate brand kit assets |
+| `generate-image.cjs` | AI image generation via API |
+| `send-posts.cjs` | Email generated posts |
+| `send-file.cjs` | Email a file attachment |
+| `send-outline.cjs` | Email the project outline |
+
+---
+
+## Daily Research & Auto-Implementation Pipeline
+
+A fully automated system that runs daily via GitHub Actions, researches the Pittsburgh soccer training market, generates content, and emails an approval-based execution plan.
+
+### Flow
+```
+GitHub Actions cron (6:30 AM ET daily)
+  → Research competitors, SEO keywords, trends, seasonal data
+  → Generate Instagram post (Interference design) + screenshot via Puppeteer → ImgBB
+  → Prepare site change recommendations
+  → Save plan to docs/daily-plans/YYYY-MM-DD.json
+  → Email HTML report with post preview + APPROVE buttons
+
+User taps APPROVE on phone
+  → Vercel API /api/daily/approve validates token
+  → Triggers GitHub Actions repository_dispatch
+  → Posts to Instagram, commits site changes, sends confirmation email
+```
+
+### Workflows (`.github/workflows/`)
+- `daily-research.yml` — Cron schedule (`30 11 * * *` = 6:30 AM ET), runs `scripts/daily-research.cjs`, commits daily plan JSON
+- `daily-implement.yml` — Triggered by `repository_dispatch` (type: `approve-daily-plan`), reads today's plan, posts to Instagram, applies site changes, sends confirmation
+
+### Daily Plans (`docs/daily-plans/`)
+JSON files per day tracking research findings, social post recommendations, site change proposals, and approval status.
+
+### Research Rotation
+- **Always:** Competitor social activity, seasonal calendar, Instagram engagement
+- **Mon:** Competitor deep-dive (pricing, offerings, website changes)
+- **Tue:** SEO keywords + ranking opportunities
+- **Wed:** Content strategy analysis
+- **Thu:** Local soccer news (tryout dates, tournaments)
+- **Fri:** Community engagement opportunities
+- **Sat:** Weekly performance summary
+- **Sun:** Week-ahead planning
+
+### Required Secrets
+**GitHub Actions:** `GMAIL_USER`, `GMAIL_APP_PASSWORD`, `OPENAI_API_KEY`, `IMGBB_API_KEY`, `APPROVE_SECRET`, `SITE_URL`, `INSTAGRAM_ACCESS_TOKEN`, `INSTAGRAM_USER_ID`, `GH_PAT`
+**Vercel:** `APPROVE_SECRET`, `GITHUB_PAT`, `GITHUB_REPO`, `GOOGLE_SERVICE_ACCOUNT_KEY`
 
 ---
 
@@ -234,53 +367,94 @@ A hooded specter/ghost figure cradling a soccer ball, serving as the brand masco
 
 ```
 fantasma-site/
-├── index.html              # Main HTML (all sections)
+├── index.html                  # Main marketing page (all sections)
+├── booking.html                # Session booking page (calendar + form)
+├── formation.html              # Interactive formation builder
+├── privacy.html                # Privacy policy (standalone styles)
+├── vite.config.js              # Vite multi-page build config
+├── vercel.json                 # Vercel rewrites (API routing)
+├── package.json                # Dependencies & scripts
+│
 ├── src/
-│   ├── style.css           # All styles, design system, responsive breakpoints
-│   └── main.js             # Animations, scroll effects, form handling, IG feed, coaches section
-├── public/
-│   ├── pitt_wraith.png     # Wraith mascot artwork
-│   ├── fantasma_logo_final.png # Fantasma "F" brand logo (transparent background)
-│   ├── gcc_profile.webp    # Coach Connor Hudson profile photo
-│   ├── FR_logo.png         # Franklin Regional logo (transparent background)
-│   ├── presby_logo.png     # Presbyterian College logo (transparent background)
-│   ├── grove_logo.png      # Grove City College logo (transparent background)
-│   ├── steelcity_logo.png  # Steel City FC logo
-│   └── cardinals_logo.png  # Commonwealth Cardinals FC logo (transparent background)
-├── tools/
-│   └── generate-image.cjs  # Gemini API image generation CLI script
-├── .vercel/                # Vercel project config (git-ignored)
-├── .env                    # API keys (git-ignored)
-├── package.json            # Vite config
-└── PROJECT_OUTLINE.md      # This file
+│   ├── style.css               # All styles, design system, responsive breakpoints
+│   ├── main.js                 # Index page: animations, scroll, form, IG feed, coaches
+│   ├── shared.js               # Shared: nav, scroll effects, mobile menu, reveal animations, ghost mode
+│   ├── booking.js              # Booking page: calendar, time slots, API calls, form
+│   └── formation.js            # Formation builder: drag-drop, arrows, position info
+│
+├── api/                        # Vercel serverless functions
+│   ├── availability.js         # GET — available time slots (Google Calendar)
+│   ├── book.js                 # POST — create booking (Calendar + email)
+│   └── daily/
+│       └── approve.js          # GET — approve daily plan (triggers GitHub Actions)
+│
+├── scripts/                    # Automation scripts (Node.js CJS)
+│   ├── daily-research.cjs      # Daily research pipeline orchestrator
+│   ├── daily-implement.cjs     # Daily plan implementation (post + site changes)
+│   ├── publish-post.cjs        # Screenshot → ImgBB → Instagram pipeline
+│   ├── screenshot-posts.cjs    # Batch screenshot social post HTML files
+│   ├── screenshot-banner.cjs   # Screenshot profile banner
+│   ├── screenshot-pfp.cjs      # Screenshot profile picture
+│   ├── generate-brandkit.cjs   # Generate brand kit assets
+│   ├── generate-image.cjs      # AI image generation
+│   ├── send-posts.cjs          # Email generated posts
+│   ├── send-file.cjs           # Email a file attachment
+│   └── send-outline.cjs        # Email the project outline
+│
+├── social/                     # Social media HTML templates
+│   ├── brand-portfolio.html    # Brand reference / design language guide
+│   ├── daily-template.html     # Auto-generated daily post template
+│   ├── post-draft.html         # Single post design workspace
+│   ├── post-batch.html         # Multi-post batch layout
+│   ├── instagram-posts.html    # Instagram post collection view
+│   ├── profile-banner.html     # Profile banner design
+│   └── profile-pic.html        # Profile picture design
+│
+├── docs/
+│   ├── project_outline.md      # This file
+│   └── daily-plans/            # Auto-generated daily plan JSON files
+│
+├── public/                     # Static assets
+│   ├── pitt_wraith.png         # Wraith mascot artwork (PNG)
+│   ├── wraith.svg              # Wraith mascot artwork (SVG)
+│   ├── fantasma_logo_final.png # Fantasma "F" brand logo (transparent)
+│   ├── gcc_profile.webp        # Coach Connor profile photo
+│   ├── coachprofilepic.jpg     # Coach profile photo (alt)
+│   ├── FR_logo.png             # Franklin Regional logo
+│   ├── presby_logo.png         # Presbyterian College logo
+│   ├── grove_logo.png          # Grove City College logo
+│   ├── grove_me.webp           # Grove City action photo
+│   ├── steelcity_logo.png      # Steel City FC logo
+│   └── cardinals_logo.png      # Commonwealth Cardinals FC logo
+│
+├── .github/workflows/
+│   ├── daily-research.yml      # Cron: daily research + email pipeline
+│   └── daily-implement.yml     # Dispatch: approve + implement daily plan
+│
+├── .env / .env.local           # API keys (git-ignored)
+└── .vercel/                    # Vercel project config (git-ignored)
 ```
 
 ---
 
 ## Deployment
 
-The site is hosted on **Vercel** and deployed via the Vercel CLI.
+The site is hosted on **Vercel** and deployed via the Vercel CLI. The custom domain **fantasmafootball.com** is connected.
 
 ### URLs
 
 | Type | URL |
 |------|-----|
-| Production | https://fantasma-site.vercel.app |
-| Deployment (initial) | https://fantasma-site-43kdkrc8c-connor-hudsons-projects.vercel.app |
+| Production (custom domain) | https://fantasmafootball.com |
+| Vercel default | https://fantasma-site.vercel.app |
 | Vercel Dashboard | https://vercel.com/connor-hudsons-projects/fantasma-site |
-| Custom Domain Settings | https://vercel.com/connor-hudsons-projects/fantasma-site/settings |
-
-- **Production URL** — Permanent, always points to the latest production deployment. This is the URL to share publicly.
-- **Deployment URL** — Unique per deploy, useful for previewing a specific version.
 
 ### Redeploying
 
-After making changes, redeploy to production with:
+After making changes, deploy to production with:
 
 ```bash
-vercel --prod
+npx vercel --prod
 ```
 
-### Custom Domain
-
-To connect a custom domain (e.g. fantasmafootball.com), visit the [domain settings](https://vercel.com/connor-hudsons-projects/fantasma-site/settings) in the Vercel dashboard.
+**Note:** GitHub auto-deploy may not always trigger. If changes aren't appearing after a push, deploy manually with the command above.
