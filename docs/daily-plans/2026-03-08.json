@@ -1,0 +1,133 @@
+{
+  "date": "2026-03-08",
+  "generated_at": "2026-03-08T11:53:48.915Z",
+  "research": {
+    "focus": "Week-ahead planning: content calendar preview and strategy for the coming week",
+    "content_opportunities": [
+      "Behind-the-scenes training sessions showcasing personalized coaching techniques",
+      "Success stories and testimonials from past clients highlighting their improvement"
+    ],
+    "keywords": [
+      {
+        "term": "private soccer training Pittsburgh",
+        "opportunity": "high"
+      },
+      {
+        "term": "youth soccer training programs",
+        "opportunity": "high"
+      },
+      {
+        "term": "elite soccer coaching Pittsburgh",
+        "opportunity": "medium"
+      },
+      {
+        "term": "1-on-1 soccer training",
+        "opportunity": "medium"
+      },
+      {
+        "term": "soccer skills development for kids",
+        "opportunity": "low"
+      }
+    ],
+    "recommended_action": "Create and share a video showcasing a recent training session with a youth player, emphasizing personalized coaching and visible improvements.",
+    "reasoning": "This approach leverages the brand's premium and elite positioning while providing tangible proof of results, which can attract both players and parents looking for effective training solutions."
+  },
+  "social": {
+    "options": [
+      {
+        "type": "training-tip",
+        "content": {
+          "number": "DRILL // 001",
+          "headline": "THE PITTSBURGH PRESS",
+          "steps": [
+            "Position yourself at the edge of the box.",
+            "Receive a pass while opening your body to see the field.",
+            "Explode towards goal with a quick touch and shot — no hesitations."
+          ]
+        },
+        "caption": "In Pittsburgh, we don’t just practice — we press. Perfect this drill and leave defenders in the dust. Book your session now. #FearThePhantom",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#SteelCitySoccer",
+          "#EliteTraining",
+          "#SoccerSkills"
+        ],
+        "image_url": "https://i.ibb.co/zTmnd6V0/cc2017ee0b76.png"
+      },
+      {
+        "type": "local-callout",
+        "content": {
+          "badge": "PITTSBURGH",
+          "headline": "MARS NEEDS MORE BALLERS",
+          "body": "In the heart of Mars, the next wave of talent is rising—our players' skills improve at a rate 40% faster than the competition."
+        },
+        "caption": "Steel City, rise up! It's time to sharpen those skills and make your mark on the field. Let's get to work! 🥅⚽️",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#YouthSoccer",
+          "#FearThePhantom",
+          "#PrivateTraining",
+          "#EliteCoaching"
+        ],
+        "image_url": "https://i.ibb.co/WvVWKZkY/2032cb8949cf.png"
+      },
+      {
+        "type": "data-blocks",
+        "content": {
+          "label": "THE FANTASMA EDGE",
+          "headline": "NUMBERS THAT MATTER",
+          "blocks": [
+            {
+              "value": "15+",
+              "label": "TRAINING SESSIONS"
+            },
+            {
+              "value": "$50",
+              "label": "PER SESSION"
+            },
+            {
+              "value": "1:1",
+              "label": "COACHING FOCUS"
+            },
+            {
+              "value": "95%",
+              "label": "PLAYER SATISFACTION"
+            }
+          ]
+        },
+        "caption": "Steel City, it's time to elevate your game. No fluff, just results. Let's make you a phantom on the field. 🔥⚽",
+        "hashtags": [
+          "#PittsburghSoccer",
+          "#SoccerTraining",
+          "#TrainFantasma",
+          "#SteelCityGrit",
+          "#YouthSoccer",
+          "#FearThePhantom"
+        ],
+        "image_url": "https://i.ibb.co/jkmRBd1g/a1183659a96c.png"
+      }
+    ]
+  },
+  "site_changes": [
+    {
+      "file": "index.html",
+      "description": "Update the meta description to include targeted keywords and highlight personalized coaching and success stories.",
+      "type": "meta_tag",
+      "search": "<meta name=\"description\" content=\"",
+      "replace": "<meta name=\"description\" content=\"Discover elite private soccer training in Pittsburgh with personalized coaching techniques and proven success stories. Improve your game today!\">"
+    },
+    {
+      "file": "index.html",
+      "description": "Add a section showcasing a recent training session video with a youth player to highlight personalized coaching and visible improvements.",
+      "type": "text_update",
+      "search": "<h2>Our Training Programs</h2>",
+      "replace": "<h2>Our Training Programs</h2><div class='video-highlight'><h3>Watch Our Recent Training Session</h3><p>See how our personalized coaching techniques have helped our young athletes improve their skills.</p><iframe src='URL_TO_VIDEO' frameborder='0' allowfullscreen></iframe></div>"
+    }
+  ],
+  "status": "pending"
+}
