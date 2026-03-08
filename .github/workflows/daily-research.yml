@@ -1,10 +1,7 @@
 name: Daily Research & Post Generation
 
 on:
-  schedule:
-    # 11:30 UTC = 6:30 AM Eastern Time
-    - cron: '30 11 * * *'
-  workflow_dispatch: # Allow manual trigger for testing
+  workflow_dispatch: # Manual trigger only
 
 permissions:
   contents: write
