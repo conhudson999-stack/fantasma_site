@@ -85,40 +85,44 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Invalid email address.' })
   }
 
-  try {
-    const transporter = getTransporter()
+  const transporter = getTransporter()
 
-    // Send confirmation to customer
+  // Send confirmation to customer (always, most important)
+  try {
     await transporter.sendMail({
       from: `"Fantasma Football" <${process.env.GMAIL_USER}>`,
       to: email,
       subject: 'Fantasma Football — We Got Your Message',
       html: confirmationHTML(name),
     })
+  } catch (err) {
+    console.error('Customer confirmation email failed:', err)
+    return res.status(500).json({ error: 'Failed to send message. Please try again.' })
+  }
 
-    // Send notification to coach
+  // Send notification to coach (fail silently)
+  try {
     await transporter.sendMail({
       from: process.env.GMAIL_USER,
       to: process.env.GMAIL_USER,
       subject: `New Inquiry: ${name}`,
       text: `New contact form submission:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\n\nMessage:\n${message}`,
     })
-
-    // SMS notification
-    try {
-      await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: '4127372858@vtext.com',
-        subject: '',
-        text: `New Inquiry: ${name} — ${message.substring(0, 80)}`,
-      })
-    } catch (smsErr) {
-      console.error('SMS notification failed:', smsErr.message)
-    }
-
-    return res.status(200).json({ success: true })
-  } catch (err) {
-    console.error('Contact form error:', err)
-    return res.status(500).json({ error: 'Failed to send message. Please try again.' })
+  } catch (coachErr) {
+    console.error('Coach notification email failed:', coachErr.message)
   }
+
+  // SMS notification (fail silently)
+  try {
+    await transporter.sendMail({
+      from: process.env.GMAIL_USER,
+      to: '4127372858@vtext.com',
+      subject: '',
+      text: `New Inquiry: ${name} — ${message.substring(0, 80)}`,
+    })
+  } catch (smsErr) {
+    console.error('SMS notification failed:', smsErr.message)
+  }
+
+  return res.status(200).json({ success: true })
 }

@@ -187,43 +187,48 @@ export default async function handler(req, res) {
       },
     })
 
-    // Send SMS notification via email-to-SMS gateway
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD,
+      },
+    })
+
+    // Send branded confirmation to customer (always, most important)
     try {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.GMAIL_USER,
-          pass: process.env.GMAIL_APP_PASSWORD,
-        },
-      })
-
-      const smsText = `New Booking: ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`
-
-      // Send SMS via Verizon gateway
-      await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: '4127372858@vtext.com',
-        subject: '',
-        text: smsText,
-      })
-
-      // Also send email notification via Gmail
-      await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: process.env.GMAIL_USER,
-        subject: `Fantasma Booking: ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
-        text: `New booking from the website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSession: ${SESSION_LABELS[sessionType]}\nDate: ${formatDatePretty(date)}\nTime: ${formatTime12(time)}\nDuration: ${duration === 60 ? '1 hour' : '1.5 hours'}`,
-      })
-
-      // Send branded confirmation to customer
       await transporter.sendMail({
         from: `"Fantasma Football" <${process.env.GMAIL_USER}>`,
         to: email,
         subject: 'Fantasma Football — Session Confirmed',
         html: bookingConfirmationHTML(name, SESSION_LABELS[sessionType], formatDatePretty(date), formatTime12(time), duration === 60 ? '1 hour' : '1.5 hours'),
       })
+    } catch (emailErr) {
+      console.error('Customer confirmation email failed:', emailErr)
+    }
+
+    // Send coach notification (fail silently)
+    try {
+      await transporter.sendMail({
+        from: process.env.GMAIL_USER,
+        to: process.env.GMAIL_USER,
+        subject: `Fantasma Booking: ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
+        text: `New booking from the website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSession: ${SESSION_LABELS[sessionType]}\nDate: ${formatDatePretty(date)}\nTime: ${formatTime12(time)}\nDuration: ${duration === 60 ? '1 hour' : '1.5 hours'}`,
+      })
+    } catch (coachErr) {
+      console.error('Coach notification email failed:', coachErr)
+    }
+
+    // Send SMS via Verizon gateway (fail silently)
+    try {
+      await transporter.sendMail({
+        from: process.env.GMAIL_USER,
+        to: '4127372858@vtext.com',
+        subject: '',
+        text: `New Booking: ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
+      })
     } catch (smsErr) {
-      console.error('Notification failed:', smsErr)
+      console.error('SMS notification failed:', smsErr)
     }
 
     return res.status(200).json({
