@@ -84,11 +84,11 @@ export default async function handler(req, res) {
 
     const busyPeriods = freeBusyRes.data.calendars[process.env.GOOGLE_CALENDAR_ID]?.busy || []
 
-    // Generate all possible slots at 30-min intervals
+    // Generate all possible slots at 1-hour intervals
     const slots = []
     const isToday = date === todayStr
 
-    for (let minutes = hours.start * 60; minutes + duration <= hours.end * 60; minutes += 30) {
+    for (let minutes = hours.start * 60; minutes + duration <= hours.end * 60; minutes += 60) {
       const slotStartH = Math.floor(minutes / 60)
       const slotStartM = minutes % 60
       const slotEndMinutes = minutes + duration
