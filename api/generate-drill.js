@@ -1,4 +1,3 @@
-
 const SYSTEM_PROMPT = `You are the Fantasma Football AI Drill Coach — an expert soccer training assistant for Fantasma Football, an elite private training program in Pittsburgh, PA.
 
 When given focus areas, generate a single, detailed drill plan. Return ONLY valid JSON with this exact structure:
@@ -40,7 +39,6 @@ export default async function handler(req, res) {
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    // Fallback if API key not configured yet
     return res.status(200).json({
       name: 'PHANTOM TOUCH CIRCUIT',
       description: 'A high-intensity circuit combining first-touch receiving under pressure with close-control dribbling through tight spaces.',
@@ -58,16 +56,29 @@ export default async function handler(req, res) {
   try {
     const userPrompt = `Generate a soccer drill plan focused on: ${focusAreas.join(', ')}${difficulty ? `. Difficulty level: ${difficulty}` : ''}.`;
 
-    const { default: Anthropic } = await import('@anthropic-ai/sdk');
-    const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-    const message = await anthropic.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1024,
-      system: SYSTEM_PROMPT,
-      messages: [{ role: 'user', content: userPrompt }],
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 1024,
+        system: SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userPrompt }],
+      }),
     });
 
-    const text = message.content[0].text;
+    if (!response.ok) {
+      const errBody = await response.text();
+      console.error('Anthropic API error:', response.status, errBody);
+      return res.status(500).json({ error: 'Failed to generate drill' });
+    }
+
+    const data = await response.json();
+    const text = data.content[0].text;
     const drill = JSON.parse(text);
 
     return res.status(200).json(drill);
