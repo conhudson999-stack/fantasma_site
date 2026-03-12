@@ -74,7 +74,7 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errBody = await response.text();
       console.error('Anthropic API error:', response.status, errBody);
-      return res.status(500).json({ error: 'Failed to generate drill', status: response.status, detail: errBody });
+      return res.status(500).json({ error: 'Failed to generate drill' });
     }
 
     const data = await response.json();
@@ -84,6 +84,6 @@ export default async function handler(req, res) {
     return res.status(200).json(drill);
   } catch (err) {
     console.error('Drill generation error:', err);
-    return res.status(500).json({ error: 'Failed to generate drill', detail: err.message });
+    return res.status(500).json({ error: 'Failed to generate drill' });
   }
 }
