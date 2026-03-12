@@ -1,4 +1,3 @@
-import Anthropic from '@anthropic-ai/sdk';
 
 const SYSTEM_PROMPT = `You are the Fantasma Football AI Drill Coach — an expert soccer training assistant for Fantasma Football, an elite private training program in Pittsburgh, PA.
 
@@ -59,6 +58,7 @@ export default async function handler(req, res) {
   try {
     const userPrompt = `Generate a soccer drill plan focused on: ${focusAreas.join(', ')}${difficulty ? `. Difficulty level: ${difficulty}` : ''}.`;
 
+    const { default: Anthropic } = await import('@anthropic-ai/sdk');
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const message = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
