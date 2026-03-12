@@ -75,16 +75,18 @@ export default async function handler(req, res) {
     if (!response.ok) {
       const errBody = await response.text();
       console.error('Anthropic API error:', response.status, errBody);
-      return res.status(500).json({ error: 'API error', status: response.status, detail: errBody, hasKey: !!apiKey, keyPrefix: apiKey ? apiKey.substring(0, 10) : 'none' });
+      return res.status(500).json({ error: 'Failed to generate drill' });
     }
 
     const data = await response.json();
-    const text = data.content[0].text;
+    let text = data.content[0].text;
+    // Strip markdown code fences if present
+    text = text.replace(/^```(?:json)?\s*\n?/i, '').replace(/\n?```\s*$/i, '');
     const drill = JSON.parse(text);
 
     return res.status(200).json(drill);
   } catch (err) {
     console.error('Drill generation error:', err);
-    return res.status(500).json({ error: 'Catch error', message: err.message });
+    return res.status(500).json({ error: 'Failed to generate drill' });
   }
 }
