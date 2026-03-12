@@ -85,6 +85,6 @@ export default async function handler(req, res) {
     return res.status(200).json(drill);
   } catch (err) {
     console.error('Drill generation error:', err);
-    return res.status(500).json({ error: 'Failed to generate drill' });
+    return res.status(500).json({ error: 'Catch error', message: err.message });
   }
 }
