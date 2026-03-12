@@ -38,7 +38,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'focusAreas is required (array of strings)' });
   }
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
     return res.status(200).json({
       name: 'PHANTOM TOUCH CIRCUIT',
       description: 'A high-intensity circuit combining first-touch receiving under pressure with close-control dribbling through tight spaces.',
@@ -60,7 +61,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
+        'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
