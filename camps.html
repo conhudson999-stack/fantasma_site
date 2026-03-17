@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Book a Session | Fantasma Football Training</title>
+    <title>Camps | Fantasma Football Training</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -71,124 +71,130 @@
         </div>
       </nav>
 
-      <!-- Booking Hero -->
+      <!-- Camps Hero -->
       <section class="booking-hero">
         <div class="container">
           <div class="section-header">
-            <p class="section-tag">Schedule Training</p>
-            <h1 class="section-title" style="color: var(--white)">BOOK YOUR<br><span class="gold">SESSION.</span></h1>
-            <p class="section-desc" style="color: var(--white-dim)">Select a date, pick a time, and reserve your spot.</p>
+            <p class="section-tag">Elite Development</p>
+            <h1 class="section-title" style="color: var(--white)">UPCOMING<br><span class="gold">CAMPS.</span></h1>
+            <p class="section-desc" style="color: var(--white-dim)">Multi-day intensives designed to push your limits and accelerate growth.</p>
           </div>
         </div>
       </section>
 
-      <!-- Booking Calendar Section -->
-      <section class="section section--light booking-section">
+      <!-- Featured Camp -->
+      <section class="section section--light" id="campsSection">
         <div class="container">
-          <div class="booking-layout">
 
-            <!-- Left: Calendar -->
-            <div class="calendar reveal" id="calendarContainer">
-              <div class="calendar-header">
-                <button class="calendar-nav-btn" id="calendarPrev" aria-label="Previous month">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-                </button>
-                <span class="calendar-month-title" id="calendarTitle"></span>
-                <button class="calendar-nav-btn" id="calendarNext" aria-label="Next month">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
-                </button>
+          <!-- Loading state -->
+          <div class="camps-loading" id="campsLoading">
+            <div class="ig-spinner"></div>
+            <p style="color: var(--dark-text-muted); margin-top: 16px;">Loading camps...</p>
+          </div>
+
+          <!-- Featured camp (injected by JS) -->
+          <div id="featuredCamp" style="display: none;"></div>
+
+          <!-- Upcoming camps list (injected by JS) -->
+          <div id="upcomingCamps" style="display: none;"></div>
+
+          <!-- No camps state -->
+          <div class="camps-empty" id="campsEmpty" style="display: none;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--dark-text-muted)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px; opacity: 0.5">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--dark-navy); margin-bottom: 8px;">NO CAMPS SCHEDULED</h3>
+            <p style="color: var(--dark-text-muted); font-size: 15px;">Follow <a href="https://instagram.com/fantasmafootball" target="_blank" style="color: var(--gold);">@fantasmafootball</a> for announcements on upcoming camps.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Registration Modal -->
+      <div class="camp-modal-overlay" id="campModalOverlay">
+        <div class="camp-modal">
+          <button class="camp-modal-close" id="campModalClose" aria-label="Close">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+          <div class="camp-modal-header">
+            <p class="section-tag" style="margin-bottom: 8px;">Camp Registration</p>
+            <h3 class="camp-modal-title" id="campModalTitle"></h3>
+            <p class="camp-modal-info" id="campModalInfo"></p>
+          </div>
+          <form class="camp-register-form" id="campRegisterForm">
+            <input type="hidden" id="campId" name="campId" />
+            <div class="camp-form-row">
+              <div class="form-group">
+                <label for="playerName">Player Name *</label>
+                <input type="text" id="playerName" name="playerName" placeholder="Full name" required />
               </div>
-              <div class="calendar-weekdays">
-                <span class="calendar-weekday">Sun</span>
-                <span class="calendar-weekday">Mon</span>
-                <span class="calendar-weekday">Tue</span>
-                <span class="calendar-weekday">Wed</span>
-                <span class="calendar-weekday">Thu</span>
-                <span class="calendar-weekday">Fri</span>
-                <span class="calendar-weekday">Sat</span>
+              <div class="form-group">
+                <label for="playerAge">Date of Birth *</label>
+                <input type="date" id="playerAge" name="playerDob" required />
               </div>
-              <div class="calendar-grid" id="calendarGrid"></div>
             </div>
-
-            <!-- Right: Session type + Slots + Form -->
-            <div class="booking-panel reveal">
-              <!-- Session Type Selector -->
-              <div class="session-type-selector">
-                <button class="session-type-btn session-type-btn--active" data-session="1-on-1">1-on-1</button>
-                <button class="session-type-btn" data-session="small-group">Small Group</button>
+            <div class="camp-form-row">
+              <div class="form-group">
+                <label for="parentName">Parent/Guardian Name *</label>
+                <input type="text" id="parentName" name="parentName" placeholder="Parent or guardian" required />
               </div>
-
-              <!-- Slots Panel -->
-              <div class="slots-panel" id="slotsPanel">
-                <div class="slots-placeholder" id="slotsPlaceholder">
-                  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--dark-text-muted)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 16px; opacity: 0.5">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                  </svg>
-                  <p>Select a date on the calendar to see available times</p>
-                </div>
-                <div class="slots-loading" id="slotsLoading" style="display: none">
-                  <div class="ig-spinner"></div>
-                  <p>Loading available times...</p>
-                </div>
-                <div id="slotsContent" style="display: none">
-                  <h4 class="slots-panel-title" id="slotsPanelTitle">Available Times</h4>
-                  <p class="slots-panel-date" id="slotsPanelDate"></p>
-                  <div class="slots-grid" id="slotsGrid"></div>
-                </div>
-                <div class="slots-empty" id="slotsEmpty" style="display: none">
-                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--dark-text-muted)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 12px; opacity: 0.5">
-                    <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
-                  </svg>
-                  <p>No available sessions on this date.<br>Try another day.</p>
-                </div>
+              <div class="form-group">
+                <label for="parentEmail">Email Address *</label>
+                <input type="email" id="parentEmail" name="email" placeholder="your@email.com" required />
               </div>
-
-              <!-- Booking Form (hidden until time selected) -->
-              <div class="booking-form-wrapper" id="bookingFormWrapper">
-                <form class="booking-form" id="bookingForm">
-                  <h4 class="slots-panel-title">Your Details</h4>
-                  <div class="form-group">
-                    <label for="bookingName">Full Name</label>
-                    <input type="text" id="bookingName" name="name" placeholder="Your name" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="bookingEmail">Email Address</label>
-                    <input type="email" id="bookingEmail" name="email" placeholder="your@email.com" required />
-                  </div>
-                  <div class="form-group">
-                    <label for="bookingPhone">Phone Number</label>
-                    <input type="tel" id="bookingPhone" name="phone" placeholder="(412) 555-1234" required />
-                  </div>
-                  <div class="form-group">
-                    <label>Session Type</label>
-                    <input type="text" id="bookingSessionDisplay" readonly />
-                  </div>
-                  <div class="form-group">
-                    <label>Date & Time</label>
-                    <input type="text" id="bookingDateTimeDisplay" readonly />
-                  </div>
-                  <button type="submit" class="btn btn-dark btn-full" id="bookingSubmitBtn">Confirm Booking</button>
-                </form>
+            </div>
+            <div class="camp-form-row">
+              <div class="form-group">
+                <label for="parentPhone">Phone Number *</label>
+                <input type="tel" id="parentPhone" name="phone" placeholder="(412) 555-1234" required />
               </div>
-
-              <!-- Confirmation (hidden until booked) -->
-              <div class="booking-confirmation" id="bookingConfirmation" style="display: none">
-                <div class="booking-confirmation-icon">
-                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                </div>
-                <h3>SESSION BOOKED!</h3>
-                <p style="color: var(--dark-text-dim); margin-bottom: 8px">You'll receive a confirmation email shortly.</p>
-                <div class="booking-confirmation-details" id="confirmationDetails"></div>
-                <div class="booking-confirmation-buttons">
-                  <button class="btn btn-dark" id="bookAnotherBtn">Book Another Session</button>
-                  <a href="/" class="btn btn-outline-dark">Back to Home</a>
-                </div>
+              <div class="form-group">
+                <label for="playerPosition">Position / Experience *</label>
+                <input type="text" id="playerPosition" name="position" placeholder="e.g. Forward, 3 years" required />
               </div>
+            </div>
+            <div class="camp-form-row">
+              <div class="form-group">
+                <label for="shirtSize">Shirt Size *</label>
+                <select id="shirtSize" name="shirtSize" required>
+                  <option value="" disabled selected>Select size</option>
+                  <option value="YS">Youth Small</option>
+                  <option value="YM">Youth Medium</option>
+                  <option value="YL">Youth Large</option>
+                  <option value="AS">Adult Small</option>
+                  <option value="AM">Adult Medium</option>
+                  <option value="AL">Adult Large</option>
+                  <option value="AXL">Adult XL</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="medicalNotes">Medical / Allergy Notes</label>
+                <input type="text" id="medicalNotes" name="medical" placeholder="Optional" />
+              </div>
+            </div>
+            <div class="form-group camp-waiver">
+              <label class="camp-waiver-label">
+                <input type="checkbox" id="waiverCheck" name="waiver" required />
+                <span>I agree to the liability waiver and release of claims for this camp. *</span>
+              </label>
+            </div>
+            <button type="submit" class="btn btn-dark btn-full" id="campSubmitBtn">Proceed to Payment</button>
+          </form>
+        </div>
+      </div>
 
+      <!-- Success Banner (shown after Stripe redirect) -->
+      <div class="camp-success-banner" id="campSuccessBanner" style="display: none;">
+        <div class="container">
+          <div class="camp-success-content">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <div>
+              <h3>YOU'RE REGISTERED!</h3>
+              <p>Check your email for a confirmation with all the camp details.</p>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- Footer -->
       <footer class="footer">
@@ -240,6 +246,6 @@
       </footer>
 
     </div>
-    <script type="module" src="/src/booking.js"></script>
+    <script type="module" src="/src/camps.js"></script>
   </body>
 </html>

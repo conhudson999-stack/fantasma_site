@@ -7,8 +7,8 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, 'index.html'),
         booking: resolve(__dirname, 'booking.html'),
-        formation: resolve(__dirname, 'formation.html'),
         privacy: resolve(__dirname, 'privacy.html'),
+        camps: resolve(__dirname, 'camps.html'),
       },
     },
   },
