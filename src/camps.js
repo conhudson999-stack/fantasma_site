@@ -68,6 +68,7 @@ async function init() {
 function renderFeatured(camp) {
   featuredCampEl.innerHTML = `
     <div class="camp-featured">
+      ${camp.comingSoon ? '<div class="camp-coming-soon"><span>COMING SOON</span></div>' : ''}
       ${camp.image ? `<div class="camp-featured-image"><img src="${camp.image}" alt="${camp.name}" /></div>` : ''}
       <div class="camp-featured-content">
         <div class="camp-featured-badge">
@@ -101,9 +102,11 @@ function renderFeatured(camp) {
           </div>
           ${camp.spots > 0 ? `<div class="camp-featured-spots">${camp.spotsRemaining} / ${camp.spots} spots remaining</div>` : ''}
         </div>
-        ${camp.spots > 0 && camp.spotsRemaining <= 0
-          ? `<button class="btn btn-dark btn-full" disabled>Sold Out</button>`
-          : `<button class="btn btn-dark btn-full camp-register-btn" data-camp-id="${camp.id}">Reserve Your Spot</button>`
+        ${camp.comingSoon
+          ? `<button class="btn btn-dark btn-full" disabled>Registration Opening Soon</button>`
+          : camp.spots > 0 && camp.spotsRemaining <= 0
+            ? `<button class="btn btn-dark btn-full" disabled>Sold Out</button>`
+            : `<button class="btn btn-dark btn-full camp-register-btn" data-camp-id="${camp.id}">Reserve Your Spot</button>`
         }
       </div>
     </div>

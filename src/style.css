@@ -4475,6 +4475,25 @@ body.ghost-mode .share-toast {
   padding: 80px 20px;
 }
 
+/* Coming soon banner */
+.camp-coming-soon {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 12, 20, 0.8);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+.camp-coming-soon span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 96px;
+  letter-spacing: 12px;
+  color: #C5B358;
+}
+
 /* Featured camp card */
 .camp-featured {
   background: var(--white);
@@ -4483,6 +4502,7 @@ body.ghost-mode .share-toast {
   overflow: hidden;
   max-width: 800px;
   margin: 0 auto;
+  position: relative;
 }
 
 .camp-featured-image {
