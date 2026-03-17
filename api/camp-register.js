@@ -3,7 +3,11 @@
 
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+  apiVersion: '2024-12-18.acacia',
+  httpClient: Stripe.createNodeHttpClient(),
+  timeout: 10000,
+})
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
