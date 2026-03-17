@@ -3,13 +3,8 @@
 
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2024-12-18.acacia',
-  httpClient: Stripe.createNodeHttpClient(),
-  timeout: 10000,
-})
-
 export default async function handler(req, res) {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -19,6 +14,11 @@ export default async function handler(req, res) {
     playerName, playerDob, parentName, email, phone,
     position, shirtSize, medical, waiver,
   } = req.body
+
+  // Debug: check if key exists
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({ error: 'STRIPE_SECRET_KEY not configured' })
+  }
 
   // Validate required fields
   if (!campId || !campName || !campPrice || !playerName || !playerDob || !parentName || !email || !phone || !position || !shirtSize) {
