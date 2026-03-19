@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080">
+  <title>Fantasma — More Than a Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 0 100px;
+      font-family: 'Outfit', sans-serif;
+    }
+    .slide {
+      width: 1080px;
+      height: 1350px;
+      position: relative;
+      overflow: hidden;
+      background: #040C14;
+    }
+
+    /* Gold diagonal half */
+    .gold-half {
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: #C5B358;
+      clip-path: polygon(0 0, 62% 0, 38% 100%, 0 100%);
+      z-index: 2;
+    }
+
+    /* Distressed fragments along the diagonal edge */
+    .edge-strip {
+      position: absolute;
+      top: 0; bottom: 0; left: 0; right: 0;
+      z-index: 3;
+    }
+    .edge-strip .frag {
+      position: absolute;
+      background: #C5B358;
+    }
+
+    /* White accent line along the cut */
+    .cut-line {
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      z-index: 4;
+    }
+    .cut-line::before {
+      content: '';
+      position: absolute;
+      top: -20px; bottom: -20px;
+      left: 0; right: 0;
+      border-right: 2px solid rgba(255,255,255,0.4);
+      clip-path: polygon(61% 0, 62% 0, 38% 100%, 37% 100%);
+    }
+
+    /* Horizontal bars for structure */
+    .h-bar {
+      position: absolute;
+      left: 0; right: 0;
+      height: 3px;
+      z-index: 8;
+    }
+
+    /* Dark side texture — diagonal lines */
+    .dark-texture {
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 50%;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 30px,
+        rgba(197,179,88,0.025) 30px,
+        rgba(197,179,88,0.025) 31px
+      );
+      z-index: 1;
+    }
+
+    /* Gold side cuts for texture */
+    .gold-cut {
+      position: absolute;
+      background: rgba(4,12,20,0.06);
+      z-index: 3;
+    }
+
+    /* Typography */
+    .text-block {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 10;
+      width: 100%;
+    }
+    .text-block .hero {
+      font-family: 'Bebas Neue';
+      font-size: 200px;
+      letter-spacing: 10px;
+      line-height: 0.82;
+    }
+
+    .line-more {
+      background: linear-gradient(90deg, #040C14 0%, #040C14 50%, #FFFFFF 52%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .line-than {
+      background: linear-gradient(90deg, #040C14 0%, #040C14 49%, #FFFFFF 51%, #FFFFFF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .line-player {
+      background: linear-gradient(90deg, #040C14 0%, #040C14 47%, #C5B358 49%, #C5B358 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Sub text */
+    .sub {
+      font-family: 'Outfit'; font-weight: 400;
+      font-size: 18px; letter-spacing: 2px;
+      line-height: 2;
+      margin-top: 40px;
+      background: linear-gradient(90deg, rgba(4,12,20,0.65) 0%, rgba(4,12,20,0.65) 45%, rgba(255,255,255,0.6) 47%, rgba(255,255,255,0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Brand top */
+    .brand-top {
+      position: absolute;
+      top: 50px; left: 0; right: 0;
+      text-align: center;
+      z-index: 10;
+      font-family: 'Outfit'; font-weight: 600;
+      font-size: 11px; letter-spacing: 6px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #040C14 0%, #040C14 59%, rgba(255,255,255,0.5) 61%, rgba(255,255,255,0.5) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Faint logo bottom right */
+    .logo-br {
+      position: absolute;
+      bottom: 50px; right: 50px;
+      z-index: 10;
+    }
+    .logo-br img {
+      height: 55px;
+      opacity: 0.15;
+      filter: brightness(3);
+    }
+
+    /* Watermark */
+    .wm {
+      position: absolute; bottom: 50px; left: 0; right: 0;
+      text-align: center; z-index: 10;
+      font-family: 'Outfit'; font-weight: 300; font-size: 10px;
+      letter-spacing: 3px;
+      background: linear-gradient(90deg, rgba(4,12,20,0.3) 0%, rgba(4,12,20,0.3) 39%, rgba(255,255,255,0.15) 41%, rgba(255,255,255,0.15) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  </style>
+</head>
+<body>
+
+<div class="slide">
+  <div class="dark-texture"></div>
+  <div class="gold-half"></div>
+  <div class="cut-line"></div>
+
+  <!-- Distressed fragments along the diagonal edge -->
+  <div class="edge-strip">
+    <div class="frag" style="top: 100px; left: 590px; width: 22px; height: 8px; transform: rotate(-18deg);"></div>
+    <div class="frag" style="top: 250px; left: 565px; width: 16px; height: 5px; transform: rotate(-15deg);"></div>
+    <div class="frag" style="top: 420px; left: 535px; width: 28px; height: 6px; transform: rotate(-20deg);"></div>
+    <div class="frag" style="top: 580px; left: 510px; width: 14px; height: 10px; transform: rotate(-18deg);"></div>
+    <div class="frag" style="top: 750px; left: 480px; width: 20px; height: 7px; transform: rotate(-22deg);"></div>
+    <div class="frag" style="top: 920px; left: 455px; width: 24px; height: 5px; transform: rotate(-16deg);"></div>
+    <div class="frag" style="top: 1080px; left: 430px; width: 16px; height: 8px; transform: rotate(-18deg);"></div>
+    <div class="frag" style="top: 1200px; left: 410px; width: 20px; height: 6px; transform: rotate(-20deg);"></div>
+  </div>
+
+  <!-- Gold side diagonal cuts -->
+  <div class="gold-cut" style="top: 0; left: 0; width: 200px; height: 180px; clip-path: polygon(0 0, 100% 0, 0 100%);"></div>
+  <div class="gold-cut" style="bottom: 0; left: 60px; width: 260px; height: 140px; clip-path: polygon(0 100%, 100% 100%, 40% 0);"></div>
+
+  <!-- Horizontal structural bars -->
+  <div class="h-bar" style="top: 240px; background: linear-gradient(90deg, rgba(4,12,20,0.1) 0%, rgba(4,12,20,0.1) 48%, rgba(197,179,88,0.1) 52%, rgba(197,179,88,0.1) 100%);"></div>
+  <div class="h-bar" style="bottom: 240px; background: linear-gradient(90deg, rgba(4,12,20,0.1) 0%, rgba(4,12,20,0.1) 40%, rgba(197,179,88,0.1) 44%, rgba(197,179,88,0.1) 100%);"></div>
+
+  <div class="brand-top">FANTASMA FOOTBALL TRAINING</div>
+
+  <div class="text-block">
+    <div class="hero">
+      <div class="line-more">MORE</div>
+      <div class="line-than">THAN A</div>
+      <div class="line-player">PLAYER</div>
+    </div>
+    <div class="sub">Every player who steps on my field is seen<br>for who they are. Not just what they do.</div>
+  </div>
+
+  <div class="logo-br">
+    <img src="../public/fantasma_logo_final.png" alt="Fantasma">
+  </div>
+
+  <div class="wm">@FANTASMAFOOTBALL</div>
+</div>
+
+</body>
+</html>
