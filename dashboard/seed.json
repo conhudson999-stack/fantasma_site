@@ -1,0 +1,28 @@
+{
+  "accounts": [
+    { "code": "1000", "name": "Cash", "type": "asset", "normal_side": "debit" },
+    { "code": "1010", "name": "Business Checking", "type": "asset", "normal_side": "debit" },
+    { "code": "1020", "name": "Venmo/Zelle/CashApp", "type": "asset", "normal_side": "debit" },
+    { "code": "1100", "name": "Accounts Receivable", "type": "asset", "normal_side": "debit" },
+    { "code": "1200", "name": "Equipment", "type": "asset", "normal_side": "debit" },
+    { "code": "2000", "name": "Accounts Payable", "type": "liability", "normal_side": "credit" },
+    { "code": "2100", "name": "Unearned Revenue", "type": "liability", "normal_side": "credit" },
+    { "code": "3000", "name": "Owner's Equity", "type": "equity", "normal_side": "credit" },
+    { "code": "3100", "name": "Owner's Draws", "type": "equity", "normal_side": "debit" },
+    { "code": "4000", "name": "Training Revenue — 1-on-1", "type": "revenue", "normal_side": "credit" },
+    { "code": "4010", "name": "Training Revenue — Small Group", "type": "revenue", "normal_side": "credit" },
+    { "code": "4020", "name": "Camp Revenue", "type": "revenue", "normal_side": "credit" },
+    { "code": "4030", "name": "Clinic Revenue", "type": "revenue", "normal_side": "credit" },
+    { "code": "4040", "name": "Other Revenue", "type": "revenue", "normal_side": "credit" },
+    { "code": "5000", "name": "Field Rental", "type": "expense", "normal_side": "debit" },
+    { "code": "5010", "name": "Equipment & Supplies", "type": "expense", "normal_side": "debit" },
+    { "code": "5020", "name": "Gas & Transportation", "type": "expense", "normal_side": "debit" },
+    { "code": "5030", "name": "Marketing & Advertising", "type": "expense", "normal_side": "debit" },
+    { "code": "5040", "name": "Software & Subscriptions", "type": "expense", "normal_side": "debit" },
+    { "code": "5050", "name": "Insurance", "type": "expense", "normal_side": "debit" },
+    { "code": "5060", "name": "Phone & Communication", "type": "expense", "normal_side": "debit" },
+    { "code": "5070", "name": "Meals & Entertainment", "type": "expense", "normal_side": "debit" },
+    { "code": "5080", "name": "Professional Development", "type": "expense", "normal_side": "debit" },
+    { "code": "5090", "name": "Miscellaneous Expense", "type": "expense", "normal_side": "debit" }
+  ]
+}
