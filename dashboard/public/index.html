@@ -4,9 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fantasma Football Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Fantasma Football Dashboard</h1>
-  <p>Backend API is running. Frontend coming soon.</p>
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="topbar-brand">FANTASMA FOOTBALL</div>
+    <div class="topbar-stats">
+      <div class="stat-box">
+        <div class="stat-label">Cash</div>
+        <div class="stat-value" id="stat-cash">$0.00</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Revenue MTD</div>
+        <div class="stat-value" id="stat-revenue">$0.00</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Open Inquiries</div>
+        <div class="stat-value" id="stat-inquiries">0</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="nav-section">
+      <div class="nav-section-title">ACCOUNTING</div>
+      <a href="#new-entry" class="nav-item" data-route="new-entry">New Entry</a>
+      <a href="#journal" class="nav-item" data-route="journal">Journal</a>
+      <a href="#ledger" class="nav-item" data-route="ledger">Ledger</a>
+      <a href="#reports" class="nav-item" data-route="reports">Reports</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">INQUIRIES</div>
+      <a href="#board" class="nav-item" data-route="board">Board</a>
+      <a href="#add-inquiry" class="nav-item" data-route="add-inquiry">Add New</a>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-title">SETTINGS</div>
+      <a href="#accounts" class="nav-item" data-route="accounts">Accounts</a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content" id="content"></main>
+
+  <script src="app.js"></script>
+  <script src="accounting.js"></script>
+  <script src="inquiries.js"></script>
 </body>
 </html>
