@@ -35,6 +35,8 @@ media/
 
 # Dashboard database
 dashboard/fantasma.db
+dashboard/fantasma.db-wal
+dashboard/fantasma.db-shm
 
 # Claude Code
 .claude/
