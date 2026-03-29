@@ -16,11 +16,24 @@ Parent-facing and warm. Speak to their investment in their child. Not salesy —
 
 - **Format:** 4-slide Instagram carousel
 - **Dimensions:** 1080x1080px per slide
-- **Pipeline:** Single HTML file per slide, Puppeteer screenshot to PNG
+- **Pipeline:** Single HTML file with 4 `.slide` divs (1080x1080 each), screenshotted individually via Puppeteer — matches existing `publish-post.cjs` pipeline which queries `page.$$('.slide')`
 - **Palette:** Navy `#040C14`, Gold `#C5B358`, Cream `#F8F7F4`
 - **Fonts:** Bebas Neue (headlines), Outfit (body/subtext)
-- **Texture:** Subtle grain overlay on dark slides
-- **Watermark:** `@fantasmafootball` on each slide
+- **Texture:** Subtle grid texture on dark slides — CSS linear gradients at 40px spacing with gold at 3% opacity (same as `evaluation.html` hero `::before`)
+- **Watermark:** `@fantasmafootball` on each slide — bottom-center, Outfit 14px, cream at 40% opacity
+- **Logo:** `public/fantasma_logo_final.png` — top-right corner on slides 1-3 (48px wide, 60% opacity), centered above headline on slide 4 (80px wide)
+
+## Typography Scale
+
+| Element | Font | Size | Weight | Color |
+|---------|------|------|--------|-------|
+| Main headline | Bebas Neue | 82px | 400 | Cream `#F8F7F4` |
+| Gold accent word | Bebas Neue | 82px | 400 | Gold `#C5B358` |
+| Sub-headline | Outfit | 24px | 300 | Cream at 60% opacity |
+| Body / lead text | Outfit | 22px | 400 | Cream at 85% opacity |
+| List items | Bebas Neue | 36px | 400 | Cream `#F8F7F4` |
+| Small text / credential | Outfit | 18px | 400 | Cream at 60% opacity |
+| Watermark | Outfit | 14px | 400 | Cream at 40% opacity |
 
 ## Slides
 
@@ -29,71 +42,75 @@ Parent-facing and warm. Speak to their investment in their child. Not salesy —
 **Purpose:** Stop the scroll. Hit a nerve every sports parent knows.
 
 **Copy:**
-- Main headline (Bebas Neue, large): `AFTER YOUR KID'S TRAINING SESSION, WHAT DO YOU GET?`
-- Follow-up line (Outfit, smaller, muted): `A wave goodbye?`
+- Main headline (Bebas Neue, 82px): `AFTER YOUR KID'S TRAINING SESSION, WHAT DO YOU GET?`
+- Follow-up line (Outfit, 24px, cream at 60%): `A wave goodbye?`
 
 **Design:**
-- Dark navy background with subtle grid texture (matching evaluation report hero)
-- Big editorial typography — headline dominates the frame
-- Follow-up line creates contrast/tension beneath the headline
-- Fantasma logo small in corner, watermark bottom
+- Dark navy `#040C14` background with grid texture overlay
+- Headline dominates the frame, centered or left-aligned with generous padding (80px sides)
+- Follow-up line directly beneath headline, creates contrast/tension
+- Logo top-right (48px), watermark bottom-center
 
 ### Slide 2 — The Differentiator
 
 **Purpose:** Reveal what Fantasma does differently. Make parents feel the gap.
 
 **Copy:**
-- Lead line (Outfit, medium): `At Fantasma, every player gets a full written evaluation after their first session.`
-- Section list with gold accents:
+- Lead line (Outfit, 22px): `At Fantasma, every player gets a full written evaluation after their first session.`
+- Section list (Bebas Neue, 36px) with gold left-border accents:
   - Strengths
   - Areas to Develop
   - Homework Drills
   - Personal Coach's Notes
 
 **Design:**
-- Dark navy background
-- Lead line at top, clean and readable
-- Vertical list below with gold bullet/line accents, each item in Bebas Neue
-- Subtle gold divider between lead line and list
+- Dark navy background with grid texture
+- Lead line at top with ~80px top padding
+- 1px gold divider line below the lead text
+- Vertical list below with 3px gold left-border on each item, 20px gap between items
 - Clean whitespace — let the list breathe
+- Logo top-right, watermark bottom-center
 
 ### Slide 3 — Report Glimpse
 
 **Purpose:** Show the report is real and polished. The visual does the talking.
 
 **Copy:**
-- Small anchoring line (Outfit): `From a D1 & semi-pro trained coach.`
+- Small anchoring line (Outfit, 18px, cream at 60%): `From a D1 & semi-pro trained coach.`
 
 **Design:**
-- Dark navy background
-- Angled/tilted rendering of the actual Natalie evaluation report
-- Report is slightly blurred or scaled so it's not fully readable — shows structure, sections, gold accents, professionalism
-- The credential line sits below or above the report image
-- This slide is primarily visual — the report preview is the hero element
+- Dark navy background (no grid texture — keep clean behind the report)
+- Recreate key sections of the evaluation report inline: hero header with "PLAYER EVALUATION" title, player info strip, and the top of the strengths section — enough to show structure and polish
+- Apply CSS `transform: perspective(800px) rotateY(-8deg) rotateX(3deg)` and `filter: blur(1.5px)` so it reads as a real document but details aren't legible
+- Scale the report mockup to ~70% of the slide width, centered
+- Credential line centered below the report
+- Logo top-right, watermark bottom-center
 
 ### Slide 4 — CTA
 
 **Purpose:** Warm close. Invite them in without being pushy.
 
 **Copy:**
-- Headline (Bebas Neue): `SEE WHAT YOUR PLAYER IS REALLY CAPABLE OF.`
-- Sub-line (Outfit): `Book a first session. Get your evaluation.`
-- Contact: `DM us or visit fantasmafootball.com`
+- Headline (Bebas Neue, 82px): `SEE WHAT YOUR PLAYER IS REALLY CAPABLE OF.`
+- Sub-line (Outfit, 22px): `Book a first session. Get your evaluation.`
+- Contact (Outfit, 18px, cream at 50%): `DM us or visit fantasmafootball.com`
 
 **Design:**
-- Dark navy background
-- Centered layout, headline dominant
-- Fantasma logo above the headline
-- Contact info / booking prompt below in muted cream
-- Gold accent line or border element to frame the CTA
+- Dark navy background with grid texture
+- Centered layout
+- Logo centered above headline (80px wide)
+- Headline centered, gold accent on key word ("REALLY" or "CAPABLE")
+- Sub-line and contact info below in muted cream
+- 1px gold horizontal rule between sub-line and contact info
+- Watermark bottom-center
 
 ## Implementation Notes
 
-- Each slide is a self-contained HTML file in `social/` (e.g., `social/post-evaluation-s1.html` through `s4`)
-- Screenshot via Puppeteer script at 1080x1080
-- For slide 3, the report glimpse can be achieved with a CSS transform (rotate + scale) and a slight blur filter applied to an embedded version of the report's key sections
+- Single HTML file: `social/post-evaluation.html` with 4 `.slide` divs stacked vertically
+- Screenshot via existing `scripts/publish-post.cjs` pipeline at 1080x1080 per slide
+- For slide 3, the report glimpse is rebuilt inline using HTML/CSS (not an image) — reproduce the evaluation hero, player strip, and top of strengths section from `evaluations/natalie.html`, then apply transform + blur
 - Follow existing post workflow: screenshot → `public/` → push → post via Instagram Graph API
-- Use unique filenames per the no-overwrite feedback rule
+- Use unique output filenames per the no-overwrite feedback rule
 
 ## Caption (draft)
 
@@ -106,5 +123,5 @@ Because your kid deserves more than just a workout. They deserve a plan.
 
 Book your first session — link in bio or DM us.
 
-#fantasmafootball #soccertraining #youthsoccer #pittsburghsoccer #playerevelopment #soccercoach #elitetraining #soccerevaluation
+#fantasmafootball #soccertraining #youthsoccer #pittsburghsoccer #playerdevelopment #soccercoach #elitetraining #soccerevaluation
 ```
