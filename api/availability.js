@@ -78,29 +78,48 @@ export default async function handler(req, res) {
     const auth = getAuth()
     const calendar = google.calendar({ version: 'v3', auth })
 
-    // Query calendar events (not free/busy) so we can read event titles
     const windowStart = new Date(`${timeMin}-05:00`).toISOString()
     const windowEnd = new Date(`${timeMax}-05:00`).toISOString()
 
-    const eventsRes = await calendar.events.list({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,
-      timeMin: windowStart,
-      timeMax: windowEnd,
-      singleEvents: true,
-      orderBy: 'startTime',
+    // Query free/busy for general blocking
+    const freeBusyRes = await calendar.freebusy.query({
+      requestBody: {
+        timeMin: windowStart,
+        timeMax: windowEnd,
+        timeZone: TIMEZONE,
+        items: [{ id: process.env.GOOGLE_CALENDAR_ID }],
+      },
     })
 
-    const events = eventsRes.data.items || []
+    const busyPeriods = freeBusyRes.data.calendars[process.env.GOOGLE_CALENDAR_ID]?.busy || []
 
-    // Build blocked periods: each event blocks its time range,
-    // and "work" events add a 30-min buffer after they end
-    const blockedPeriods = events.map(event => {
-      const busyStart = new Date(event.start.dateTime || event.start.date)
-      const busyEnd = new Date(event.end.dateTime || event.end.date)
-      const title = (event.summary || '').toLowerCase().trim()
-      const bufferMs = title === 'work' ? 30 * 60 * 1000 : 0
-      return { start: busyStart, end: new Date(busyEnd.getTime() + bufferMs) }
-    })
+    // Also query events to find "Work" events and add 30-min buffer
+    let workBuffers = []
+    try {
+      const eventsRes = await calendar.events.list({
+        calendarId: process.env.GOOGLE_CALENDAR_ID,
+        timeMin: windowStart,
+        timeMax: windowEnd,
+        singleEvents: true,
+        orderBy: 'startTime',
+      })
+      const events = eventsRes.data.items || []
+      workBuffers = events
+        .filter(e => (e.summary || '').toLowerCase().trim() === 'work')
+        .map(e => {
+          const end = new Date(e.end.dateTime || e.end.date)
+          const bufferEnd = new Date(end.getTime() + 30 * 60 * 1000)
+          return { start: end, end: bufferEnd }
+        })
+    } catch (_) {
+      // If events.list fails (permissions), just skip the buffer
+    }
+
+    // Combine busy periods with work buffers
+    const blockedPeriods = [
+      ...busyPeriods.map(b => ({ start: new Date(b.start), end: new Date(b.end) })),
+      ...workBuffers,
+    ]
 
     // Generate all possible slots at 1-hour intervals
     const slots = []
