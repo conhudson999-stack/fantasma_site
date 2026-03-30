@@ -70,6 +70,19 @@ export default async function handler(req, res) {
     return res.status(200).json({ date, sessionType, slots: [] })
   }
 
+  // Compute the correct UTC offset for the target date in Eastern time
+  // (handles EST vs EDT automatically)
+  function getEasternOffset(dateStr, hour) {
+    const utcGuess = new Date(`${dateStr}T${String(hour).padStart(2, '0')}:00:00Z`)
+    const eastern = new Date(utcGuess.toLocaleString('en-US', { timeZone: TIMEZONE }))
+    const diffMs = eastern.getTime() - utcGuess.getTime()
+    const diffHours = Math.round(diffMs / (60 * 1000 * 60))
+    const sign = diffHours >= 0 ? '+' : '-'
+    return `${sign}${String(Math.abs(diffHours)).padStart(2, '0')}:00`
+  }
+
+  const offset = getEasternOffset(date, hours.start)
+
   // Build time window
   const timeMin = `${date}T${String(hours.start).padStart(2, '0')}:00:00`
   const timeMax = `${date}T${String(hours.end).padStart(2, '0')}:00:00`
@@ -78,8 +91,8 @@ export default async function handler(req, res) {
     const auth = getAuth()
     const calendar = google.calendar({ version: 'v3', auth })
 
-    const windowStart = new Date(`${timeMin}-05:00`).toISOString()
-    const windowEnd = new Date(`${timeMax}-05:00`).toISOString()
+    const windowStart = new Date(`${timeMin}${offset}`).toISOString()
+    const windowEnd = new Date(`${timeMax}${offset}`).toISOString()
 
     // Query free/busy for general blocking
     const freeBusyRes = await calendar.freebusy.query({
@@ -140,8 +153,8 @@ export default async function handler(req, res) {
       }
 
       // Check overlap with blocked periods (includes work buffer)
-      const slotStart = new Date(`${date}T${String(slotStartH).padStart(2, '0')}:${String(slotStartM).padStart(2, '0')}:00-05:00`)
-      const slotEnd = new Date(`${date}T${String(slotEndH).padStart(2, '0')}:${String(slotEndM).padStart(2, '0')}:00-05:00`)
+      const slotStart = new Date(`${date}T${String(slotStartH).padStart(2, '0')}:${String(slotStartM).padStart(2, '0')}:00${offset}`)
+      const slotEnd = new Date(`${date}T${String(slotEndH).padStart(2, '0')}:${String(slotEndM).padStart(2, '0')}:00${offset}`)
 
       const isBlocked = blockedPeriods.some(blocked => {
         return slotStart < blocked.end && slotEnd > blocked.start
