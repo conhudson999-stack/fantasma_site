@@ -29,6 +29,12 @@ function getAuth() {
 }
 
 export default async function handler(req, res) {
+  // CORS for mobile app
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type')
+  if (req.method === 'OPTIONS') return res.status(200).end()
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
@@ -72,17 +78,29 @@ export default async function handler(req, res) {
     const auth = getAuth()
     const calendar = google.calendar({ version: 'v3', auth })
 
-    // Query free/busy
-    const freeBusyRes = await calendar.freebusy.query({
-      requestBody: {
-        timeMin: new Date(`${timeMin}-05:00`).toISOString(),
-        timeMax: new Date(`${timeMax}-05:00`).toISOString(),
-        timeZone: TIMEZONE,
-        items: [{ id: process.env.GOOGLE_CALENDAR_ID }],
-      },
+    // Query calendar events (not free/busy) so we can read event titles
+    const windowStart = new Date(`${timeMin}-05:00`).toISOString()
+    const windowEnd = new Date(`${timeMax}-05:00`).toISOString()
+
+    const eventsRes = await calendar.events.list({
+      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      timeMin: windowStart,
+      timeMax: windowEnd,
+      singleEvents: true,
+      orderBy: 'startTime',
     })
 
-    const busyPeriods = freeBusyRes.data.calendars[process.env.GOOGLE_CALENDAR_ID]?.busy || []
+    const events = eventsRes.data.items || []
+
+    // Build blocked periods: each event blocks its time range,
+    // and "work" events add a 30-min buffer after they end
+    const blockedPeriods = events.map(event => {
+      const busyStart = new Date(event.start.dateTime || event.start.date)
+      const busyEnd = new Date(event.end.dateTime || event.end.date)
+      const title = (event.summary || '').toLowerCase().trim()
+      const bufferMs = title === 'work' ? 30 * 60 * 1000 : 0
+      return { start: busyStart, end: new Date(busyEnd.getTime() + bufferMs) }
+    })
 
     // Generate all possible slots at 1-hour intervals
     const slots = []
@@ -102,17 +120,15 @@ export default async function handler(req, res) {
         if (minutes <= nowMinutes) continue
       }
 
-      // Check overlap with busy periods
+      // Check overlap with blocked periods (includes work buffer)
       const slotStart = new Date(`${date}T${String(slotStartH).padStart(2, '0')}:${String(slotStartM).padStart(2, '0')}:00-05:00`)
       const slotEnd = new Date(`${date}T${String(slotEndH).padStart(2, '0')}:${String(slotEndM).padStart(2, '0')}:00-05:00`)
 
-      const isOverlapping = busyPeriods.some(busy => {
-        const busyStart = new Date(busy.start)
-        const busyEnd = new Date(busy.end)
-        return slotStart < busyEnd && slotEnd > busyStart
+      const isBlocked = blockedPeriods.some(blocked => {
+        return slotStart < blocked.end && slotEnd > blocked.start
       })
 
-      if (!isOverlapping) {
+      if (!isBlocked) {
         slots.push(`${String(slotStartH).padStart(2, '0')}:${String(slotStartM).padStart(2, '0')}`)
       }
     }

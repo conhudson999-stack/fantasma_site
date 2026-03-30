@@ -117,7 +117,7 @@ async function screenshotPost(htmlFile) {
     const outPath = path.join(__dirname, '..', 'posts', `post-screenshot-${i + 1}.png`);
     await page.screenshot({
       path: outPath,
-      clip: { x: clip.x, y: clip.y, width: 1080, height: 1080 },
+      clip: { x: clip.x, y: clip.y, width: clip.width, height: clip.height },
     });
     paths.push(outPath);
     console.log(`  Slide ${i + 1} → post-screenshot-${i + 1}.png`);
