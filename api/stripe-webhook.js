@@ -68,19 +68,19 @@ function confirmationHTML(meta) {
 </html>`
 }
 
-// Vercel requires raw body for webhook verification
 export const config = {
   api: {
     bodyParser: false,
   },
 }
 
-async function getRawBody(req) {
-  const chunks = []
-  for await (const chunk of req) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk)
-  }
-  return Buffer.concat(chunks)
+async function readBody(req) {
+  return new Promise((resolve, reject) => {
+    const chunks = []
+    req.on('data', (chunk) => chunks.push(chunk))
+    req.on('end', () => resolve(Buffer.concat(chunks)))
+    req.on('error', reject)
+  })
 }
 
 export default async function handler(req, res) {
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
   }
 
   const sig = req.headers['stripe-signature']
-  const rawBody = await getRawBody(req)
+  const rawBody = await readBody(req)
 
   let event
   try {
