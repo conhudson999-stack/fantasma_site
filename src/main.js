@@ -106,7 +106,24 @@ const coachesData = [
     title: 'Head Coach — Grove City / Slippery Rock',
     photo: '/colton_profile.webp',
     bio: '',
-    teams: []
+    teams: [
+      {
+        logo: '/FR_logo.png',
+        name: 'Franklin Regional',
+        location: 'Murrysville, PA',
+        years: '',
+        glowColor: '#C5A55A',
+        description: ''
+      },
+      {
+        logo: '/grove_logo.png',
+        name: 'Grove City College',
+        location: 'Grove City, PA',
+        years: '',
+        glowColor: '#E00000',
+        description: ''
+      }
+    ]
   }
 ]
 
