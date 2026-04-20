@@ -1,15 +1,13 @@
 {
-  "name": "fantasma-booking-video",
-  "version": "1.0.0",
+  "name": "fantasma-booking-reel",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
-    "studio": "remotion studio",
-    "render": "remotion render BookingWalkthrough out/booking-walkthrough.mp4",
-    "preview": "remotion preview"
+    "studio": "remotion studio src/index.ts",
+    "render": "remotion render src/index.ts BookingReel out/booking-reel.mp4 --codec h264"
   },
   "dependencies": {
     "@remotion/cli": "4.0.450",
-    "@remotion/transitions": "4.0.450",
     "@remotion/google-fonts": "4.0.450",
     "@remotion/animation-utils": "4.0.450",
     "react": "^18.2.0",
