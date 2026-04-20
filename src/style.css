@@ -304,7 +304,7 @@ body::after {
 .hero {
   position: relative;
   min-height: 100vh;
-  background: var(--cream);
+  background: var(--navy);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -312,7 +312,20 @@ body::after {
   overflow: hidden;
 }
 
+.hero-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.4;
+}
+
 .hero-inner {
+  position: relative;
+  z-index: 1;
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 32px;
@@ -334,7 +347,7 @@ body::after {
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--dark-text-dim);
+  color: var(--white-dim);
   margin-bottom: 32px;
   animation: fadeInUp 0.7s ease-out 0s both;
 }
@@ -353,7 +366,7 @@ body::after {
   font-size: clamp(4.5rem, 11vw, 11rem);
   line-height: 0.92;
   letter-spacing: 2px;
-  color: var(--dark-text);
+  color: var(--white);
   margin-bottom: 32px;
 }
 
@@ -372,7 +385,7 @@ body::after {
 
 .hero-sub {
   font-size: clamp(1rem, 1.8vw, 1.15rem);
-  color: var(--dark-text-dim);
+  color: var(--white-dim);
   max-width: 520px;
   font-weight: 300;
   line-height: 1.8;
@@ -499,6 +512,30 @@ body::after {
 
 .btn-outline-dark:hover {
   border-color: var(--dark-text);
+  transform: translateY(-1px);
+}
+
+.btn--gold {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+  font-weight: 600;
+}
+
+.btn--gold:hover {
+  background: #d4c264;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(197, 179, 88, 0.3);
+}
+
+.btn-outline-light {
+  background: transparent;
+  color: var(--white);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.btn-outline-light:hover {
+  border-color: var(--white);
   transform: translateY(-1px);
 }
 
