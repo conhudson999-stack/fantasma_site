@@ -254,13 +254,13 @@ export default async function handler(req, res) {
       console.error('Coach notification email failed:', coachErr)
     }
 
-    // Send SMS via Verizon gateway (fail silently)
+    // Send SMS to Connor via Verizon gateway (fail silently)
     try {
       await transporter.sendMail({
         from: coachGmail,
         to: '4127372858@vtext.com',
         subject: '',
-        text: `New Booking: ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
+        text: `New Booking (${coachConfig.name}): ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
       })
     } catch (smsErr) {
       console.error('SMS notification failed:', smsErr)
