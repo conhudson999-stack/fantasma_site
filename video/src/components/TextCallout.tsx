@@ -51,12 +51,14 @@ export const TextCallout: React.FC<TextCalloutProps> = ({
         top: y,
         transform: `translateX(${offsetX}px) translateY(-50%)`,
         opacity,
+        background: COLORS.navy,
+        padding: "10px 18px",
+        borderRadius: 8,
         fontFamily: FONTS.display,
         fontSize: 36,
         letterSpacing: 2,
-        color: COLORS.white,
+        color: COLORS.gold,
         whiteSpace: "nowrap",
-        textShadow: "0 2px 10px rgba(0,0,0,0.5)",
       }}
     >
       {text}
