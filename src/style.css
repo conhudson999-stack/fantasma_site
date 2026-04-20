@@ -409,7 +409,7 @@ body::after {
 }
 
 .hero-visual-frame .wraith-figure {
-  width: 65%;
+  width: 100%;
   height: auto;
   object-fit: contain;
   opacity: 1;
