@@ -9,15 +9,11 @@ export default async function handler(req, res) {
   const {
     campId, campName, campPrice, campDates,
     playerName, playerDob, parentName, email, phone,
-    position, shirtSize, medical, waiver,
+    position, shirtSize, medical,
   } = req.body
 
   if (!campId || !campName || !campPrice || !playerName || !playerDob || !parentName || !email || !phone || !position || !shirtSize) {
     return res.status(400).json({ error: 'Missing required fields' })
-  }
-
-  if (!waiver || waiver === 'false') {
-    return res.status(400).json({ error: 'Liability waiver must be accepted' })
   }
 
   const secretKey = process.env.STRIPE_SECRET_KEY

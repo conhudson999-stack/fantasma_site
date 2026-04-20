@@ -180,11 +180,6 @@ document.addEventListener('keydown', (e) => {
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault()
 
-  if (!document.getElementById('waiverCheck').checked) {
-    alert('Please agree to the liability waiver to continue.')
-    return
-  }
-
   submitBtn.disabled = true
   submitBtn.textContent = 'Processing...'
 
