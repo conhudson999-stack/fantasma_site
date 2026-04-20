@@ -99,6 +99,14 @@ const coachesData = [
         description: 'Returned to collegiate soccer for a graduate year at the NCAA Division 3 level in Grove City, PA. Became a consistent starter from day one, chipping in several goals and bringing Division 1 experience and leadership to the squad. Helped guide the team to a conference finalist finish in a tightly contested season.'
       }
     ]
+  },
+  {
+    id: 'colton-hudson',
+    name: 'Colton Hudson',
+    title: 'Head Coach — Grove City / Slippery Rock',
+    photo: '/colton_profile.webp',
+    bio: '',
+    teams: []
   }
 ]
 
