@@ -63,13 +63,16 @@ export const BookingReel: React.FC = () => {
     ? interpolate(frame - TIMING.confirmationStart, [0, 10], [0, 1], { extrapolateRight: "clamp" })
     : 0;
 
-  // === CURSOR TARGETS (relative to phone viewport) ===
+  // === CURSOR TARGETS (relative to phone viewport, accounting for scroll) ===
+  // These are where the elements appear in the viewport AFTER scrolling
+  // Cursor targets: x,y are relative to phone content area (0,0 = top-left of content viewport)
+  // The Cursor component adds phoneLeft and phoneTop offsets internally
   const cursorTargets = [
-    { x: 500, y: 600, frame: TIMING.cursorAppear },
-    { x: 220, y: 480, frame: TIMING.coachClick, click: true },
-    { x: 380, y: 520, frame: TIMING.dateClick, click: true },
-    { x: 350, y: 420, frame: TIMING.timeClick, click: true },
-    { x: 350, y: 600, frame: TIMING.bookClick, click: true },
+    { x: 400, y: 800, frame: TIMING.cursorAppear },           // initial idle position (center-ish)
+    { x: 260, y: 200, frame: TIMING.coachClick, click: true }, // Connor's bubble center
+    { x: 310, y: 500, frame: TIMING.dateClick, click: true },  // Day 15 cell
+    { x: 460, y: 590, frame: TIMING.timeClick, click: true },  // 5:00 PM pill
+    { x: 350, y: 770, frame: TIMING.bookClick, click: true },  // Book Session button
   ];
 
   // === END CARD (last 20 frames) ===
@@ -100,9 +103,9 @@ export const BookingReel: React.FC = () => {
       </div>
 
       {/* Text callouts */}
-      <TextCallout text="PICK YOUR COACH" side="left" enterFrame={80} exitFrame={135} y={900} />
-      <TextCallout text="CHOOSE A DATE" side="right" enterFrame={170} exitFrame={235} y={900} />
-      <TextCallout text="BOOK IN SECONDS" side="left" enterFrame={335} exitFrame={370} y={900} />
+      <TextCallout text="PICK YOUR COACH" side="left" enterFrame={80} exitFrame={135} y={750} />
+      <TextCallout text="CHOOSE A DATE" side="right" enterFrame={170} exitFrame={235} y={850} />
+      <TextCallout text="BOOK IN SECONDS" side="left" enterFrame={335} exitFrame={370} y={800} />
 
       {/* End card overlay */}
       {endCardOpacity > 0 && (

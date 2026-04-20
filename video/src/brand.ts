@@ -54,8 +54,8 @@ export const TIMING = {
 
 export const SCROLL = {
   hero: 0,
-  coach: 400,
-  calendar: 800,
-  slots: 1050,
-  form: 1400,
+  coach: 200,
+  calendar: 420,
+  slots: 620,
+  form: 820,
 } as const;
