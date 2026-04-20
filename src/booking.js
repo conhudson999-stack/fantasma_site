@@ -17,6 +17,11 @@ const SESSION_DURATIONS = {
   'small-group': '1.5 hours'
 }
 
+const COACH_NAMES = {
+  'connor': 'Coach Connor',
+  'colton': 'Coach Colton'
+}
+
 // --- State ---
 const state = {
   currentMonth: new Date().getMonth(),
@@ -24,6 +29,7 @@ const state = {
   selectedDate: null,
   selectedTime: null,
   selectedSessionType: '1-on-1',
+  selectedCoach: 'connor',
   availableSlots: [],
   isLoadingSlots: false,
   isBooking: false
@@ -188,7 +194,7 @@ async function fetchSlots() {
   const dateStr = toDateString(state.selectedDate)
 
   try {
-    const res = await fetch(`/api/availability?date=${dateStr}&sessionType=${state.selectedSessionType}`)
+    const res = await fetch(`/api/availability?date=${dateStr}&sessionType=${state.selectedSessionType}&coach=${state.selectedCoach}`)
     if (!res.ok) throw new Error(`API error: ${res.status}`)
 
     const data = await res.json()
@@ -234,6 +240,29 @@ function renderSlots() {
 }
 
 // ============================================
+// COACH SELECTOR
+// ============================================
+
+document.querySelectorAll('.coach-bubble').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.coach-bubble').forEach(b => b.classList.remove('coach-bubble--active'))
+    btn.classList.add('coach-bubble--active')
+
+    state.selectedCoach = btn.dataset.coach
+    state.selectedTime = null
+
+    // Hide booking form
+    bookingFormWrapper.classList.remove('is-visible')
+    bookingFormWrapper.style.maxHeight = null
+
+    // Re-fetch if a date is selected
+    if (state.selectedDate) {
+      fetchSlots()
+    }
+  })
+})
+
+// ============================================
 // SESSION TYPE SELECTOR
 // ============================================
 
@@ -261,6 +290,7 @@ document.querySelectorAll('.session-type-btn').forEach(btn => {
 // ============================================
 
 function showBookingForm() {
+  document.getElementById('bookingCoachDisplay').value = COACH_NAMES[state.selectedCoach]
   bookingSessionDisplay.value = SESSION_LABELS[state.selectedSessionType]
   bookingDateTimeDisplay.value = `${formatDate(state.selectedDate)} at ${formatTime(state.selectedTime)}`
 
@@ -281,6 +311,7 @@ bookingForm.addEventListener('submit', async (e) => {
     email: bookingForm.email.value.trim(),
     phone: bookingForm.phone.value.trim(),
     sessionType: state.selectedSessionType,
+    coach: state.selectedCoach,
     date: toDateString(state.selectedDate),
     time: state.selectedTime
   }

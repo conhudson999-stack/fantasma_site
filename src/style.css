@@ -2537,6 +2537,85 @@ body::after {
   margin-bottom: 0;
 }
 
+/* --- Coach Selector --- */
+.coach-selector {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.coach-selector-label {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--dark-text-muted);
+  margin-bottom: 20px;
+}
+
+.coach-selector-bubbles {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+}
+
+.coach-bubble {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 12px 20px;
+  border-radius: var(--radius-lg);
+  transition: all var(--transition);
+}
+
+.coach-bubble:hover {
+  background: rgba(197, 179, 88, 0.06);
+}
+
+.coach-bubble-img-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--light-border);
+  transition: all var(--transition);
+}
+
+.coach-bubble--active .coach-bubble-img-wrap {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(197, 179, 88, 0.25);
+}
+
+.coach-bubble-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.coach-bubble-name {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  letter-spacing: 1.5px;
+  color: var(--dark-text);
+  transition: color var(--transition);
+}
+
+.coach-bubble--active .coach-bubble-name {
+  color: var(--gold);
+}
+
+.coach-bubble-title {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--dark-text-muted);
+  text-transform: uppercase;
+}
+
 /* --- Booking Layout --- */
 .booking-section {
   padding: 100px 0 140px;
@@ -4251,6 +4330,35 @@ body.ghost-mode .calendar-day.is-today {
 
 body.ghost-mode .calendar-day.is-past {
   color: rgba(150, 210, 220, 0.2);
+}
+
+body.ghost-mode .coach-selector-label {
+  color: rgba(0, 255, 200, 0.4);
+}
+
+body.ghost-mode .coach-bubble:hover {
+  background: rgba(0, 255, 200, 0.04);
+}
+
+body.ghost-mode .coach-bubble-img-wrap {
+  border-color: rgba(0, 255, 200, 0.08);
+}
+
+body.ghost-mode .coach-bubble--active .coach-bubble-img-wrap {
+  border-color: #00ffc8;
+  box-shadow: 0 0 0 3px rgba(0, 255, 200, 0.15);
+}
+
+body.ghost-mode .coach-bubble-name {
+  color: rgba(150, 210, 220, 0.7);
+}
+
+body.ghost-mode .coach-bubble--active .coach-bubble-name {
+  color: #00ffc8;
+}
+
+body.ghost-mode .coach-bubble-title {
+  color: rgba(150, 210, 220, 0.3);
 }
 
 body.ghost-mode .session-type-btn {

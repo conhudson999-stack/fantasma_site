@@ -18,14 +18,33 @@ const SESSION_DURATIONS = {
   'small-group': 90,
 }
 
-function getAuth() {
+const COACH_CONFIG = {
+  connor: {
+    serviceEmail: () => process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: () => process.env.GOOGLE_PRIVATE_KEY,
+    calendarId: () => process.env.GOOGLE_CALENDAR_ID,
+  },
+  colton: {
+    serviceEmail: () => process.env.COLTON_GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: () => process.env.COLTON_GOOGLE_PRIVATE_KEY,
+    calendarId: () => process.env.COLTON_GOOGLE_CALENDAR_ID,
+  },
+}
+
+function getAuth(coach = 'connor') {
+  const config = COACH_CONFIG[coach] || COACH_CONFIG.connor
   return new google.auth.GoogleAuth({
     credentials: {
-      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: config.serviceEmail(),
+      private_key: config.privateKey().replace(/\\n/g, '\n'),
     },
     scopes: ['https://www.googleapis.com/auth/calendar'],
   })
+}
+
+function getCalendarId(coach = 'connor') {
+  const config = COACH_CONFIG[coach] || COACH_CONFIG.connor
+  return config.calendarId()
 }
 
 export default async function handler(req, res) {
@@ -39,7 +58,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { date, sessionType = '1-on-1' } = req.query
+  const { date, sessionType = '1-on-1', coach = 'connor' } = req.query
 
   // Validate date
   if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -88,7 +107,8 @@ export default async function handler(req, res) {
   const timeMax = `${date}T${String(hours.end).padStart(2, '0')}:00:00`
 
   try {
-    const auth = getAuth()
+    const auth = getAuth(coach)
+    const calendarId = getCalendarId(coach)
     const calendar = google.calendar({ version: 'v3', auth })
 
     const windowStart = new Date(`${timeMin}${offset}`).toISOString()
@@ -100,17 +120,17 @@ export default async function handler(req, res) {
         timeMin: windowStart,
         timeMax: windowEnd,
         timeZone: TIMEZONE,
-        items: [{ id: process.env.GOOGLE_CALENDAR_ID }],
+        items: [{ id: calendarId }],
       },
     })
 
-    const busyPeriods = freeBusyRes.data.calendars[process.env.GOOGLE_CALENDAR_ID]?.busy || []
+    const busyPeriods = freeBusyRes.data.calendars[calendarId]?.busy || []
 
     // Also query events to find "Work" events and add 30-min buffer
     let workBuffers = []
     try {
       const eventsRes = await calendar.events.list({
-        calendarId: process.env.GOOGLE_CALENDAR_ID,
+        calendarId: calendarId,
         timeMin: windowStart,
         timeMax: windowEnd,
         singleEvents: true,

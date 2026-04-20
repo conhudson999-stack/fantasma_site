@@ -23,14 +23,39 @@ const SESSION_LABELS = {
   'small-group': 'Small Group Training',
 }
 
-function getAuth() {
+const COACH_CONFIG = {
+  connor: {
+    serviceEmail: () => process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: () => process.env.GOOGLE_PRIVATE_KEY,
+    calendarId: () => process.env.GOOGLE_CALENDAR_ID,
+    gmailUser: () => process.env.GMAIL_USER,
+    gmailPass: () => process.env.GMAIL_APP_PASSWORD,
+    name: 'Connor Hudson',
+  },
+  colton: {
+    serviceEmail: () => process.env.COLTON_GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    privateKey: () => process.env.COLTON_GOOGLE_PRIVATE_KEY,
+    calendarId: () => process.env.COLTON_GOOGLE_CALENDAR_ID,
+    gmailUser: () => process.env.COLTON_GMAIL_USER,
+    gmailPass: () => process.env.COLTON_GMAIL_APP_PASSWORD,
+    name: 'Colton Hudson',
+  },
+}
+
+function getAuth(coach = 'connor') {
+  const config = COACH_CONFIG[coach] || COACH_CONFIG.connor
   return new google.auth.GoogleAuth({
     credentials: {
-      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-      private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      client_email: config.serviceEmail(),
+      private_key: config.privateKey().replace(/\\n/g, '\n'),
     },
     scopes: ['https://www.googleapis.com/auth/calendar'],
   })
+}
+
+function getCalendarId(coach = 'connor') {
+  const config = COACH_CONFIG[coach] || COACH_CONFIG.connor
+  return config.calendarId()
 }
 
 function formatTime12(time24) {
@@ -123,7 +148,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { name, email, phone, sessionType, date, time } = req.body
+  const { name, email, phone, sessionType, coach = 'connor', date, time } = req.body
 
   // Validate required fields
   if (!name || !email || !phone || !sessionType || !date || !time) {
@@ -150,7 +175,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const auth = getAuth()
+    const auth = getAuth(coach)
+    const calendarId = getCalendarId(coach)
+    const coachConfig = COACH_CONFIG[coach] || COACH_CONFIG.connor
     const calendar = google.calendar({ version: 'v3', auth })
 
     // Double-check the slot is still available
@@ -166,20 +193,20 @@ export default async function handler(req, res) {
         timeMin: new Date(`${slotStart}-05:00`).toISOString(),
         timeMax: new Date(`${slotEnd}-05:00`).toISOString(),
         timeZone: TIMEZONE,
-        items: [{ id: process.env.GOOGLE_CALENDAR_ID }],
+        items: [{ id: calendarId }],
       },
     })
 
-    const busyPeriods = freeBusyRes.data.calendars[process.env.GOOGLE_CALENDAR_ID]?.busy || []
+    const busyPeriods = freeBusyRes.data.calendars[calendarId]?.busy || []
     if (busyPeriods.length > 0) {
       return res.status(409).json({ error: 'This time slot is no longer available.' })
     }
 
     // Create the calendar event
     const event = await calendar.events.insert({
-      calendarId: process.env.GOOGLE_CALENDAR_ID,
+      calendarId: calendarId,
       requestBody: {
-        summary: `Fantasma Training - ${SESSION_LABELS[sessionType]} - ${name}`,
+        summary: `Fantasma Training - ${SESSION_LABELS[sessionType]} - ${name} (Coach: ${coachConfig.name})`,
         description: `Session Type: ${SESSION_LABELS[sessionType]}\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nBooked via fantasma-site.vercel.app`,
         start: {
           dateTime: `${slotStart}`,
@@ -193,18 +220,20 @@ export default async function handler(req, res) {
       },
     })
 
+    const coachGmail = coachConfig.gmailUser()
+    const coachGmailPass = coachConfig.gmailPass()
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: process.env.GMAIL_USER,
-        pass: process.env.GMAIL_APP_PASSWORD,
+        user: coachGmail,
+        pass: coachGmailPass,
       },
     })
 
     // Send branded confirmation to customer (always, most important)
     try {
       await transporter.sendMail({
-        from: `"Fantasma Football" <${process.env.GMAIL_USER}>`,
+        from: `"Fantasma Football" <${coachGmail}>`,
         to: email,
         subject: 'Fantasma Football — Session Confirmed',
         html: bookingConfirmationHTML(name, SESSION_LABELS[sessionType], formatDatePretty(date), formatTime12(time), duration === 60 ? '1 hour' : '1.5 hours'),
@@ -216,8 +245,8 @@ export default async function handler(req, res) {
     // Send coach notification (fail silently)
     try {
       await transporter.sendMail({
-        from: process.env.GMAIL_USER,
-        to: process.env.GMAIL_USER,
+        from: coachGmail,
+        to: coachGmail,
         subject: `Fantasma Booking: ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
         text: `New booking from the website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSession: ${SESSION_LABELS[sessionType]}\nDate: ${formatDatePretty(date)}\nTime: ${formatTime12(time)}\nDuration: ${duration === 60 ? '1 hour' : '1.5 hours'}`,
       })
@@ -228,7 +257,7 @@ export default async function handler(req, res) {
     // Send SMS via Verizon gateway (fail silently)
     try {
       await transporter.sendMail({
-        from: process.env.GMAIL_USER,
+        from: coachGmail,
         to: '4127372858@vtext.com',
         subject: '',
         text: `New Booking: ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,

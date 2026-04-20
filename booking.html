@@ -85,6 +85,28 @@
       <!-- Booking Calendar Section -->
       <section class="section section--light booking-section">
         <div class="container">
+
+          <!-- Coach Selector -->
+          <div class="coach-selector reveal" id="coachSelector">
+            <p class="coach-selector-label">SELECT YOUR COACH</p>
+            <div class="coach-selector-bubbles">
+              <button class="coach-bubble coach-bubble--active" data-coach="connor">
+                <div class="coach-bubble-img-wrap">
+                  <img src="/gcc_profile.webp" alt="Coach Connor" class="coach-bubble-img" />
+                </div>
+                <span class="coach-bubble-name">Connor</span>
+                <span class="coach-bubble-title">Head Coach</span>
+              </button>
+              <button class="coach-bubble" data-coach="colton">
+                <div class="coach-bubble-img-wrap">
+                  <img src="/colton_profile.webp" alt="Coach Colton" class="coach-bubble-img" />
+                </div>
+                <span class="coach-bubble-name">Colton</span>
+                <span class="coach-bubble-title">Coach</span>
+              </button>
+            </div>
+          </div>
+
           <div class="booking-layout">
 
             <!-- Left: Calendar -->
@@ -158,6 +180,10 @@
                   <div class="form-group">
                     <label for="bookingPhone">Phone Number</label>
                     <input type="tel" id="bookingPhone" name="phone" placeholder="(412) 555-1234" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Coach</label>
+                    <input type="text" id="bookingCoachDisplay" readonly />
                   </div>
                   <div class="form-group">
                     <label>Session Type</label>
