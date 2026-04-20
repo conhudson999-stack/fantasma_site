@@ -10,11 +10,11 @@ export const ChooseCoach: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const slideConnor = spring({ frame, fps, config: { damping: 14, stiffness: 100 } });
-  const slideColton = spring({ frame: frame - 5, fps, config: { damping: 14, stiffness: 100 } });
+  const fadeIn = spring({ frame, fps, config: { damping: 14, stiffness: 80 } });
 
   const selectFrame = 50;
-  const ringScale = frame >= selectFrame
+  const isSelected = frame >= selectFrame;
+  const ringSpring = isSelected
     ? spring({ frame: frame - selectFrame, fps, config: { damping: 10, stiffness: 150 } })
     : 0;
 
@@ -26,50 +26,86 @@ export const ChooseCoach: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: COLORS.navy,
+        backgroundColor: COLORS.cream,
         position: "relative",
-        gap: 40,
+        padding: 80,
       }}
     >
       <GrainOverlay />
+      {/* Label — matches .coach-selector-label */}
       <p
         style={{
           fontFamily: FONTS.body,
-          fontSize: 36,
-          color: COLORS.cream,
-          letterSpacing: 4,
+          fontSize: 24,
+          fontWeight: 700,
+          letterSpacing: 3,
+          color: "rgba(4, 12, 20, 0.35)",
           textTransform: "uppercase",
+          marginBottom: 48,
           opacity: interpolate(frame, [0, 15], [0, 1], { extrapolateRight: "clamp" }),
         }}
       >
-        Select Your Coach
+        SELECT YOUR COACH
       </p>
-      <div style={{ display: "flex", gap: 80, alignItems: "center" }}>
+      {/* Coach bubbles */}
+      <div
+        style={{
+          display: "flex",
+          gap: 64,
+          alignItems: "flex-start",
+          opacity: fadeIn,
+          transform: `translateY(${interpolate(fadeIn, [0, 1], [20, 0])}px)`,
+        }}
+      >
         {/* Connor */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            transform: `translateX(${interpolate(slideConnor, [0, 1], [-200, 0])}px)`,
-            opacity: slideConnor,
+            gap: 12,
+            padding: "24px 40px",
+            borderRadius: 20,
+            background: isSelected ? "rgba(197, 179, 88, 0.06)" : "transparent",
           }}
         >
           <div
             style={{
-              width: 200,
-              height: 200,
+              width: 160,
+              height: 160,
               borderRadius: "50%",
               overflow: "hidden",
-              border: `4px solid ${ringScale > 0 ? COLORS.gold : COLORS.cream}40`,
-              boxShadow: ringScale > 0 ? `0 0 30px ${COLORS.gold}60` : "none",
-              transform: `scale(${1 + ringScale * 0.08})`,
+              border: isSelected
+                ? `3px solid ${COLORS.gold}`
+                : "3px solid rgba(10, 10, 10, 0.08)",
+              boxShadow: isSelected
+                ? `0 0 0 ${6 * ringSpring}px rgba(197, 179, 88, 0.25)`
+                : "none",
             }}
           >
             <Img src={connorImg} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <span style={{ fontFamily: FONTS.body, fontSize: 28, color: COLORS.cream, marginTop: 16 }}>
-            Connor
+          <span
+            style={{
+              fontFamily: FONTS.display,
+              fontSize: 32,
+              letterSpacing: 1.5,
+              color: isSelected ? COLORS.gold : COLORS.navy,
+            }}
+          >
+            CONNOR
+          </span>
+          <span
+            style={{
+              fontFamily: FONTS.body,
+              fontSize: 18,
+              fontWeight: 500,
+              letterSpacing: 1,
+              color: "rgba(4, 12, 20, 0.35)",
+              textTransform: "uppercase",
+            }}
+          >
+            Pittsburgh
           </span>
         </div>
         {/* Colton */}
@@ -78,27 +114,47 @@ export const ChooseCoach: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            transform: `translateX(${interpolate(slideColton, [0, 1], [200, 0])}px)`,
-            opacity: slideColton,
+            gap: 12,
+            padding: "24px 40px",
+            borderRadius: 20,
           }}
         >
           <div
             style={{
-              width: 200,
-              height: 200,
+              width: 160,
+              height: 160,
               borderRadius: "50%",
               overflow: "hidden",
-              border: `4px solid ${COLORS.cream}40`,
+              border: "3px solid rgba(10, 10, 10, 0.08)",
             }}
           >
             <Img src={coltonImg} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </div>
-          <span style={{ fontFamily: FONTS.body, fontSize: 28, color: COLORS.cream, marginTop: 16 }}>
-            Colton
+          <span
+            style={{
+              fontFamily: FONTS.display,
+              fontSize: 32,
+              letterSpacing: 1.5,
+              color: COLORS.navy,
+            }}
+          >
+            COLTON
+          </span>
+          <span
+            style={{
+              fontFamily: FONTS.body,
+              fontSize: 18,
+              fontWeight: 500,
+              letterSpacing: 1,
+              color: "rgba(4, 12, 20, 0.35)",
+              textTransform: "uppercase",
+            }}
+          >
+            Grove City / Slippery Rock
           </span>
         </div>
       </div>
-      <TapIndicator x={340} y={960} startFrame={selectFrame} />
+      <TapIndicator x={370} y={880} startFrame={selectFrame} />
     </div>
   );
 };
