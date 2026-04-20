@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/fantasma-crest-outline-navy.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome Packet | Fantasma Football Training</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+      :root {
+        --navy: #040C14;
+        --gold: #C5B358;
+        --cream: #F8F7F4;
+        --white: #ffffff;
+        --gray-400: #9ca3af;
+        --gray-600: #4b5563;
+      }
+
+      body {
+        font-family: 'Outfit', sans-serif;
+        background: var(--cream);
+        color: var(--navy);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Hero ─────────────────────────────────────── */
+      .hero {
+        background: var(--navy);
+        color: var(--cream);
+        text-align: center;
+        padding: 80px 24px 64px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: 'FANTASMA';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(120px, 20vw, 280px);
+        color: rgba(197, 179, 88, 0.04);
+        white-space: nowrap;
+        pointer-events: none;
+        letter-spacing: 0.05em;
+      }
+
+      .hero-logo {
+        width: 120px;
+        margin-bottom: 24px;
+        position: relative;
+      }
+
+      .hero h1 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(48px, 8vw, 72px);
+        letter-spacing: 0.03em;
+        line-height: 0.95;
+        margin-bottom: 8px;
+        position: relative;
+      }
+
+      .hero h1 .gold { color: var(--gold); }
+
+      .hero-sub {
+        font-size: 16px;
+        color: var(--gray-400);
+        font-weight: 300;
+        max-width: 480px;
+        margin: 0 auto;
+        position: relative;
+      }
+
+      .hero-divider {
+        width: 60px;
+        height: 3px;
+        background: var(--gold);
+        margin: 24px auto 0;
+        position: relative;
+      }
+
+      /* ── Layout ───────────────────────────────────── */
+      .container {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .section--dark {
+        background: var(--navy);
+        color: var(--cream);
+      }
+
+      .section--light {
+        background: var(--cream);
+        color: var(--navy);
+      }
+
+      .section-number {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 14px;
+        letter-spacing: 3px;
+        color: var(--gold);
+        margin-bottom: 8px;
+      }
+
+      .section h2 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: clamp(32px, 5vw, 44px);
+        letter-spacing: 0.02em;
+        line-height: 1;
+        margin-bottom: 20px;
+      }
+
+      .section h2 .gold { color: var(--gold); }
+
+      .section p {
+        font-size: 15px;
+        line-height: 1.7;
+        font-weight: 300;
+        margin-bottom: 16px;
+      }
+
+      .section p:last-child { margin-bottom: 0; }
+
+      .gold-line {
+        width: 40px;
+        height: 2px;
+        background: var(--gold);
+        margin-bottom: 20px;
+      }
+
+      /* ── Coach Card ───────────────────────────────── */
+      .coach-intro {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        margin-top: 24px;
+      }
+
+      .coach-photo {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--gold);
+        flex-shrink: 0;
+      }
+
+      .coach-info {
+        flex: 1;
+      }
+
+      .coach-name {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+        margin-bottom: 2px;
+      }
+
+      .coach-title {
+        font-size: 13px;
+        color: var(--gold);
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .coach-info p {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      /* ── Checklist ────────────────────────────────── */
+      .checklist {
+        list-style: none;
+        margin-top: 20px;
+      }
+
+      .checklist li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(197, 179, 88, 0.15);
+        font-size: 15px;
+        font-weight: 400;
+      }
+
+      .checklist li:last-child { border-bottom: none; }
+
+      .check-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(197, 179, 88, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      .check-icon svg {
+        width: 12px;
+        height: 12px;
+        stroke: var(--gold);
+      }
+
+      .checklist .item-note {
+        font-size: 13px;
+        color: var(--gray-400);
+        font-weight: 300;
+        display: block;
+        margin-top: 2px;
+      }
+
+      /* ── Session Breakdown ────────────────────────── */
+      .session-steps {
+        margin-top: 24px;
+      }
+
+      .session-step {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .step-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .step-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      .step-line {
+        width: 2px;
+        flex: 1;
+        background: rgba(197, 179, 88, 0.2);
+        margin-top: 4px;
+      }
+
+      .step-content h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 20px;
+        letter-spacing: 0.02em;
+        margin-bottom: 4px;
+      }
+
+      .step-content p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.6;
+        margin-bottom: 0;
+      }
+
+      /* ── Pricing Cards ────────────────────────────── */
+      .pricing-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .pricing-card {
+        background: rgba(197, 179, 88, 0.08);
+        border: 1px solid rgba(197, 179, 88, 0.2);
+        border-radius: 8px;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .pricing-card h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+        margin-bottom: 4px;
+      }
+
+      .pricing-card .price {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 36px;
+        color: var(--gold);
+        line-height: 1;
+        margin: 12px 0 4px;
+      }
+
+      .pricing-card .price-sub {
+        font-size: 13px;
+        font-weight: 300;
+        color: var(--gray-400);
+      }
+
+      .pricing-card .duration {
+        font-size: 13px;
+        color: var(--gray-400);
+        margin-top: 8px;
+      }
+
+      /* ── Contact Block ────────────────────────────── */
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .contact-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        background: rgba(197, 179, 88, 0.08);
+        border-radius: 8px;
+        text-decoration: none;
+        color: inherit;
+        transition: background 0.2s;
+      }
+
+      .contact-item:hover {
+        background: rgba(197, 179, 88, 0.15);
+      }
+
+      .contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--gold);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .contact-icon svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--navy);
+      }
+
+      .contact-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--gray-400);
+        font-weight: 500;
+      }
+
+      .contact-value {
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      /* ── Expect List ──────────────────────────────── */
+      .expect-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .expect-card {
+        padding: 20px;
+        border-left: 3px solid var(--gold);
+        background: rgba(197, 179, 88, 0.06);
+        border-radius: 0 8px 8px 0;
+      }
+
+      .expect-card h3 {
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 18px;
+        letter-spacing: 0.02em;
+        margin-bottom: 6px;
+      }
+
+      .expect-card p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.6;
+        margin-bottom: 0;
+        color: var(--gray-400);
+      }
+
+      /* ── Media Strip ─────────────────────────────── */
+      .media-strip {
+        width: 100%;
+        overflow: hidden;
+        line-height: 0;
+      }
+
+      .media-strip img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .media-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        line-height: 0;
+      }
+
+      .media-row img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+      }
+
+      @media (max-width: 600px) {
+        .media-strip img { height: 140px; }
+        .media-row img { height: 140px; }
+      }
+
+      /* ── Footer ───────────────────────────────────── */
+      .footer {
+        background: var(--navy);
+        color: var(--gray-400);
+        text-align: center;
+        padding: 32px 24px;
+        font-size: 13px;
+        border-top: 1px solid rgba(197, 179, 88, 0.15);
+      }
+
+      .footer a {
+        color: var(--gold);
+        text-decoration: none;
+      }
+
+      /* ── Print Styles ─────────────────────────────── */
+      @media print {
+        *, *::before, *::after {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+          color-adjust: exact !important;
+        }
+        body { background: var(--cream); }
+        .hero { padding: 40px 24px 32px; break-after: avoid; background: var(--navy) !important; }
+        .section { padding: 32px 0; break-inside: avoid; }
+        .section--dark { background: var(--navy) !important; color: var(--cream) !important; }
+        .section--light { background: var(--cream) !important; }
+        .pricing-card { background: rgba(197, 179, 88, 0.08) !important; border: 1px solid rgba(197, 179, 88, 0.2) !important; }
+        .contact-item { background: rgba(197, 179, 88, 0.08) !important; }
+        .contact-icon { background: var(--gold) !important; }
+        .expect-card { background: rgba(197, 179, 88, 0.06) !important; border-left: 3px solid var(--gold) !important; }
+        .check-icon { background: rgba(197, 179, 88, 0.15) !important; }
+        .gold-line, .hero-divider { background: var(--gold) !important; }
+        .step-dot { background: var(--gold) !important; }
+        .step-line { background: rgba(197, 179, 88, 0.2) !important; }
+        .coach-photo { border-color: var(--gold) !important; }
+        .footer { background: var(--navy) !important; color: var(--gray-400) !important; }
+        .print-hide { display: none !important; }
+      }
+
+      /* ── Responsive ───────────────────────────────── */
+      @media (max-width: 600px) {
+        .hero { padding: 60px 20px 48px; }
+        .section { padding: 40px 0; }
+        .coach-intro { flex-direction: column; align-items: center; text-align: center; }
+        .pricing-grid { grid-template-columns: 1fr; }
+        .contact-grid { grid-template-columns: 1fr; }
+        .expect-grid { grid-template-columns: 1fr; }
+      }
+
+      /* ── Print Button ─────────────────────────────── */
+      .print-btn {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--gold);
+        color: var(--navy);
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 16px;
+        letter-spacing: 1px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transition: transform 0.15s, box-shadow 0.15s;
+        z-index: 100;
+      }
+
+      .print-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px rgba(0,0,0,0.3);
+      }
+
+      .print-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Hero -->
+    <section class="hero">
+      <img src="/fantasma_logo_final.png" alt="Fantasma Football" class="hero-logo" />
+      <h1>WELCOME TO<br><span class="gold">FANTASMA.</span></h1>
+      <p class="hero-sub">Everything you need to know before your first session. We're excited to have you.</p>
+      <div class="hero-divider"></div>
+    </section>
+
+    <!-- 01Welcome -->
+    <section class="section section--light">
+      <div class="container">
+        <div class="section-number">01</div>
+        <h2>WHO WE <span class="gold">ARE.</span></h2>
+        <div class="gold-line"></div>
+        <p>Fantasma Football is elite soccer training built on three pillars: <strong>passion</strong> for the beautiful game, <strong>tactical intelligence</strong> that makes smart players dangerous, and <strong>desire</strong> that outworks everyone else on the pitch.</p>
+        <p>We believe in training the whole person, not just the athlete. Every player carries a special purpose, and our sessions are designed to develop technically gifted, tactically intelligent, and mentally tough competitors. As Ecclesiastes 9:10 says, "Whatever your hand finds to do, do it with all your might." That's the standard we hold every session to.</p>
+
+        <div class="coach-intro">
+          <img src="/gcc_profile.webp" alt="Coach Connor Hudson" class="coach-photo" />
+          <div class="coach-info">
+            <div class="coach-name">CONNOR HUDSON</div>
+            <div class="coach-title">Founder & Head Coach</div>
+</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02What to Bring -->
+    <section class="section section--dark">
+      <div class="container">
+        <div class="section-number">02</div>
+        <h2>WHAT TO <span class="gold">BRING.</span></h2>
+        <div class="gold-line"></div>
+        <p>Come ready to work. Here's what you'll need:</p>
+
+        <ul class="checklist">
+          <li>
+            <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <strong>Cleats & indoor shoes</strong>
+              <span class="item-note">Cleats for outdoor sessions, indoor shoes for facility sessions</span>
+            </div>
+          </li>
+          <li>
+            <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <strong>Water bottle</strong>
+              <span class="item-note">Stay hydrated, bring plenty</span>
+            </div>
+          </li>
+          <li>
+            <span class="check-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+            <div>
+              <strong>That's it</strong>
+              <span class="item-note">All other training equipment is provided by Fantasma</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03What a Session Looks Like -->
+    <section class="section section--light">
+      <div class="container">
+        <div class="section-number">03</div>
+        <h2>WHAT A SESSION <span class="gold">LOOKS LIKE.</span></h2>
+        <div class="gold-line"></div>
+        <p>Every session is tailored to the player's goals and current ability. Here's the general flow:</p>
+
+        <div class="session-steps">
+          <div class="session-step">
+            <div class="step-marker">
+              <div class="step-dot"></div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>WARM-UP & ACTIVATION</h3>
+              <p>Dynamic movement, ball mastery, and coordination work to get the body and mind locked in.</p>
+            </div>
+          </div>
+
+          <div class="session-step">
+            <div class="step-marker">
+              <div class="step-dot"></div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>TECHNICAL DEVELOPMENT</h3>
+              <p>Focused drills on passing, first touch, dribbling, or position-specific skills based on the player's development plan.</p>
+            </div>
+          </div>
+
+          <div class="session-step">
+            <div class="step-marker">
+              <div class="step-dot"></div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-content">
+              <h3>FINISHING</h3>
+              <p>Repetitions in front of goal, working on shot placement, composure, and converting chances under pressure.</p>
+            </div>
+          </div>
+
+          <div class="session-step">
+            <div class="step-marker">
+              <div class="step-dot"></div>
+            </div>
+            <div class="step-content">
+              <h3>COOL-DOWN & DEBRIEF</h3>
+              <p>Recovery, review of what we worked on, and key takeaways to practice before the next session.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Media row -->
+    <div class="media-row">
+      <img src="/anywhere-pitch-post.png" alt="Anywhere is a Pitch" />
+      <img src="/ecc-post.png" alt="Ecclesiastes 9:10" />
+      <img src="/work-post.png" alt="Work" />
+    </div>
+
+    <!-- 04Pricing -->
+    <section class="section section--dark">
+      <div class="container">
+        <div class="section-number">04</div>
+        <h2>TRAINING <span class="gold">RATES.</span></h2>
+        <div class="gold-line"></div>
+
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <h3>1-ON-1 TRAINING</h3>
+            <div class="price">$50</div>
+            <div class="price-sub">per session</div>
+            <div class="duration">60 minutes</div>
+          </div>
+          <div class="pricing-card">
+            <h3>SMALL GROUP</h3>
+            <div class="price">$40</div>
+            <div class="price-sub">per player / session</div>
+            <div class="duration">60 minutes &middot; 2-6 players</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05Stay Connected -->
+    <section class="section section--light">
+      <div class="container">
+        <div class="section-number">05</div>
+        <h2>STAY <span class="gold">CONNECTED.</span></h2>
+        <div class="gold-line"></div>
+        <p>Have questions, need to reschedule, or just want to follow along? Here's how to reach us.</p>
+
+        <div class="contact-grid">
+          <a href="mailto:conhudbusiness@gmail.com" class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Email</div>
+              <div class="contact-value">conhudbusiness@gmail.com</div>
+            </div>
+          </a>
+          <a href="tel:4127372858" class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Phone / Text</div>
+              <div class="contact-value">(412) 737-2858</div>
+            </div>
+          </a>
+          <a href="https://instagram.com/fantasmafootball" target="_blank" rel="noopener noreferrer" class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Instagram</div>
+              <div class="contact-value">@fantasmafootball</div>
+            </div>
+          </a>
+          <a href="https://fantasmafootball.com" target="_blank" rel="noopener noreferrer" class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Website</div>
+              <div class="contact-value">fantasmafootball.com</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06What to Expect -->
+    <section class="section section--dark">
+      <div class="container">
+        <div class="section-number">06</div>
+        <h2>WHAT TO <span class="gold">EXPECT.</span></h2>
+        <div class="gold-line"></div>
+        <p>Here's what you can count on from Fantasma.</p>
+
+        <div class="expect-grid">
+          <div class="expect-card">
+            <h3>PARENTS WELCOME</h3>
+            <p>Feel free to stay and watch your child's session. You're always welcome on the sideline.</p>
+          </div>
+          <div class="expect-card">
+            <h3>PROGRESS UPDATES</h3>
+            <p>Coach Connor will consistently provide updates on your player's development, what they're working on, and where they're improving.</p>
+          </div>
+          <div class="expect-card">
+            <h3>TAILORED TRAINING</h3>
+            <p>No two players are the same. Sessions are customized to your child's position, skill level, and goals.</p>
+          </div>
+          <div class="expect-card">
+            <h3>ALL AGES & LEVELS</h3>
+            <p>From beginners just starting out to advanced club athletes preparing for college, everyone is welcome.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Fantasma Football Training &middot; Pittsburgh, PA</p>
+      <p style="margin-top: 4px"><a href="https://fantasmafootball.com">fantasmafootball.com</a></p>
+    </footer>
+
+    <!-- Print Button -->
+    <button class="print-btn print-hide" onclick="window.print()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      SAVE AS PDF
+    </button>
+
+  </body>
+</html>
