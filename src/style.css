@@ -17,9 +17,9 @@
   --cream: #F8F7F4;
   --cream-alt: #F2F0EB;
   --white: #FFFFFF;
-  --dark-text: #0A0A0A;
-  --dark-text-dim: rgba(10, 10, 10, 0.6);
-  --dark-text-muted: rgba(10, 10, 10, 0.35);
+  --dark-text: #040C14;
+  --dark-text-dim: rgba(4, 12, 20, 0.6);
+  --dark-text-muted: rgba(4, 12, 20, 0.35);
   --white-dim: rgba(255, 255, 255, 0.7);
   --white-muted: rgba(255, 255, 255, 0.4);
   --light-border: rgba(10, 10, 10, 0.08);
