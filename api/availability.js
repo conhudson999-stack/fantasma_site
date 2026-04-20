@@ -188,18 +188,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ date, sessionType, slots })
   } catch (err) {
     console.error('Google Calendar API error:', err)
-    const cfg = COACH_CONFIG[coach] || COACH_CONFIG.connor
-    return res.status(500).json({
-      error: 'Failed to fetch availability.',
-      detail: err.message,
-      debug: {
-        coach,
-        hasServiceEmail: !!cfg.serviceEmail(),
-        hasPrivateKey: !!cfg.privateKey(),
-        privateKeyLen: cfg.privateKey()?.length,
-        privateKeyStart: cfg.privateKey()?.substring(0, 30),
-        calendarId: cfg.calendarId(),
-      }
-    })
+    console.error('Google Calendar API error:', err)
+    return res.status(500).json({ error: 'Failed to fetch availability.' })
   }
 }
