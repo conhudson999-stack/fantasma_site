@@ -4526,6 +4526,13 @@ body.ghost-mode .share-toast {
   object-fit: cover;
 }
 
+@media (max-width: 768px) {
+  .camp-featured-image img {
+    height: auto;
+    object-fit: contain;
+  }
+}
+
 .camp-featured-image img[src*="placeholder"] {
   opacity: 0.3;
   filter: grayscale(100%);
