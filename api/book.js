@@ -47,7 +47,7 @@ function getAuth(coach = 'connor') {
   return new google.auth.GoogleAuth({
     credentials: {
       client_email: config.serviceEmail(),
-      private_key: config.privateKey().replace(/\\n/g, '\n'),
+      private_key: config.privateKey().replace(/\\n/g, '\n').replace(/\r/g, ''),
     },
     scopes: ['https://www.googleapis.com/auth/calendar'],
   })

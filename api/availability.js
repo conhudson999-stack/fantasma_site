@@ -36,7 +36,7 @@ function getAuth(coach = 'connor') {
   return new google.auth.GoogleAuth({
     credentials: {
       client_email: config.serviceEmail(),
-      private_key: config.privateKey().replace(/\\n/g, '\n'),
+      private_key: config.privateKey().replace(/\\n/g, '\n').replace(/\r/g, ''),
     },
     scopes: ['https://www.googleapis.com/auth/calendar'],
   })
@@ -188,6 +188,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ date, sessionType, slots })
   } catch (err) {
     console.error('Google Calendar API error:', err)
-    return res.status(500).json({ error: 'Failed to fetch availability.' })
+    return res.status(500).json({ error: 'Failed to fetch availability.', detail: err.message })
   }
 }
