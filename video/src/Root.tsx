@@ -1,7 +1,8 @@
 import React from "react";
-import { Composition, Series } from "remotion";
-import { VIDEO, SCENE_FRAMES } from "./brand";
+import { Composition, Series, useCurrentFrame } from "remotion";
+import { VIDEO, SCENE_FRAMES, TRANSITION_FRAMES } from "./brand";
 import { FontLoader } from "./components/FontLoader";
+import { DiagonalWipe } from "./components/DiagonalWipe";
 import { LogoReveal } from "./sequences/LogoReveal";
 import { ChooseCoach } from "./sequences/ChooseCoach";
 import { PickDate } from "./sequences/PickDate";
@@ -11,8 +12,19 @@ import { Confirmation } from "./sequences/Confirmation";
 import { EndCard } from "./sequences/EndCard";
 
 const BookingWalkthrough: React.FC = () => {
+  const frame = useCurrentFrame();
+
+  const sceneBoundaries = [
+    SCENE_FRAMES.logoReveal,
+    SCENE_FRAMES.logoReveal + SCENE_FRAMES.chooseCoach,
+    SCENE_FRAMES.logoReveal + SCENE_FRAMES.chooseCoach + SCENE_FRAMES.pickDate,
+    SCENE_FRAMES.logoReveal + SCENE_FRAMES.chooseCoach + SCENE_FRAMES.pickDate + SCENE_FRAMES.selectTime,
+    SCENE_FRAMES.logoReveal + SCENE_FRAMES.chooseCoach + SCENE_FRAMES.pickDate + SCENE_FRAMES.selectTime + SCENE_FRAMES.fillDetails,
+    SCENE_FRAMES.logoReveal + SCENE_FRAMES.chooseCoach + SCENE_FRAMES.pickDate + SCENE_FRAMES.selectTime + SCENE_FRAMES.fillDetails + SCENE_FRAMES.confirmation,
+  ];
+
   return (
-    <div style={{ flex: 1, backgroundColor: "#040C14" }}>
+    <div style={{ flex: 1, backgroundColor: "#040C14", position: "relative" }}>
       <FontLoader />
       <Series>
         <Series.Sequence durationInFrames={SCENE_FRAMES.logoReveal}>
@@ -37,6 +49,9 @@ const BookingWalkthrough: React.FC = () => {
           <EndCard />
         </Series.Sequence>
       </Series>
+      {sceneBoundaries.map((boundary, i) => (
+        <DiagonalWipe key={i} startFrame={boundary - TRANSITION_FRAMES / 2} />
+      ))}
     </div>
   );
 };
