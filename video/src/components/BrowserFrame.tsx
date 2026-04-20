@@ -1,6 +1,7 @@
 import React from "react";
-import { Img } from "remotion";
-import { COLORS, FONTS } from "../brand";
+import { Img, AbsoluteFill } from "remotion";
+import { COLORS } from "../brand";
+import { LOADED_FONTS } from "./FontLoader";
 import logo from "../assets/fantasma_logo_final.png";
 
 interface BrowserFrameProps {
@@ -62,7 +63,7 @@ export const BrowserFrame: React.FC<BrowserFrameProps> = ({
           </svg>
           <span
             style={{
-              fontFamily: FONTS.body,
+              fontFamily: LOADED_FONTS.body,
               fontSize: 16,
               color: "#aaa",
             }}
@@ -117,7 +118,7 @@ export const BrowserFrame: React.FC<BrowserFrameProps> = ({
               <span
                 key={item}
                 style={{
-                  fontFamily: FONTS.body,
+                  fontFamily: LOADED_FONTS.body,
                   fontSize: 14,
                   fontWeight: 500,
                   color: item === "Book a Session" ? COLORS.navy : "rgba(4, 12, 20, 0.6)",
@@ -135,7 +136,7 @@ export const BrowserFrame: React.FC<BrowserFrameProps> = ({
             style={{
               background: COLORS.navy,
               color: "#fff",
-              fontFamily: FONTS.body,
+              fontFamily: LOADED_FONTS.body,
               fontSize: 14,
               fontWeight: 600,
               padding: "9px 20px",

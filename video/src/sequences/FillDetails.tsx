@@ -1,6 +1,7 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
-import { COLORS, FONTS } from "../brand";
+import { COLORS } from "../brand";
+import { LOADED_FONTS } from "../components/FontLoader";
 import { GrainOverlay } from "../components/GrainOverlay";
 import { BrowserFrame } from "../components/BrowserFrame";
 
@@ -45,7 +46,7 @@ export const FillDetails: React.FC = () => {
         >
           <p
             style={{
-              fontFamily: FONTS.display,
+              fontFamily: LOADED_FONTS.display,
               fontSize: 30,
               letterSpacing: 1,
               color: COLORS.navy,
@@ -67,7 +68,7 @@ export const FillDetails: React.FC = () => {
                 <div key={label}>
                   <p
                     style={{
-                      fontFamily: FONTS.body,
+                      fontFamily: LOADED_FONTS.body,
                       fontSize: 18,
                       fontWeight: 500,
                       color: COLORS.navy,
@@ -89,7 +90,7 @@ export const FillDetails: React.FC = () => {
                   >
                     <span
                       style={{
-                        fontFamily: FONTS.body,
+                        fontFamily: LOADED_FONTS.body,
                         fontSize: 22,
                         color: charsToShow > 0 ? COLORS.navy : "rgba(4, 12, 20, 0.35)",
                       }}
@@ -114,7 +115,7 @@ export const FillDetails: React.FC = () => {
                 padding: "16px 48px",
                 borderRadius: 12,
                 backgroundColor: COLORS.gold,
-                fontFamily: FONTS.display,
+                fontFamily: LOADED_FONTS.display,
                 fontSize: 26,
                 letterSpacing: 1,
                 color: COLORS.navy,

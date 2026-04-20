@@ -1,6 +1,7 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig, spring, interpolate } from "remotion";
-import { COLORS, FONTS } from "../brand";
+import { COLORS } from "../brand";
+import { LOADED_FONTS } from "../components/FontLoader";
 import { GrainOverlay } from "../components/GrainOverlay";
 import { BrowserFrame } from "../components/BrowserFrame";
 import { TapIndicator } from "../components/TapIndicator";
@@ -44,7 +45,7 @@ export const SelectTime: React.FC = () => {
               borderRadius: 9999,
               background: COLORS.gold,
               color: COLORS.navy,
-              fontFamily: FONTS.body,
+              fontFamily: LOADED_FONTS.body,
               fontSize: 20,
               fontWeight: 600,
             }}
@@ -58,7 +59,7 @@ export const SelectTime: React.FC = () => {
               background: "#FFFFFF",
               border: "1px solid rgba(10, 10, 10, 0.08)",
               color: "rgba(4, 12, 20, 0.6)",
-              fontFamily: FONTS.body,
+              fontFamily: LOADED_FONTS.body,
               fontSize: 20,
               fontWeight: 500,
             }}
@@ -81,7 +82,7 @@ export const SelectTime: React.FC = () => {
         >
           <p
             style={{
-              fontFamily: FONTS.display,
+              fontFamily: LOADED_FONTS.display,
               fontSize: 30,
               letterSpacing: 1,
               color: COLORS.navy,
@@ -92,7 +93,7 @@ export const SelectTime: React.FC = () => {
           </p>
           <p
             style={{
-              fontFamily: FONTS.body,
+              fontFamily: LOADED_FONTS.body,
               fontSize: 16,
               fontWeight: 600,
               letterSpacing: 2,
@@ -125,7 +126,7 @@ export const SelectTime: React.FC = () => {
                     borderRadius: 9999,
                     backgroundColor: isSelected ? COLORS.gold : "#FFFFFF",
                     border: `1px solid ${isSelected ? COLORS.gold : "rgba(10, 10, 10, 0.08)"}`,
-                    fontFamily: FONTS.body,
+                    fontFamily: LOADED_FONTS.body,
                     fontSize: 22,
                     fontWeight: isSelected ? 600 : 500,
                     color: COLORS.navy,

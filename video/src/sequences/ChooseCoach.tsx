@@ -1,6 +1,7 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig, spring, interpolate, Img } from "remotion";
-import { COLORS, FONTS } from "../brand";
+import { COLORS } from "../brand";
+import { LOADED_FONTS } from "../components/FontLoader";
 import { GrainOverlay } from "../components/GrainOverlay";
 import { BrowserFrame } from "../components/BrowserFrame";
 import { TapIndicator } from "../components/TapIndicator";
@@ -35,7 +36,7 @@ export const ChooseCoach: React.FC = () => {
         <GrainOverlay />
         <p
           style={{
-            fontFamily: FONTS.body,
+            fontFamily: LOADED_FONTS.body,
             fontSize: 20,
             fontWeight: 700,
             letterSpacing: 3,
@@ -86,7 +87,7 @@ export const ChooseCoach: React.FC = () => {
             </div>
             <span
               style={{
-                fontFamily: FONTS.display,
+                fontFamily: LOADED_FONTS.display,
                 fontSize: 26,
                 letterSpacing: 1.5,
                 color: isSelected ? COLORS.gold : COLORS.navy,
@@ -96,7 +97,7 @@ export const ChooseCoach: React.FC = () => {
             </span>
             <span
               style={{
-                fontFamily: FONTS.body,
+                fontFamily: LOADED_FONTS.body,
                 fontSize: 14,
                 fontWeight: 500,
                 letterSpacing: 1,
@@ -131,7 +132,7 @@ export const ChooseCoach: React.FC = () => {
             </div>
             <span
               style={{
-                fontFamily: FONTS.display,
+                fontFamily: LOADED_FONTS.display,
                 fontSize: 26,
                 letterSpacing: 1.5,
                 color: COLORS.navy,
@@ -141,7 +142,7 @@ export const ChooseCoach: React.FC = () => {
             </span>
             <span
               style={{
-                fontFamily: FONTS.body,
+                fontFamily: LOADED_FONTS.body,
                 fontSize: 14,
                 fontWeight: 500,
                 letterSpacing: 1,
