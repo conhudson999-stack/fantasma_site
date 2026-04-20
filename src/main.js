@@ -342,7 +342,7 @@ if (contactForm) {
 // ============================================
 // INSTAGRAM FEED
 // ============================================
-const IG_TOKEN = 'EAAmC0evJQjYBQosf0F6ZBvUOeMnJ9qumI9RmBp67lTk8ZBcG8YTkrwiFI9WgoElOPR6bKqVXjamKLM7eXS6f5H3cyqHh1JjXSXOShoOxzwK85kGoS5Ge1XZCr4LsWMI5ZCoZAxewLejgZC8OyQsVQexr6Qrldu3Euxe3FJW3gbk1nH2mmlWkSRYZAIJQvjK1hBuSZAljnhZC78KOGaJZAAFF7GkGLsOGt2M5qr6gyG'
+const IG_TOKEN = 'IGAAUYzXkGkBVBZAFp6S0pJaDhibEZAzdS1rQTR2d2p0RXBxdFEyRjdwZAkJkYmdrcnB5SmdZAbkotcTFjcmh0VnU4MjBJSFB4SHFWS3RTQk92Ny1tUTFQWW0wNlRsSS15VHhVZAnJISVQ0a1dVdUFzNk5ZAeTVB'
 const IG_ACCOUNT_ID = '17841478778350197'
 const IG_POST_COUNT = 9
 
@@ -366,7 +366,7 @@ async function loadInstagramFeed() {
   try {
     const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
     const res = await fetch(
-      `https://graph.facebook.com/v21.0/${IG_ACCOUNT_ID}/media?fields=${fields}&limit=${IG_POST_COUNT}&access_token=${IG_TOKEN}`
+      `https://graph.instagram.com/me/media?fields=${fields}&limit=${IG_POST_COUNT}&access_token=${IG_TOKEN}`
     )
     if (!res.ok) throw new Error(`API error: ${res.status}`)
 
