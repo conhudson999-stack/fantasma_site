@@ -765,12 +765,12 @@ body::after {
   align-items: center;
   justify-content: center;
   position: relative;
-  height: 320px;
+  height: 420px;
 }
 
 .ig-carousel-card {
   position: absolute;
-  width: 260px;
+  width: 360px;
   aspect-ratio: 1;
   border-radius: var(--radius);
   overflow: hidden;
@@ -2245,8 +2245,8 @@ body::after {
 
   .footer-brand { grid-column: 1 / -1; }
 
-  .ig-carousel-track { height: 280px; }
-  .ig-carousel-card { width: 240px; }
+  .ig-carousel-track { height: 360px; }
+  .ig-carousel-card { width: 320px; }
 }
 
 /* ============================================
@@ -2462,8 +2462,8 @@ body::after {
 
   .footer-social-icons { justify-content: center; }
 
-  .ig-carousel-track { height: 260px; }
-  .ig-carousel-card { width: 220px; }
+  .ig-carousel-track { height: 320px; }
+  .ig-carousel-card { width: 280px; }
   .ig-carousel-arrow { width: 32px; height: 32px; }
   .ig-carousel-arrow--prev { left: 8px; }
   .ig-carousel-arrow--next { right: 8px; }
@@ -2527,8 +2527,8 @@ body::after {
 
   .footer-watermark { font-size: 5rem; }
 
-  .ig-carousel-track { height: 230px; }
-  .ig-carousel-card { width: 190px; }
+  .ig-carousel-track { height: 280px; }
+  .ig-carousel-card { width: 240px; }
   .ig-carousel-arrow--prev { left: 4px; }
   .ig-carousel-arrow--next { right: 4px; }
   .ig-carousel-dots { padding-top: 10px; }
