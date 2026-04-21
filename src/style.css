@@ -674,7 +674,7 @@ body::after {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: start;
+  align-items: center;
 }
 
 .about-text p {
