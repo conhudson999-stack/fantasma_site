@@ -158,7 +158,7 @@ export default async function handler(req, res) {
     const slots = []
     const isToday = date === todayStr
 
-    for (let minutes = hours.start * 60; minutes + duration <= hours.end * 60; minutes += 60) {
+    for (let minutes = hours.start * 60; minutes + duration <= hours.end * 60; minutes += 30) {
       const slotStartH = Math.floor(minutes / 60)
       const slotStartM = minutes % 60
       const slotEndMinutes = minutes + duration
