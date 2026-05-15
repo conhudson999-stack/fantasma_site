@@ -2132,6 +2132,117 @@ body::after {
 .footer-social-icons a:hover { color: var(--gold); }
 
 /* ============================================
+   TESTIMONIALS
+   ============================================ */
+.testimonials {
+  background: var(--navy);
+  border-top: 1px solid rgba(197, 179, 88, 0.15);
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.testimonial-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(197, 179, 88, 0.12);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: border-color var(--transition), transform var(--transition);
+}
+
+.testimonial-card:hover {
+  border-color: rgba(197, 179, 88, 0.35);
+  transform: translateY(-4px);
+}
+
+.testimonial-photo {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+}
+
+.testimonial-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 85%;
+  filter: brightness(0.85);
+  transition: filter var(--transition);
+}
+
+.testimonial-card:hover .testimonial-photo img {
+  filter: brightness(0.95);
+}
+
+.testimonial-content {
+  padding: 32px;
+}
+
+.testimonial-quote {
+  font-family: var(--font-display);
+  font-size: 5rem;
+  line-height: 0.6;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+.testimonial-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--white-dim);
+  font-weight: 300;
+}
+
+.testimonial-divider {
+  width: 40px;
+  height: 2px;
+  background: var(--gold);
+  margin: 24px 0;
+}
+
+.testimonial-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.testimonial-title {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+@media (max-width: 1024px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .testimonial-photo {
+    height: 220px;
+  }
+
+  .testimonial-content {
+    padding: 24px;
+  }
+
+  .testimonial-quote {
+    font-size: 4rem;
+  }
+}
+
+/* ============================================
    RESPONSIVE — 1024px
    ============================================ */
 @media (max-width: 1024px) {
