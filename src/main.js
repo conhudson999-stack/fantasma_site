@@ -105,23 +105,23 @@ const coachesData = [
     name: 'Colton Hudson',
     title: 'Head Coach — Grove City / Slippery Rock',
     photo: '/colton_profile.webp',
-    bio: '',
+    bio: 'A fierce competitor and natural leader who has excelled at every level he\u2019s played. Colton brings a defensive mindset and winning mentality forged through championship runs in high school and college. His ability to read the game, organize a back line, and elevate the players around him makes him an invaluable coach for any young player looking to sharpen their tactical awareness and competitive edge.',
     teams: [
       {
         logo: '/FR_logo.png',
         name: 'Franklin Regional',
         location: 'Murrysville, PA',
-        years: '',
+        years: '2017 – 2021',
         glowColor: '#C5A55A',
-        description: ''
+        description: 'A standout at one of Western Pennsylvania\u2019s premier high school programs. Multiple-time All-WPIAL selection who captained the team his junior and senior years. Won a WPIAL championship in 2019 and led multiple state tournament runs throughout his career, establishing himself as one of the top defenders in the region.'
       },
       {
         logo: '/grove_logo.png',
         name: 'Grove City College',
         location: 'Grove City, PA',
-        years: '',
+        years: '2022 – Present',
         glowColor: '#E00000',
-        description: ''
+        description: 'Heading into his senior year in fall 2026, Colton has been a cornerstone of the Grove City defense. He has made three Presidents Athletic Conference Tournament Final appearances. In fall 2025, he helped lead the team to its first conference final victory since 2005, punching the program\u2019s first ever ticket to the NCAA DIII National Tournament. That season, Colton earned Conference Defensive Player of the Year and was named a United Soccer Coaches NCAA DIII 3rd Team All-American.'
       }
     ]
   }
