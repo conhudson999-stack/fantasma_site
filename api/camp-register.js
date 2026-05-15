@@ -9,7 +9,7 @@ export default async function handler(req, res) {
   const {
     campId, campName, campPrice, campDates,
     playerName, playerDob, parentName, email, phone,
-    position, shirtSize, medical,
+    position, shirtSize, medical, mediaConsent,
   } = req.body
 
   if (!campId || !campName || !campPrice || !playerName || !playerDob || !parentName || !email || !phone || !position || !shirtSize) {
@@ -44,6 +44,7 @@ export default async function handler(req, res) {
     params.append('metadata[position]', position)
     params.append('metadata[shirtSize]', shirtSize)
     params.append('metadata[medical]', medical || 'None')
+    params.append('metadata[mediaConsent]', mediaConsent || 'not specified')
     params.append('allow_promotion_codes', 'true')
     params.append('success_url', `${origin}/camps.html?success=true&camp=${campId}`)
     params.append('cancel_url', `${origin}/camps.html`)

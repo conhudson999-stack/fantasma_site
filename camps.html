@@ -172,6 +172,18 @@
                 <input type="text" id="medicalNotes" name="medical" placeholder="Optional" />
               </div>
             </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label style="margin-bottom: 10px; display: block;">Photo/Video Permission *</label>
+              <p style="font-size: 13px; color: var(--dark-text-muted); margin-bottom: 10px;">I give permission for my child to be photographed and/or videotaped during camp activities.</p>
+              <div style="display: flex; gap: 20px;">
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                  <input type="radio" name="mediaConsent" value="yes" required /> Yes
+                </label>
+                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 14px;">
+                  <input type="radio" name="mediaConsent" value="no" required /> No
+                </label>
+              </div>
+            </div>
             <button type="submit" class="btn btn-dark btn-full" id="campSubmitBtn">Proceed to Payment</button>
           </form>
         </div>
