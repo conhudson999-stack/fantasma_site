@@ -56,7 +56,7 @@ const coachesData = [
     name: 'Connor Hudson',
     title: 'Head Coach — Pittsburgh (Founder)',
     photo: '/gcc_profile.webp',
-    bio: 'Former NCAA Division 1 and semi-professional player whose deep, unconditional love for the game drives everything he does. Connor founded Fantasma because the beautiful game deserves to be studied, respected, and pursued with everything you\u2019ve got.',
+    bio: 'Former NCAA Division 1 and semi-professional player whose deep, unconditional love for the game drives everything he does. Connor founded Fantasma to provide elite training from coaches you can trust, while serving the ultimate goal of spreading the word of God.',
     teams: [
       {
         logo: '/FR_logo.png',
