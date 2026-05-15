@@ -2281,7 +2281,7 @@ body::after {
 
 @media (max-width: 768px) {
   .testimonial-photo {
-    height: 220px;
+    height: 320px;
   }
 
   .testimonial-content {
