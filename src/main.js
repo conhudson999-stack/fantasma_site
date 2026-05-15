@@ -56,7 +56,7 @@ const coachesData = [
     name: 'Connor Hudson',
     title: 'Head Coach — Pittsburgh (Founder)',
     photo: '/gcc_profile.webp',
-    bio: 'Former NCAA Division 1 and semi-professional player whose deep, unconditional love for the game drives everything he does. Connor founded Fantasma because the beautiful game deserves to be studied, respected, and pursued with everything you\u2019ve got. He believes you don\u2019t need to be the fastest or most athletic, you need a willingness to learn, the ability to think through problems, and a relentless desire to get better every single day.',
+    bio: 'Former NCAA Division 1 and semi-professional player whose deep, unconditional love for the game drives everything he does. Connor founded Fantasma because the beautiful game deserves to be studied, respected, and pursued with everything you\u2019ve got.',
     teams: [
       {
         logo: '/FR_logo.png',
@@ -105,7 +105,7 @@ const coachesData = [
     name: 'Colton Hudson',
     title: 'Head Coach — Grove City / Slippery Rock',
     photo: '/colton_profile.webp',
-    bio: 'A fierce competitor and natural leader who has excelled at every level he\u2019s played. Colton brings a defensive mindset and winning mentality forged through championship runs in high school and college. His ability to read the game, organize a back line, and elevate the players around him makes him an invaluable coach for any young player looking to sharpen their tactical awareness and competitive edge.',
+    bio: 'NCAA DIII All-American and WPIAL champion whose relentless work ethic and love for competing have defined his career. Colton is a born leader who captained teams at every level and thrives in the biggest moments.',
     teams: [
       {
         logo: '/FR_logo.png',
