@@ -2319,6 +2319,11 @@ body::after {
     gap: 48px;
   }
 
+  .about-mosaic-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
   /* Programs — Tablet */
   .program-row {
     flex-wrap: wrap;
