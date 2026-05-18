@@ -4915,6 +4915,12 @@ body.ghost-mode .share-toast {
   color: var(--dark-text-muted);
   margin-bottom: 32px;
 }
+.camp-featured-desc p {
+  margin: 0 0 12px;
+}
+.camp-featured-desc p:last-child {
+  margin-bottom: 0;
+}
 
 .camp-featured-bottom {
   display: flex;

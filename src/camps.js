@@ -94,7 +94,7 @@ function renderFeatured(camp) {
             ${camp.ages === 'All' ? 'All Ages' : 'Ages ' + camp.ages}
           </div>
         </div>
-        <p class="camp-featured-desc">${camp.description}</p>
+        <div class="camp-featured-desc">${camp.description.split('\n\n').map(p => `<p>${p}</p>`).join('')}</div>
         <div class="camp-featured-bottom">
           <div class="camp-featured-price">
             <span class="camp-price-amount">$${camp.price}</span>
