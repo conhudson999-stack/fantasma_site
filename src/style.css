@@ -909,23 +909,33 @@ body::after {
 }
 
 .ig-carousel-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ig-carousel-dot::after {
+  content: '';
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--dark-text-muted);
-  border: none;
-  padding: 19px;
-  background-clip: content-box;
-  cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
 
-.ig-carousel-dot.is-active {
+.ig-carousel-dot.is-active::after {
   background: var(--gold);
   transform: scale(1.15);
 }
 
-.ig-carousel-dot:hover {
+.ig-carousel-dot:hover::after {
   background: var(--gold);
 }
 
@@ -1737,23 +1747,33 @@ body::after {
 }
 
 .coaches-carousel-dot {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.coaches-carousel-dot::after {
+  content: '';
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--dark-text-muted);
-  border: none;
-  padding: 19px;
-  background-clip: content-box;
-  cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
 
-.coaches-carousel-dot.is-active {
+.coaches-carousel-dot.is-active::after {
   background: var(--gold);
   transform: scale(1.15);
 }
 
-.coaches-carousel-dot:hover {
+.coaches-carousel-dot:hover::after {
   background: var(--gold);
 }
 
@@ -4452,7 +4472,7 @@ body.ghost-mode .ig-carousel-card.is-active img {
   box-shadow: 0 0 30px rgba(0, 255, 200, 0.15);
 }
 
-body.ghost-mode .ig-carousel-dot.is-active {
+body.ghost-mode .ig-carousel-dot.is-active::after {
   background: #00ffc8;
   box-shadow: 0 0 8px rgba(0, 255, 200, 0.5);
 }
