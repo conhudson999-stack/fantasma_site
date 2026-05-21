@@ -33,41 +33,20 @@ window.addEventListener('scroll', () => {
 })
 
 // --- Mobile nav toggle ---
-let navBackdrop = null
-
-function closeMobileMenu() {
-  navToggle.classList.remove('active')
-  navMenu.classList.remove('active')
-  document.body.style.overflow = ''
-  if (navBackdrop) {
-    navBackdrop.remove()
-    navBackdrop = null
-  }
-}
-
 if (navToggle && navMenu) {
   navToggle.addEventListener('click', () => {
-    const isOpen = navMenu.classList.contains('active')
-
-    if (isOpen) {
-      closeMobileMenu()
-    } else {
-      navToggle.classList.add('active')
-      navMenu.classList.add('active')
-      document.body.style.overflow = 'hidden'
-
-      // Create backdrop
-      navBackdrop = document.createElement('div')
-      navBackdrop.className = 'nav-backdrop'
-      navBackdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999'
-      navBackdrop.addEventListener('click', closeMobileMenu)
-      document.body.appendChild(navBackdrop)
-    }
+    navToggle.classList.toggle('active')
+    navMenu.classList.toggle('active')
+    document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : ''
   })
 
   // Close mobile menu when a link is clicked
   navMenu.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', closeMobileMenu)
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active')
+      navMenu.classList.remove('active')
+      document.body.style.overflow = ''
+    })
   })
 }
 
