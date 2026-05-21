@@ -1614,7 +1614,7 @@ body::after {
   height: 100%;
   object-fit: cover;
 }
-.coach-photo img[src*="con-profile-fant"] {
+.coach-photo img[src*="connor-profile"] {
   transform: scale(1.15);
 }
 
@@ -2828,7 +2828,7 @@ body::after {
   height: 100%;
   object-fit: cover;
 }
-.coach-bubble-img[src*="con-profile-fant"] {
+.coach-bubble-img[src*="connor-profile"] {
   transform: scale(1.15);
 }
 
