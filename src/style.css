@@ -63,6 +63,11 @@ body::after {
   background-size: 256px 256px;
 }
 
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
 #app {
   width: 100%;
   position: relative;
@@ -210,7 +215,11 @@ body::after {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 4px;
+  padding: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
   z-index: 1003;
 }
 
@@ -905,7 +914,8 @@ body::after {
   border-radius: 50%;
   background: var(--dark-text-muted);
   border: none;
-  padding: 0;
+  padding: 19px;
+  background-clip: content-box;
   cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
@@ -1732,7 +1742,8 @@ body::after {
   border-radius: 50%;
   background: var(--dark-text-muted);
   border: none;
-  padding: 0;
+  padding: 19px;
+  background-clip: content-box;
   cursor: pointer;
   transition: background var(--transition), transform var(--transition);
 }
@@ -4814,7 +4825,7 @@ body.ghost-mode .share-toast {
 
 .camp-coming-soon span {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 96px;
+  font-size: clamp(36px, 10vw, 96px);
   letter-spacing: 12px;
   color: #C5B358;
 }
@@ -5129,7 +5140,7 @@ body.ghost-mode .share-toast {
   width: 100%;
   padding: 10px 14px;
   font-family: 'Outfit', sans-serif;
-  font-size: 14px;
+  font-size: 16px;
   border: 1px solid rgba(4, 12, 20, 0.12);
   border-radius: 6px;
   background: var(--cream);

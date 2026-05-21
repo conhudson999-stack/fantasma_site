@@ -28,6 +28,8 @@ if (goldLine) {
 
 // --- FAQ accordion ---
 document.querySelectorAll('.faq-question').forEach(button => {
+  button.setAttribute('aria-expanded', 'false')
+
   button.addEventListener('click', () => {
     const item = button.parentElement
     const answer = item.querySelector('.faq-answer')
@@ -37,12 +39,14 @@ document.querySelectorAll('.faq-question').forEach(button => {
     document.querySelectorAll('.faq-item').forEach(faqItem => {
       faqItem.classList.remove('active')
       faqItem.querySelector('.faq-answer').style.maxHeight = null
+      faqItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false')
     })
 
     // Open clicked item if it wasn't already open
     if (!isActive) {
       item.classList.add('active')
       answer.style.maxHeight = answer.scrollHeight + 'px'
+      button.setAttribute('aria-expanded', 'true')
     }
   })
 })
@@ -145,12 +149,12 @@ function renderCoachAccordion() {
   container.innerHTML = coachesData.map((coach, i) => {
     const initials = coach.name.split(' ').map(w => w[0]).join('')
     const photoHTML = coach.photo
-      ? `<img src="${coach.photo}" alt="${coach.name}" />`
+      ? `<img src="${coach.photo}" alt="${coach.name}" loading="lazy" />`
       : `<div class="coach-photo-placeholder">${initials}</div>`
 
     return `
       <div class="coach-item${i === 0 ? ' active' : ''}" data-coach-index="${i}">
-        <button class="coach-header">
+        <button class="coach-header" aria-expanded="${i === 0 ? 'true' : 'false'}">
           <div class="coach-header-left">
             <span class="coach-header-name">${coach.name.toUpperCase()}</span>
             <span class="coach-header-title">${coach.title}</span>
@@ -176,12 +180,14 @@ function renderCoachAccordion() {
       container.querySelectorAll('.coach-item').forEach(ci => {
         ci.classList.remove('active')
         ci.querySelector('.coach-body').style.maxHeight = null
+        ci.querySelector('.coach-header').setAttribute('aria-expanded', 'false')
       })
 
       if (!wasActive) {
         item.classList.add('active')
         const body = item.querySelector('.coach-body')
         body.style.maxHeight = body.scrollHeight + 'px'
+        button.setAttribute('aria-expanded', 'true')
 
         if (index !== activeCoachIndex) {
           activeCoachIndex = index
@@ -213,7 +219,7 @@ function renderCoachTeamCarousel() {
   track.innerHTML = currentCoachTeams.map((team, i) => {
     const glowStyle = team.glowColor ? `--glow-color: ${team.glowColor}` : ''
     const logoHTML = team.logo
-      ? `<img src="${team.logo}" alt="${team.name}" />`
+      ? `<img src="${team.logo}" alt="${team.name}" loading="lazy" />`
       : `<div class="coaches-logo-placeholder"><span>${team.name}</span></div>`
 
     return `<div class="coaches-carousel-card" data-team-index="${i}" style="${glowStyle}">${logoHTML}</div>`
@@ -367,10 +373,6 @@ if (contactForm) {
 // ============================================
 // INSTAGRAM FEED
 // ============================================
-const IG_TOKEN = 'IGAAUYzXkGkBVBZAFp6S0pJaDhibEZAzdS1rQTR2d2p0RXBxdFEyRjdwZAkJkYmdrcnB5SmdZAbkotcTFjcmh0VnU4MjBJSFB4SHFWS3RTQk92Ny1tUTFQWW0wNlRsSS15VHhVZAnJISVQ0a1dVdUFzNk5ZAeTVB'
-const IG_ACCOUNT_ID = '17841478778350197'
-const IG_POST_COUNT = 9
-
 let igPosts = []
 let igActiveIndex = 0
 
@@ -378,21 +380,8 @@ async function loadInstagramFeed() {
   const track = document.getElementById('igCarouselTrack')
   if (!track) return
 
-  if (IG_TOKEN === 'YOUR_INSTAGRAM_ACCESS_TOKEN') {
-    track.innerHTML = `
-      <div class="ig-feed-error">
-        <p>Instagram feed not configured yet.</p>
-        <a href="https://instagram.com/fantasmafootball" target="_blank" rel="noopener noreferrer">Visit @fantasmafootball</a>
-      </div>
-    `
-    return
-  }
-
   try {
-    const fields = 'id,caption,media_type,media_url,thumbnail_url,permalink,timestamp'
-    const res = await fetch(
-      `https://graph.instagram.com/me/media?fields=${fields}&limit=${IG_POST_COUNT}&access_token=${IG_TOKEN}`
-    )
+    const res = await fetch('/api/instagram-feed')
     if (!res.ok) throw new Error(`API error: ${res.status}`)
 
     const data = await res.json()
@@ -432,10 +421,13 @@ function renderIGCarousel() {
     const isVideo = post.media_type === 'VIDEO'
     const isCarousel = post.media_type === 'CAROUSEL_ALBUM'
     const thumb = isVideo ? post.thumbnail_url : post.media_url
+    const altText = post.caption
+      ? post.caption.substring(0, 125).replace(/"/g, '&quot;') + (post.caption.length > 125 ? '...' : '')
+      : 'Instagram post'
 
     return `
       <div class="ig-carousel-card" data-ig-index="${i}">
-        <img src="${thumb}" alt="" loading="lazy" />
+        <img src="${thumb}" alt="${altText}" loading="lazy" />
         ${isVideo ? `
           <div class="ig-media-badge">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
@@ -526,15 +518,25 @@ function updateCarousel() {
   if (nextBtn) nextBtn.disabled = false
 }
 
+let igLightboxTrigger = null
+let igLightboxTrapHandler = null
+
 function openIGLightbox(post) {
   const lightbox = document.getElementById('igLightbox')
   const media = document.getElementById('igLightboxMedia')
   const info = document.getElementById('igLightboxInfo')
 
+  // Store the element that triggered the lightbox for focus restore
+  igLightboxTrigger = document.activeElement
+
+  const altText = post.caption
+    ? post.caption.substring(0, 125) + (post.caption.length > 125 ? '...' : '')
+    : 'Instagram post'
+
   if (post.media_type === 'VIDEO') {
     media.innerHTML = `<video src="${post.media_url}" controls autoplay playsinline></video>`
   } else {
-    media.innerHTML = `<img src="${post.media_url}" alt="" />`
+    media.innerHTML = `<img src="${post.media_url}" alt="${altText}" />`
   }
 
   const caption = post.caption
@@ -548,6 +550,32 @@ function openIGLightbox(post) {
 
   lightbox.classList.add('active')
   document.body.style.overflow = 'hidden'
+
+  // Move focus to close button
+  const closeBtn = lightbox.querySelector('.ig-lightbox-close')
+  if (closeBtn) closeBtn.focus()
+
+  // Set up focus trap
+  igLightboxTrapHandler = (e) => {
+    if (e.key !== 'Tab') return
+    const focusable = lightbox.querySelectorAll('button, [href], video, [tabindex]:not([tabindex="-1"])')
+    if (focusable.length === 0) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  }
+  document.addEventListener('keydown', igLightboxTrapHandler)
 }
 
 function closeIGLightbox() {
@@ -559,6 +587,18 @@ function closeIGLightbox() {
 
   const video = media.querySelector('video')
   if (video) video.pause()
+
+  // Remove focus trap
+  if (igLightboxTrapHandler) {
+    document.removeEventListener('keydown', igLightboxTrapHandler)
+    igLightboxTrapHandler = null
+  }
+
+  // Restore focus
+  if (igLightboxTrigger) {
+    igLightboxTrigger.focus()
+    igLightboxTrigger = null
+  }
 }
 
 // Lightbox event listeners

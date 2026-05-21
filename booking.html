@@ -19,15 +19,68 @@
 
     <meta property="og:title" content="Book Private Soccer Training in Pittsburgh | Fantasma Football" />
     <meta property="og:description" content="Book a private 1-on-1 or small group soccer training session in Pittsburgh, PA with former NCAA D1 and professional players." />
-    <meta property="og:image" content="https://fantasmafootball.com/fantasma_logo_final.png" />
+    <meta property="og:image" content="https://fantasmafootball.com/og-image.png" />
     <meta property="og:url" content="https://fantasmafootball.com/booking.html" />
     <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Fantasma Football Training",
+  "description": "Elite private soccer training sessions in Pittsburgh, PA. 1-on-1 and small group options available.",
+  "provider": {
+    "@type": "SportsActivityLocation",
+    "name": "Fantasma Football",
+    "telephone": "412-737-2858",
+    "url": "https://fantasmafootball.com"
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": "Pittsburgh",
+    "addressRegion": "PA"
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Training Sessions",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "1-on-1 Training",
+          "description": "60-minute private training session"
+        },
+        "price": "50.00",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Small Group Training",
+          "description": "90-minute small group training session"
+        },
+        "price": "40.00",
+        "priceCurrency": "USD"
+      }
+    ]
+  },
+  "potentialAction": {
+    "@type": "ReserveAction",
+    "target": "https://fantasmafootball.com/booking.html"
+  }
+}
+</script>
+
+    <style>.skip-link{position:absolute;top:-100%;left:16px;padding:8px 16px;background:var(--gold);color:var(--dark-navy);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;z-index:10000;text-decoration:none;border-radius:0 0 4px 4px;transition:top 0.2s}.skip-link:focus{top:0}</style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
 
     <div id="app">
 
@@ -89,6 +142,7 @@
         </div>
       </nav>
 
+      <main id="main">
       <!-- Booking Hero -->
       <section class="booking-hero">
         <div class="container">
@@ -233,6 +287,8 @@
           </div>
         </div>
       </section>
+
+      </main>
 
       <!-- Footer -->
       <footer class="footer">

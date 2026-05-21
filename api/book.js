@@ -58,6 +58,16 @@ function getCalendarId(coach = 'connor') {
   return config.calendarId()
 }
 
+// Compute the correct UTC offset for Eastern time (handles EST vs EDT)
+function getEasternOffset(dateStr, hour) {
+  const utcGuess = new Date(`${dateStr}T${String(hour).padStart(2, '0')}:00:00Z`)
+  const eastern = new Date(utcGuess.toLocaleString('en-US', { timeZone: TIMEZONE }))
+  const diffMs = eastern.getTime() - utcGuess.getTime()
+  const diffHours = Math.round(diffMs / (60 * 1000 * 60))
+  const sign = diffHours >= 0 ? '+' : '-'
+  return `${sign}${String(Math.abs(diffHours)).padStart(2, '0')}:00`
+}
+
 function formatTime12(time24) {
   const [h, m] = time24.split(':').map(Number)
   const period = h >= 12 ? 'PM' : 'AM'
@@ -188,10 +198,12 @@ export default async function handler(req, res) {
     const slotStart = `${date}T${time}:00`
     const slotEnd = `${date}T${String(endH).padStart(2, '0')}:${String(endM).padStart(2, '0')}:00`
 
+    const offset = getEasternOffset(date, timeH)
+
     const freeBusyRes = await calendar.freebusy.query({
       requestBody: {
-        timeMin: new Date(`${slotStart}-05:00`).toISOString(),
-        timeMax: new Date(`${slotEnd}-05:00`).toISOString(),
+        timeMin: new Date(`${slotStart}${offset}`).toISOString(),
+        timeMax: new Date(`${slotEnd}${offset}`).toISOString(),
         timeZone: TIMEZONE,
         items: [{ id: calendarId }],
       },

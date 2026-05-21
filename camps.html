@@ -19,15 +19,54 @@
 
     <meta property="og:title" content="Youth Soccer Camps in Pittsburgh | Fantasma Football" />
     <meta property="og:description" content="Register for elite youth soccer camps in Pittsburgh, PA. Professional coaching, tactical training, and competitive play for all ages." />
-    <meta property="og:image" content="https://fantasmafootball.com/fantasma_logo_final.png" />
+    <meta property="og:image" content="https://fantasmafootball.com/og-image.png" />
     <meta property="og:url" content="https://fantasmafootball.com/camps.html" />
     <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Youth Soccer Camps - Fantasma Football",
+  "description": "Elite youth soccer camps in Pittsburgh, PA with professional coaching, tactical training, and competitive play.",
+  "provider": {
+    "@type": "SportsActivityLocation",
+    "name": "Fantasma Football",
+    "url": "https://fantasmafootball.com"
+  },
+  "mainEntity": {
+    "@type": "Event",
+    "name": "Fantasma x 360\u00b0 Vision International Camp",
+    "startDate": "2026-07-10",
+    "endDate": "2026-07-12",
+    "location": {
+      "@type": "Place",
+      "name": "Veterans Field",
+      "address": "4170 Sardis Rd, Murrysville, PA 15668"
+    },
+    "organizer": {
+      "@type": "Organization",
+      "name": "Fantasma Football",
+      "url": "https://fantasmafootball.com"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "250.00",
+      "priceCurrency": "USD",
+      "availability": "https://schema.org/InStock"
+    }
+  }
+}
+</script>
+
+    <style>.skip-link{position:absolute;top:-100%;left:16px;padding:8px 16px;background:var(--gold);color:var(--dark-navy);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;z-index:10000;text-decoration:none;border-radius:0 0 4px 4px;transition:top 0.2s}.skip-link:focus{top:0}</style>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
 
     <div id="app">
 
@@ -89,6 +128,7 @@
         </div>
       </nav>
 
+      <main id="main">
       <!-- Camps Hero -->
       <section class="booking-hero">
         <div class="container">
@@ -129,7 +169,7 @@
       </section>
 
       <!-- Registration Modal -->
-      <div class="camp-modal-overlay" id="campModalOverlay">
+      <div class="camp-modal-overlay" id="campModalOverlay" role="dialog" aria-modal="true" aria-label="Camp registration">
         <div class="camp-modal">
           <button class="camp-modal-close" id="campModalClose" aria-label="Close">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
@@ -219,6 +259,8 @@
           </div>
         </div>
       </div>
+
+      </main>
 
       <!-- Footer -->
       <footer class="footer">

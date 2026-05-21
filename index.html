@@ -20,7 +20,7 @@
     <!-- Open Graph -->
     <meta property="og:title" content="Fantasma Football | Elite Soccer Training in Pittsburgh, PA" />
     <meta property="og:description" content="Elite private soccer training led by former NCAA D1 and professional players. 1-on-1 sessions, group training, and youth camps in Pittsburgh, PA." />
-    <meta property="og:image" content="https://fantasmafootball.com/fantasma_logo_final.png" />
+    <meta property="og:image" content="https://fantasmafootball.com/og-image.png" />
     <meta property="og:url" content="https://fantasmafootball.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Fantasma Football" />
@@ -111,11 +111,14 @@
     }
     </script>
 
+    <style>.skip-link{position:absolute;top:-100%;left:16px;padding:8px 16px;background:var(--gold);color:var(--dark-navy);font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:1px;z-index:10000;text-decoration:none;border-radius:0 0 4px 4px;transition:top 0.2s}.skip-link:focus{top:0}</style>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   </head>
   <body>
+    <a href="#main" class="skip-link">Skip to main content</a>
 
     <div class="wraith-bg" aria-hidden="true">
       <img src="/fantasma-crest-outline-navy.svg" alt="" />
@@ -181,9 +184,10 @@
         </div>
       </nav>
 
+      <main id="main">
       <!-- Hero -->
       <section class="hero" id="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
+        <video class="hero-video" autoplay muted loop playsinline poster="/hero-poster.jpg">
           <source src="/hero-bg.mp4" type="video/mp4" />
         </video>
         <div class="hero-inner">
@@ -619,6 +623,8 @@
         </div>
       </section>
 
+      </main>
+
       <!-- Footer -->
       <footer class="footer">
         <div class="footer-watermark" aria-hidden="true">FANTASMA</div>
@@ -672,7 +678,7 @@
       </footer>
 
       <!-- Instagram Lightbox -->
-      <div class="ig-lightbox" id="igLightbox">
+      <div class="ig-lightbox" id="igLightbox" role="dialog" aria-modal="true" aria-label="Instagram post">
         <div class="ig-lightbox-backdrop"></div>
         <button class="ig-lightbox-close" aria-label="Close">&times;</button>
         <div class="ig-lightbox-body">

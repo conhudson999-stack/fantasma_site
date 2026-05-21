@@ -154,18 +154,63 @@ function renderUpcoming(camps) {
 }
 
 // --- Modal ---
+let campModalTrigger = null
+let campModalTrapHandler = null
+
 function openModal(camp) {
+  campModalTrigger = document.activeElement
+
   campIdInput.value = camp.id
   modalTitle.textContent = camp.name
   modalInfo.textContent = `${camp.dates} · $${camp.price}/player`
   modalOverlay.classList.add('active')
   document.body.style.overflow = 'hidden'
+
+  // Focus the first input in the form
+  const firstInput = registerForm.querySelector('input:not([type="hidden"]), select, textarea')
+  if (firstInput) {
+    setTimeout(() => firstInput.focus(), 50)
+  }
+
+  // Set up focus trap
+  campModalTrapHandler = (e) => {
+    if (e.key !== 'Tab') return
+    const focusable = modalOverlay.querySelectorAll('button, [href], input:not([type="hidden"]), select, textarea, [tabindex]:not([tabindex="-1"])')
+    if (focusable.length === 0) return
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault()
+        last.focus()
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+  }
+  document.addEventListener('keydown', campModalTrapHandler)
 }
 
 function closeModal() {
   modalOverlay.classList.remove('active')
   document.body.style.overflow = ''
   registerForm.reset()
+
+  // Remove focus trap
+  if (campModalTrapHandler) {
+    document.removeEventListener('keydown', campModalTrapHandler)
+    campModalTrapHandler = null
+  }
+
+  // Restore focus
+  if (campModalTrigger) {
+    campModalTrigger.focus()
+    campModalTrigger = null
+  }
 }
 
 modalClose.addEventListener('click', closeModal)
