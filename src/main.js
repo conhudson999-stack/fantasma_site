@@ -59,7 +59,7 @@ const coachesData = [
     id: 'connor-hudson',
     name: 'Connor Hudson',
     title: 'Head Coach — Pittsburgh (Founder)',
-    photo: '/con-profile-fant.jpeg',
+    photo: '/gcc_profile.webp',
     bio: 'Former NCAA Division 1 and semi-professional player whose deep, unconditional love for the game drives everything he does. Connor founded Fantasma to provide elite training from coaches you can trust, while serving the ultimate goal of spreading the word of God.',
     teams: [
       {
@@ -108,7 +108,7 @@ const coachesData = [
     id: 'colton-hudson',
     name: 'Colton Hudson',
     title: 'Head Coach — Grove City / Slippery Rock',
-    photo: '/col-profile-fant.jpeg',
+    photo: '/colton_profile.webp',
     bio: 'NCAA DIII All-American and WPIAL champion whose relentless work ethic and love for competing have defined his career. Colton is a born leader who captained teams at every level and thrives in the biggest moments.',
     teams: [
       {
