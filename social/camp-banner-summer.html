@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summer Mini Camp Banner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      width: 1200px;
+      height: 600px;
+      overflow: hidden;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .banner {
+      position: relative;
+      width: 1200px;
+      height: 600px;
+      background: #040C14;
+      overflow: hidden;
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: -100px;
+      left: 55%;
+      width: 300px;
+      height: 900px;
+      background: linear-gradient(180deg, #C5B358 0%, #A89340 50%, #C5B358 100%);
+      transform: skewX(-12deg);
+      opacity: 0.12;
+      z-index: 1;
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(197,179,88,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(197,179,88,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: 1;
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .corner-tl, .corner-br {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      z-index: 3;
+    }
+    .corner-tl {
+      top: 20px; left: 20px;
+      border-top: 2px solid rgba(197,179,88,0.4);
+      border-left: 2px solid rgba(197,179,88,0.4);
+    }
+    .corner-br {
+      bottom: 20px; right: 20px;
+      border-bottom: 2px solid rgba(197,179,88,0.4);
+      border-right: 2px solid rgba(197,179,88,0.4);
+    }
+
+    .content {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      height: 100%;
+      padding: 50px 60px;
+    }
+
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .right {
+      width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .tag {
+      font-size: 11px;
+      letter-spacing: 6px;
+      color: #C5B358;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 82px;
+      line-height: 0.92;
+      color: #F8F7F4;
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+    }
+
+    .title .gold { color: #C5B358; }
+
+    .title .thin {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 48px;
+      letter-spacing: 8px;
+      display: block;
+      margin-top: 4px;
+      color: rgba(248,247,244,0.5);
+    }
+
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: #C5B358;
+      margin: 20px 0;
+    }
+
+    .details {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      color: rgba(248,247,244,0.6);
+      font-weight: 400;
+    }
+
+    .detail-row svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      color: #C5B358;
+    }
+
+    .detail-row strong {
+      color: #F8F7F4;
+      font-weight: 600;
+    }
+
+    .logo-fantasma {
+      width: 220px;
+      height: 220px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 30px rgba(197,179,88,0.15));
+    }
+
+    .price-badge {
+      background: rgba(197,179,88,0.08);
+      border: 1px solid rgba(197,179,88,0.2);
+      border-radius: 6px;
+      padding: 12px 28px;
+      text-align: center;
+    }
+
+    .price-badge .price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 2px;
+      color: #C5B358;
+    }
+
+    .price-badge .per {
+      font-size: 14px;
+      color: rgba(248,247,244,0.4);
+      margin-top: 2px;
+    }
+
+    .bottom-bar {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #C5B358, transparent);
+      z-index: 5;
+    }
+
+    .glow {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(197,179,88,0.06) 0%, transparent 70%);
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="grain"></div>
+    <div class="corner-tl"></div>
+    <div class="corner-br"></div>
+    <div class="glow"></div>
+    <div class="bottom-bar"></div>
+
+    <div class="content">
+      <div class="left">
+        <div class="tag">Summer Training Camp</div>
+        <div class="title">
+          FANTASMA<br>
+          <span class="gold">MINI CAMP</span>
+          <span class="thin">SUMMER 2026</span>
+        </div>
+        <div class="divider"></div>
+        <div class="details">
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span><strong>July 10–11, 2026</strong> · 9:00 AM – 11:30 AM</span>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Veterans Field, Murrysville, PA</span>
+          </div>
+          <div class="detail-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <span>Ages 7–10</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <img src="../public/fantasma_logo_final.png" alt="Fantasma" class="logo-fantasma" />
+        <div class="price-badge">
+          <div class="price">$100 / PLAYER</div>
+          <div class="per">2 days of elite training</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
