@@ -9,6 +9,37 @@ if (heroWraith) {
   }, 2400)
 }
 
+// --- Hero intro video play/pause ---
+const heroIntroVideo = document.getElementById('heroIntroVideo')
+const heroIntroPlayBtn = document.getElementById('heroIntroPlayBtn')
+if (heroIntroVideo && heroIntroPlayBtn) {
+  const pauseIcon = '<svg width="48" height="48" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+  const playIcon = '<svg width="48" height="48" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>'
+
+  function toggleVideo() {
+    if (heroIntroVideo.paused) {
+      heroIntroVideo.play()
+      heroIntroPlayBtn.innerHTML = pauseIcon
+      heroIntroPlayBtn.classList.add('is-playing')
+      heroIntroPlayBtn.setAttribute('aria-label', 'Pause video')
+    } else {
+      heroIntroVideo.pause()
+      heroIntroPlayBtn.innerHTML = playIcon
+      heroIntroPlayBtn.classList.remove('is-playing')
+      heroIntroPlayBtn.setAttribute('aria-label', 'Play video')
+    }
+  }
+
+  heroIntroPlayBtn.addEventListener('click', toggleVideo)
+  heroIntroVideo.addEventListener('click', toggleVideo)
+
+  heroIntroVideo.addEventListener('ended', () => {
+    heroIntroPlayBtn.innerHTML = playIcon
+    heroIntroPlayBtn.classList.remove('is-playing')
+    heroIntroPlayBtn.setAttribute('aria-label', 'Play video')
+  })
+}
+
 // --- Contact gold line reveal ---
 const goldLine = document.querySelector('.contact-gold-line')
 if (goldLine) {

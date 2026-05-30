@@ -454,6 +454,50 @@ body::after {
   object-fit: cover;
   border-radius: 24px;
   animation: fadeInUp 1.2s ease-out 0.5s both;
+  cursor: pointer;
+}
+
+.hero-intro-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: rgba(4,12,20,0.6);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  transition: all 0.3s ease;
+}
+
+.hero-intro-play-btn:hover {
+  background: rgba(197,179,88,0.7);
+  border-color: var(--gold);
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+.hero-intro-play-btn svg {
+  margin-left: 4px;
+}
+
+.hero-intro-play-btn.is-playing {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hero-visual-frame:hover .hero-intro-play-btn.is-playing {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-intro-play-btn.is-playing svg {
+  margin-left: 0;
 }
 
 .hero-visual-glow {
