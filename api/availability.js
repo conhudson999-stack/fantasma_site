@@ -10,7 +10,7 @@ const GENERAL_HOURS = {
   3: { start: 15, end: 20 },  // Wednesday
   4: { start: 15, end: 20 },  // Thursday
   5: { start: 15, end: 20 },  // Friday
-  6: { start: 9, end: 14 },   // Saturday 9am-2pm
+  6: { start: 7, end: 14 },   // Saturday 7am-2pm
 }
 
 const SESSION_DURATIONS = {
