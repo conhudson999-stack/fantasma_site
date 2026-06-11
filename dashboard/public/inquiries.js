@@ -2,7 +2,7 @@
    INQUIRY VIEWS
    ══════════════════════════════════════════════════════════════════════ */
 
-const STATUS_LABELS = { new: 'New', contacted: 'Contacted', booked: 'Booked', lost: 'Lost' };
+const STATUS_LABELS = { new: 'New', contacted: 'Contacted', booked: 'Booked/Active', lost: 'Lost' };
 const STATUS_ORDER = ['new', 'contacted', 'booked', 'lost'];
 const SOURCES = ['instagram', 'referral', 'google', 'contact_form', 'other'];
 const INTERESTS = ['1-on-1', 'small_group', 'camp', 'clinic', 'other'];
@@ -30,7 +30,7 @@ async function renderBoard() {
   }
 
   // Sort each column: overdue first, then soonest follow-up, then newest
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = todayLocal();
   for (const s of STATUS_ORDER) {
     grouped[s].sort((a, b) => {
       const aOverdue = a.follow_up_date && a.follow_up_date < todayStr ? 1 : 0;
@@ -58,14 +58,18 @@ async function renderBoard() {
     for (const inq of items) {
       const days = daysAgo(inq.created_at);
       const overdue = inq.follow_up_date && inq.follow_up_date < todayStr;
+      const moveTargets = STATUS_ORDER.filter(s => s !== status);
       html += `
         <div class="inquiry-card" data-id="${inq.id}">
-          <div class="inquiry-card-name">${inq.name}</div>
+          <div class="inquiry-card-name">${esc(inq.name)}</div>
           <div class="inquiry-card-meta">
             ${inq.interest ? `<span class="pill">${interestLabel(inq.interest)}</span>` : ''}
             ${inq.source ? `<span>${sourceLabel(inq.source)}</span>` : ''}
             <span>${days}d ago</span>
             ${inq.follow_up_date ? `<span class="pill ${overdue ? 'overdue' : ''}">Follow-up: ${formatDate(inq.follow_up_date)}</span>` : ''}
+          </div>
+          <div class="inquiry-card-actions">
+            ${moveTargets.map(t => `<button class="move-btn move-btn--${t}" data-id="${inq.id}" data-to="${t}">${STATUS_LABELS[t]}</button>`).join('')}
           </div>
         </div>
       `;
@@ -80,6 +84,16 @@ async function renderBoard() {
   html += '<div class="detail-panel" id="detail-panel"></div>';
 
   content.innerHTML = html;
+
+  // Move buttons
+  content.querySelectorAll('.move-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await api('PUT', `/api/inquiries/${btn.dataset.id}`, { status: btn.dataset.to });
+      refreshStats();
+      renderBoard();
+    });
+  });
 
   // Card click → open detail
   content.querySelectorAll('.inquiry-card').forEach(card => {
@@ -98,7 +112,7 @@ async function openDetailPanel(id) {
 
   panel.innerHTML = `
     <button class="detail-panel-close" id="close-panel">&times;</button>
-    <h2>${data.name}</h2>
+    <h2>${esc(data.name)}</h2>
 
     <div class="flex gap-16 mb-16">
       <div><span class="text-muted" style="font-size:11px">Created</span><br><strong>${daysSinceCreated}d ago</strong></div>
@@ -122,11 +136,11 @@ async function openDetailPanel(id) {
       <div class="form-row">
         <div class="form-group">
           <label>Email</label>
-          <input type="text" id="d-email" value="${data.email || ''}">
+          <input type="text" id="d-email" value="${esc(data.email || '')}">
         </div>
         <div class="form-group">
           <label>Phone</label>
-          <input type="text" id="d-phone" value="${data.phone || ''}">
+          <input type="text" id="d-phone" value="${esc(data.phone || '')}">
         </div>
       </div>
 
@@ -154,14 +168,14 @@ async function openDetailPanel(id) {
         </div>
         <div class="form-group">
           <label>Position</label>
-          <input type="text" id="d-position" value="${data.player_position || ''}">
+          <input type="text" id="d-position" value="${esc(data.player_position || '')}">
         </div>
       </div>
 
       ${data.message ? `
         <div class="form-group">
           <label>Message</label>
-          <textarea readonly style="background:var(--gray-100)">${data.message}</textarea>
+          <textarea readonly style="background:var(--gray-100)">${esc(data.message)}</textarea>
         </div>
       ` : ''}
     </div>
@@ -173,7 +187,7 @@ async function openDetailPanel(id) {
           <div class="note-item">
             <button class="note-delete" data-note-id="${n.id}">&times;</button>
             <div class="note-date">${formatDate(n.created_at.slice(0, 10))}</div>
-            <div class="note-text">${n.note}</div>
+            <div class="note-text">${esc(n.note)}</div>
           </div>
         `).join('')}
         ${(!data.notes || data.notes.length === 0) ? '<p class="text-muted" style="font-size:13px;padding:8px 0">No notes yet.</p>' : ''}
@@ -213,6 +227,9 @@ async function openDetailPanel(id) {
       const val = f.parse ? f.parse(el.value) : (el.value || null);
       await api('PUT', `/api/inquiries/${id}`, { [f.key]: val });
       refreshStats();
+      // Status change re-buckets the card; re-render the board but keep the
+      // detail panel open on the same inquiry instead of abruptly closing it.
+      if (f.key === 'status') { renderBoard(); openDetailPanel(id); }
     });
   }
 

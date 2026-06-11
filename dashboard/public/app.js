@@ -8,18 +8,36 @@ function formatCents(cents) {
 
 function formatDate(iso) {
   if (!iso) return '';
-  const d = new Date(iso + 'T00:00:00');
+  // Accept both date-only ('YYYY-MM-DD') and full ISO timestamps.
+  const d = new Date(iso.length <= 10 ? iso + 'T00:00:00' : iso);
+  if (isNaN(d.getTime())) return '';
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+// Local calendar date as 'YYYY-MM-DD'. Use this instead of
+// new Date().toISOString().slice(0,10), which returns the UTC date and
+// rolls over to "tomorrow" in the evening for US timezones.
+function todayLocal() {
+  const t = new Date();
+  return `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
 }
 
 function daysAgo(iso) {
   const d = new Date(iso);
   const now = new Date();
-  return Math.floor((now - d) / (1000 * 60 * 60 * 24));
+  return Math.max(0, Math.floor((now - d) / (1000 * 60 * 60 * 24)));
+}
+
+// Escape user-supplied text before interpolating into innerHTML.
+function esc(str) {
+  if (str === null || str === undefined) return '';
+  const div = document.createElement('div');
+  div.textContent = String(str);
+  return div.innerHTML;
 }
 
 async function api(method, path, body) {
-  const opts = { method, headers: {} };
+  const opts = { method, headers: {}, cache: 'no-store' };
   if (body) {
     opts.headers['Content-Type'] = 'application/json';
     opts.body = JSON.stringify(body);
@@ -42,6 +60,9 @@ const routes = {
   'board': () => renderBoard(),
   'add-inquiry': () => renderAddInquiry(),
   'accounts': () => renderAccounts(),
+  'financials': () => renderFinancials(),
+  'charts': () => renderCharts(),
+  'todos': () => renderTodos(),
 };
 
 function navigate() {

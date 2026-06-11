@@ -2,6 +2,8 @@
    ACCOUNTING VIEWS
    ══════════════════════════════════════════════════════════════════════ */
 
+const MILEAGE_RATE = 0.70; // IRS standard mileage rate ($/mile)
+
 let cachedAccounts = null;
 
 async function getAccounts() {
@@ -42,7 +44,7 @@ async function renderNewEntry(editId) {
     entry = await api('GET', `/api/journal-entries/${editId}`);
   }
 
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = todayLocal();
 
   content.innerHTML = `
     <h1 class="page-title">${entry ? 'EDIT ENTRY' : 'NEW ENTRY'}</h1>
@@ -59,10 +61,40 @@ async function renderNewEntry(editId) {
         </div>
       </div>
 
-      <div class="quick-btns">
+      <div class="classification-row">
+        <label class="classification-label">Classification</label>
+        <label class="classification-option">
+          <input type="radio" name="entry-classification" value="operations" ${!entry || entry.classification === 'operations' ? 'checked' : ''}>
+          <span class="classification-text">Normal Business Operations</span>
+        </label>
+        <label class="classification-option">
+          <input type="radio" name="entry-classification" value="tax" ${entry && entry.classification === 'tax' ? 'checked' : ''}>
+          <span class="classification-text">For Tax Implications</span>
+        </label>
+      </div>
+
+      <div class="quick-btns"${entry ? ' style="display:none"' : ''}>
         <button class="quick-btn" data-quick="training">Training Session</button>
         <button class="quick-btn" data-quick="field">Field Rental</button>
         <button class="quick-btn" data-quick="equipment">Equipment Purchase</button>
+        <button class="quick-btn" data-quick="mileage">Mileage Expense</button>
+      </div>
+
+      <div id="mileage-panel" style="display:none" class="mileage-panel">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Miles Driven</label>
+            <input type="number" id="mileage-miles" placeholder="0" min="0" step="0.1">
+          </div>
+          <div class="form-group">
+            <label>Amount ($)</label>
+            <input type="text" id="mileage-amount" placeholder="0.00">
+          </div>
+          <div class="form-group" style="align-self:flex-end">
+            <button class="btn btn-gold btn-sm" id="mileage-book">Book Mileage Entry</button>
+          </div>
+        </div>
+        <div class="text-muted" style="font-size:12px;margin-top:4px">Rate: $${MILEAGE_RATE.toFixed(2)}/mile — amount is editable if the rate changes</div>
       </div>
 
       <table class="line-table">
@@ -168,11 +200,83 @@ async function renderNewEntry(editId) {
       linesBody.innerHTML = '';
       addLine(equip.id, 0, 0);
       addLine(cash.id, 0, 0);
+    },
+    mileage: () => {
+      // Show mileage panel, hide the line-item table
+      $('#mileage-panel').style.display = '';
+      $('.line-table').style.display = 'none';
+      $('#add-row-btn').style.display = 'none';
+      $('#entry-totals').style.display = 'none';
+      $('#save-entry-btn').style.display = 'none';
+      $('#mileage-miles').value = '';
+      $('#mileage-amount').value = '';
+      $('#mileage-miles').focus();
+      return; // skip recalc
     }
   };
 
+  // Mileage panel logic
+  $('#mileage-miles').addEventListener('input', () => {
+    const miles = parseFloat($('#mileage-miles').value) || 0;
+    $('#mileage-amount').value = (miles * MILEAGE_RATE).toFixed(2);
+  });
+
+  $('#mileage-book').addEventListener('click', async () => {
+    const miles = parseFloat($('#mileage-miles').value) || 0;
+    if (miles <= 0) {
+      $('#entry-msg').innerHTML = '<div class="msg msg-error">Enter miles driven.</div>';
+      return;
+    }
+
+    const amount = parseDollars($('#mileage-amount').value);
+    if (amount <= 0) {
+      $('#entry-msg').innerHTML = '<div class="msg msg-error">Amount must be greater than zero.</div>';
+      return;
+    }
+
+    const mileageAcct = accounts.find(a => a.code === '5100');
+    const cashAcct = accounts.find(a => a.code === '1000');
+    if (!mileageAcct || !cashAcct) {
+      $('#entry-msg').innerHTML = '<div class="msg msg-error">Mileage Expense (5100) or Cash (1000) account not found. Add the account first.</div>';
+      return;
+    }
+
+    const mileageClassification = document.querySelector('input[name="entry-classification"]:checked')?.value;
+    if (!mileageClassification) {
+      $('#entry-msg').innerHTML = '<div class="msg msg-error">Select a classification before booking mileage.</div>';
+      return;
+    }
+
+    try {
+      await api('POST', '/api/journal-entries', {
+        date: $('#entry-date').value,
+        memo: `Mileage: ${miles} miles @ $${MILEAGE_RATE.toFixed(2)}/mi`,
+        classification: mileageClassification,
+        lines: [
+          { account_id: mileageAcct.id, debit: amount, credit: 0 },
+          { account_id: cashAcct.id, debit: 0, credit: amount }
+        ]
+      });
+      refreshStats();
+      $('#entry-msg').innerHTML = '<div class="msg msg-success">Mileage entry saved.</div>';
+      // Reset mileage panel
+      $('#mileage-miles').value = '';
+      $('#mileage-amount').value = '';
+    } catch (e) {
+      $('#entry-msg').innerHTML = `<div class="msg msg-error">${e.message}</div>`;
+    }
+  });
+
   content.querySelectorAll('.quick-btn').forEach(btn => {
     btn.addEventListener('click', () => {
+      // Reset: show line table, hide mileage panel
+      if (btn.dataset.quick !== 'mileage') {
+        $('#mileage-panel').style.display = 'none';
+        $('.line-table').style.display = '';
+        $('#add-row-btn').style.display = '';
+        $('#entry-totals').style.display = '';
+        $('#save-entry-btn').style.display = '';
+      }
       const fn = quickMap[btn.dataset.quick];
       if (fn) fn();
       recalc();
@@ -196,9 +300,16 @@ async function renderNewEntry(editId) {
       return;
     }
 
+    const classification = document.querySelector('input[name="entry-classification"]:checked')?.value;
+    if (!classification) {
+      $('#entry-msg').innerHTML = '<div class="msg msg-error">Select a classification (Normal Business Operations or For Tax Implications).</div>';
+      return;
+    }
+
     const body = {
       date: $('#entry-date').value,
       memo: $('#entry-memo').value,
+      classification,
       lines
     };
 
@@ -255,6 +366,7 @@ async function renderJournal() {
           <tr>
             <th>Date</th>
             <th>Memo</th>
+            <th class="text-center">Class</th>
             <th class="text-right">Amount</th>
             <th class="text-center">Lines</th>
             <th></th>
@@ -279,16 +391,19 @@ async function renderJournal() {
     tbody.innerHTML = '';
 
     if (entries.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted" style="padding:24px">No entries found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted" style="padding:24px">No entries found.</td></tr>';
       return;
     }
 
     for (const e of entries) {
       const tr = document.createElement('tr');
       tr.style.cursor = 'pointer';
+      const classLabel = e.classification === 'tax' ? 'TAX' : 'OPS';
+      const classCls = e.classification === 'tax' ? 'pill-tax' : 'pill-ops';
       tr.innerHTML = `
         <td>${formatDate(e.date)}</td>
         <td>${e.memo}</td>
+        <td class="text-center"><span class="pill ${classCls}">${classLabel}</span></td>
         <td class="text-right">${formatCents(e.total_amount)}</td>
         <td class="text-center">${e.line_count}</td>
         <td class="text-right">
@@ -301,7 +416,7 @@ async function renderJournal() {
       const expandTr = document.createElement('tr');
       expandTr.className = 'expand-row';
       expandTr.style.display = 'none';
-      expandTr.innerHTML = '<td colspan="5" id="expand-' + e.id + '" style="padding:0 12px 12px 24px"></td>';
+      expandTr.innerHTML = '<td colspan="6" id="expand-' + e.id + '" style="padding:0 12px 12px 24px"></td>';
 
       tr.addEventListener('click', async (ev) => {
         if (ev.target.closest('.edit-btn') || ev.target.closest('.del-btn')) return;
@@ -391,16 +506,36 @@ async function renderLedger() {
       const detail = await api('GET', `/api/journal-entries/${e.id}`);
       for (const l of detail.lines) {
         if (l.account_id == accountId) {
-          rows.push({ date: e.date, memo: e.memo, debit: l.debit, credit: l.credit });
+          rows.push({ date: e.date, entryId: e.id, lineId: l.id, memo: e.memo, debit: l.debit, credit: l.credit });
         }
       }
     }
 
-    // Sort by date
-    rows.sort((a, b) => a.date.localeCompare(b.date));
+    // Sort chronologically with a stable tiebreak (entry id, then line id),
+    // so same-day rows are ordered consistently with the running balance.
+    rows.sort((a, b) =>
+      a.date.localeCompare(b.date) || (a.entryId - b.entryId) || (a.lineId - b.lineId)
+    );
+
+    // Opening balance: when a From date is set, seed the running balance with
+    // the account's true balance as of the day before, so "Balance" reflects
+    // the real account balance rather than just the period's net change.
+    let opening = 0;
+    if (from) {
+      const d = new Date(from + 'T00:00:00');
+      d.setDate(d.getDate() - 1);
+      const prevDay = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+      const tb = await api('GET', `/api/reports/trial-balance?as_of=${prevDay}`);
+      const ta = tb.accounts.find(x => x.id == accountId);
+      if (ta) {
+        opening = account.normal_side === 'debit'
+          ? ta.debit_balance - ta.credit_balance
+          : ta.credit_balance - ta.debit_balance;
+      }
+    }
 
     // Compute running balance
-    let balance = 0;
+    let balance = opening;
     let totalDebit = 0;
     let totalCredit = 0;
     for (const r of rows) {
@@ -418,8 +553,8 @@ async function renderLedger() {
       <div class="card">
         <div class="flex justify-between items-center mb-16">
           <div>
-            <span style="font-size:13px;color:var(--gray-500)">${account.code}</span>
-            <h2 class="card-title">${account.name}</h2>
+            <span style="font-size:13px;color:var(--gray-500)">${esc(account.code)}</span>
+            <h2 class="card-title">${esc(account.name)}</h2>
           </div>
           <div class="flex gap-16" style="text-align:center">
             <div><div class="text-muted" style="font-size:11px;text-transform:uppercase">Total Debits</div><div style="font-weight:600">${formatCents(totalDebit)}</div></div>
@@ -434,13 +569,21 @@ async function renderLedger() {
           <tbody>
     `;
 
-    if (rows.length === 0) {
+    if (from) {
+      html += `<tr style="color:var(--gray-500)">
+        <td>${formatDate(from)}</td>
+        <td><em>Opening balance</em></td>
+        <td></td><td></td>
+        <td class="text-right" style="font-weight:600">${formatCents(opening)}</td>
+      </tr>`;
+    }
+    if (rows.length === 0 && !from) {
       html += '<tr><td colspan="5" class="text-center text-muted" style="padding:24px">No transactions found.</td></tr>';
     } else {
       for (const r of rows) {
         html += `<tr>
           <td>${formatDate(r.date)}</td>
-          <td>${r.memo}</td>
+          <td>${esc(r.memo)}</td>
           <td class="text-right">${r.debit ? formatCents(r.debit) : ''}</td>
           <td class="text-right">${r.credit ? formatCents(r.credit) : ''}</td>
           <td class="text-right" style="font-weight:600">${formatCents(r.balance)}</td>
@@ -459,7 +602,7 @@ async function renderLedger() {
 /* ── Reports ─────────────────────────────────────────────────────── */
 async function renderReports() {
   const content = $('#content');
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const todayStr = todayLocal();
   const monthStart = todayStr.slice(0, 7) + '-01';
 
   content.innerHTML = `
@@ -715,4 +858,216 @@ async function renderAccounts() {
       if (e.key === 'Enter') { e.preventDefault(); cell.blur(); }
     });
   });
+}
+
+/* ── Financial Statements ────────────────────────────────────────── */
+async function renderFinancials() {
+  const content = $('#content');
+  const todayStr = todayLocal();
+  const monthStart = todayStr.slice(0, 7) + '-01';
+
+  content.innerHTML = `
+    <h1 class="page-title">FINANCIAL STATEMENTS</h1>
+    <div class="filter-bar">
+      <div class="form-group">
+        <label>Statement</label>
+        <select id="fs-type" style="min-width:240px">
+          <option value="income-statement">Income Statement</option>
+          <option value="balance-sheet">Balance Sheet</option>
+          <option value="cash-flow">Statement of Cash Flows</option>
+        </select>
+      </div>
+      <div class="form-group" id="fs-from-group">
+        <label>From</label>
+        <input type="date" id="fs-from" value="${monthStart}">
+      </div>
+      <div class="form-group" id="fs-to-group">
+        <label>To</label>
+        <input type="date" id="fs-to" value="${todayStr}">
+      </div>
+      <div class="form-group" id="fs-asof-group" style="display:none">
+        <label>As of</label>
+        <input type="date" id="fs-asof" value="${todayStr}">
+      </div>
+      <div class="form-group">
+        <label>Classification</label>
+        <div class="classification-toggle">
+          <button class="class-toggle-btn active" data-class="">Both</button>
+          <button class="class-toggle-btn" data-class="operations">Operations</button>
+          <button class="class-toggle-btn" data-class="tax">Tax</button>
+        </div>
+      </div>
+      <button class="btn btn-navy btn-sm" id="fs-run">Generate</button>
+    </div>
+    <div id="fs-body"></div>
+  `;
+
+  let activeClassification = '';
+
+  // Classification toggle buttons
+  content.querySelectorAll('.class-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      content.querySelectorAll('.class-toggle-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeClassification = btn.dataset.class;
+      generate();
+    });
+  });
+
+  function updateFilters() {
+    const type = $('#fs-type').value;
+    if (type === 'balance-sheet') {
+      $('#fs-from-group').style.display = 'none';
+      $('#fs-to-group').style.display = 'none';
+      $('#fs-asof-group').style.display = '';
+    } else {
+      $('#fs-from-group').style.display = '';
+      $('#fs-to-group').style.display = '';
+      $('#fs-asof-group').style.display = 'none';
+    }
+  }
+
+  async function generate() {
+    const type = $('#fs-type').value;
+    const body = $('#fs-body');
+    try {
+
+    const classParam = activeClassification ? `&classification=${activeClassification}` : '';
+
+    if (type === 'income-statement') {
+      const from = $('#fs-from').value;
+      const to = $('#fs-to').value;
+      const data = await api('GET', `/api/reports/income-statement?from=${from}&to=${to}${classParam}`);
+
+      let html = `
+        <div class="card">
+          <div class="text-center mb-16">
+            <h2 class="card-title" style="font-size:28px;margin-bottom:0">FANTASMA FOOTBALL</h2>
+            <div style="font-family:Bebas Neue;font-size:20px;color:var(--gold);letter-spacing:1px">INCOME STATEMENT</div>
+            <div class="text-muted" style="font-size:13px">For the period ${formatDate(from)} — ${formatDate(to)}</div>
+            ${activeClassification ? `<div class="classification-badge">${activeClassification === 'operations' ? 'Normal Business Operations' : 'Tax Implications'} Only</div>` : ''}
+          </div>
+          <table>
+            <tbody>
+              <tr><td colspan="2" class="report-section-title">REVENUE</td></tr>
+      `;
+      for (const a of data.revenue) {
+        if (a.balance === 0) continue;
+        html += `<tr><td style="padding-left:32px">${a.name}</td><td class="text-right">${formatCents(a.balance)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">TOTAL REVENUE</td><td class="text-right">${formatCents(data.totalRevenue)}</td></tr>`;
+
+      html += '<tr><td colspan="2" class="report-section-title">EXPENSES</td></tr>';
+      for (const a of data.expenses) {
+        if (a.balance === 0) continue;
+        html += `<tr><td style="padding-left:32px">${a.name}</td><td class="text-right">${formatCents(a.balance)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">TOTAL EXPENSES</td><td class="text-right">${formatCents(data.totalExpenses)}</td></tr>`;
+      html += `<tr class="report-net-row"><td>NET INCOME</td><td class="text-right">${formatCents(data.netIncome)}</td></tr>`;
+      html += '</tbody></table></div>';
+      body.innerHTML = html;
+
+    } else if (type === 'balance-sheet') {
+      const asOf = $('#fs-asof').value;
+      const data = await api('GET', `/api/reports/balance-sheet?as_of=${asOf}${classParam}`);
+
+      let html = `
+        <div class="card">
+          <div class="text-center mb-16">
+            <h2 class="card-title" style="font-size:28px;margin-bottom:0">FANTASMA FOOTBALL</h2>
+            <div style="font-family:Bebas Neue;font-size:20px;color:var(--gold);letter-spacing:1px">BALANCE SHEET</div>
+            <div class="text-muted" style="font-size:13px">As of ${formatDate(asOf)}</div>
+            ${activeClassification ? `<div class="classification-badge">${activeClassification === 'operations' ? 'Normal Business Operations' : 'Tax Implications'} Only</div>` : ''}
+          </div>
+          <table><tbody>
+            <tr><td colspan="2" class="report-section-title">ASSETS</td></tr>
+      `;
+      for (const a of data.assets) {
+        if (a.balance === 0) continue;
+        html += `<tr><td style="padding-left:32px">${a.name}</td><td class="text-right">${formatCents(a.balance)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">TOTAL ASSETS</td><td class="text-right">${formatCents(data.totalAssets)}</td></tr>`;
+
+      html += '<tr><td colspan="2" class="report-section-title">LIABILITIES</td></tr>';
+      for (const a of data.liabilities) {
+        if (a.balance === 0) continue;
+        html += `<tr><td style="padding-left:32px">${a.name}</td><td class="text-right">${formatCents(a.balance)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">TOTAL LIABILITIES</td><td class="text-right">${formatCents(data.totalLiabilities)}</td></tr>`;
+
+      html += '<tr><td colspan="2" class="report-section-title">EQUITY</td></tr>';
+      for (const a of data.equity) {
+        if (a.balance === 0) continue;
+        html += `<tr><td style="padding-left:32px">${a.name}</td><td class="text-right">${formatCents(a.balance)}</td></tr>`;
+      }
+      if (data.netIncome !== 0) {
+        html += `<tr><td style="padding-left:32px">Net Income</td><td class="text-right">${formatCents(data.netIncome)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">TOTAL EQUITY</td><td class="text-right">${formatCents(data.totalEquity)}</td></tr>`;
+      html += `<tr class="report-net-row"><td>TOTAL LIABILITIES + EQUITY</td><td class="text-right">${formatCents(data.totalLiabilities + data.totalEquity)}</td></tr>`;
+      html += '</tbody></table></div>';
+      body.innerHTML = html;
+
+    } else if (type === 'cash-flow') {
+      const from = $('#fs-from').value;
+      const to = $('#fs-to').value;
+      const data = await api('GET', `/api/reports/cash-flow?from=${from}&to=${to}${classParam}`);
+
+      let html = `
+        <div class="card">
+          <div class="text-center mb-16">
+            <h2 class="card-title" style="font-size:28px;margin-bottom:0">FANTASMA FOOTBALL</h2>
+            <div style="font-family:Bebas Neue;font-size:20px;color:var(--gold);letter-spacing:1px">STATEMENT OF CASH FLOWS</div>
+            <div class="text-muted" style="font-size:13px">For the period ${formatDate(from)} — ${formatDate(to)}</div>
+            ${activeClassification ? `<div class="classification-badge">${activeClassification === 'operations' ? 'Normal Business Operations' : 'Tax Implications'} Only</div>` : ''}
+          </div>
+          <table><tbody>
+            <tr><td colspan="2" class="report-section-title">CASH FLOWS FROM OPERATING ACTIVITIES</td></tr>
+      `;
+      for (const item of data.operating) {
+        if (item.amount === 0) continue;
+        html += `<tr><td style="padding-left:32px">${item.name}</td><td class="text-right">${formatCents(item.amount)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">NET CASH FROM OPERATIONS</td><td class="text-right">${formatCents(data.totalOperating)}</td></tr>`;
+
+      html += '<tr><td colspan="2" class="report-section-title">CASH FLOWS FROM INVESTING ACTIVITIES</td></tr>';
+      if (data.investing.length === 0) {
+        html += '<tr><td style="padding-left:32px" class="text-muted">None</td><td></td></tr>';
+      }
+      for (const item of data.investing) {
+        if (item.amount === 0) continue;
+        html += `<tr><td style="padding-left:32px">${item.name}</td><td class="text-right">${formatCents(item.amount)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">NET CASH FROM INVESTING</td><td class="text-right">${formatCents(data.totalInvesting)}</td></tr>`;
+
+      html += '<tr><td colspan="2" class="report-section-title">CASH FLOWS FROM FINANCING ACTIVITIES</td></tr>';
+      if (data.financing.length === 0) {
+        html += '<tr><td style="padding-left:32px" class="text-muted">None</td><td></td></tr>';
+      }
+      for (const item of data.financing) {
+        if (item.amount === 0) continue;
+        html += `<tr><td style="padding-left:32px">${item.name}</td><td class="text-right">${formatCents(item.amount)}</td></tr>`;
+      }
+      html += `<tr class="report-total-row"><td style="padding-left:16px">NET CASH FROM FINANCING</td><td class="text-right">${formatCents(data.totalFinancing)}</td></tr>`;
+
+      html += `
+        <tr style="height:16px"><td colspan="2"></td></tr>
+        <tr class="report-net-row"><td>NET CHANGE IN CASH</td><td class="text-right">${formatCents(data.netChange)}</td></tr>
+        <tr><td style="padding-left:16px">Beginning Cash Balance</td><td class="text-right">${formatCents(data.beginningCash)}</td></tr>
+        <tr class="report-total-row"><td style="padding-left:16px">ENDING CASH BALANCE</td><td class="text-right">${formatCents(data.endingCash)}</td></tr>
+      `;
+      html += '</tbody></table></div>';
+      body.innerHTML = html;
+    }
+    } catch (e) {
+      console.error('Financial statement error:', e);
+      body.innerHTML = `<div class="card"><p style="color:#e74c3c">Error generating statement: ${e.message}</p></div>`;
+    }
+  }
+
+  $('#fs-type').addEventListener('change', () => { updateFilters(); generate(); });
+  $('#fs-run').addEventListener('click', generate);
+
+  updateFilters();
+  generate();
 }
