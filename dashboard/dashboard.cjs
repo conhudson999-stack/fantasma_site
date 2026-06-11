@@ -9,7 +9,10 @@ app.use(express.json());
 
 auth.mountAuth(app);        // /api/login, /api/logout — must be BEFORE requireAuth
 app.use(auth.requireAuth);  // everything below requires a valid cookie
-app.use(express.static(path.join(__dirname, 'public')));
+// Served from 'static/' (NOT 'public/') so Vercel does not auto-serve these files
+// from its CDN, which would bypass requireAuth. All requests route through the
+// function and are gated, then Express serves the assets.
+app.use(express.static(path.join(__dirname, 'static')));
 
 // ── Helpers ───────────────────────────────────────────────────────────
 function now() {

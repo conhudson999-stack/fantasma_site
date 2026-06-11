@@ -23,6 +23,7 @@
     { "code": "5060", "name": "Phone & Communication", "type": "expense", "normal_side": "debit" },
     { "code": "5070", "name": "Meals & Entertainment", "type": "expense", "normal_side": "debit" },
     { "code": "5080", "name": "Professional Development", "type": "expense", "normal_side": "debit" },
-    { "code": "5090", "name": "Miscellaneous Expense", "type": "expense", "normal_side": "debit" }
+    { "code": "5090", "name": "Miscellaneous Expense", "type": "expense", "normal_side": "debit" },
+    { "code": "5100", "name": "Mileage Expense", "type": "expense", "normal_side": "debit" }
   ]
 }
