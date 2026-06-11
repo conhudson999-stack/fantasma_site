@@ -16,7 +16,7 @@ if (fs.existsSync(envPath)) {
 
 const seed = require('./seed.json');
 
-async function setupSchema(target) {
+async function setupSchema(target, doSeed) {
   await target.executeMultiple(`
     CREATE TABLE IF NOT EXISTS accounts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -71,6 +71,11 @@ async function setupSchema(target) {
     console.log('Added classification column');
   }
 
+  // Seeding only happens when bootstrapping a fresh local DB. When migrating to
+  // an empty Turso DB we copy ALL tables (including accounts) faithfully from the
+  // local source instead, so account ids/rows are preserved for journal_lines FKs.
+  if (!doSeed) return;
+
   // Seed accounts if empty.
   const cnt = (await target.execute('SELECT COUNT(*) AS c FROM accounts')).rows[0].c;
   if (Number(cnt) === 0) {
@@ -111,7 +116,9 @@ async function copyRows(source, target) {
     ? createClient({ url: tursoUrl, authToken: process.env.TURSO_AUTH_TOKEN })
     : createClient({ url: `file:${path.join(__dirname, 'fantasma.db')}` });
 
-  await setupSchema(target);
+  // Seed only when bootstrapping a fresh LOCAL db; when migrating to Turso we copy
+  // everything (accounts included) from the local source to preserve ids.
+  await setupSchema(target, !tursoUrl);
 
   // If migrating to Turso, copy from the existing local file DB.
   if (tursoUrl) {
