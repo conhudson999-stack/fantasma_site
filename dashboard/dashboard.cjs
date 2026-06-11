@@ -1,10 +1,14 @@
 const path = require('path');
 const express = require('express');
 const db = require('./db');
+const auth = require('./auth');
 
 // ── Express App ───────────────────────────────────────────────────────
 const app = express();
 app.use(express.json());
+
+auth.mountAuth(app);        // /api/login, /api/logout — must be BEFORE requireAuth
+app.use(auth.requireAuth);  // everything below requires a valid cookie
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Helpers ───────────────────────────────────────────────────────────
