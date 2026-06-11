@@ -6,6 +6,23 @@ Live site: https://fantasmafootball.com
 Vercel dashboard: https://vercel.com/connor-hudsons-projects/fantasma-site
 Instagram: @fantasmafootball
 
+## Bookkeeping / Inquiry Dashboard (`dashboard/`)
+Private double-entry bookkeeping + inquiry CRM + to-do app. Lives in `dashboard/`,
+deployed as its **own separate Vercel project** (Root Directory = `dashboard/`),
+NOT part of the public site.
+- **Live (private):** https://dashboard.fantasmafootball.com — single-password login.
+- **Database:** Turso (libSQL cloud SQLite). One module `dashboard/db.js` targets Turso
+  in prod (`TURSO_DATABASE_URL`/`TURSO_AUTH_TOKEN`) and a local `file:fantasma.db` in dev.
+- **Runtime:** the whole Express app (`dashboard/dashboard.cjs`) runs as ONE Vercel
+  function via `dashboard/api/index.js` (catch-all rewrite in `dashboard/vercel.json`).
+- **Auth:** `dashboard/auth.js` — HMAC-signed cookie; env vars `DASHBOARD_PASSWORD`,
+  `SESSION_SECRET`. Frontend assets live in `dashboard/static/` (NOT `public/`, or
+  Vercel would serve them un-gated from its CDN).
+- **Run locally:** `node dashboard/dashboard.cjs` (uses local `file:` DB).
+- **One-time DB setup / data migration:** `node dashboard/migrate.cjs` (idempotent;
+  seeds a fresh local DB, or copies all local rows into Turso when `TURSO_*` env is set).
+- **Tests:** `node --test dashboard/test/db.test.js dashboard/test/auth.test.js`.
+
 ## Tech Stack
 - Vite 7.x (vanilla HTML/CSS/JS, no framework)
 - Vercel (static + serverless functions in `api/`)
