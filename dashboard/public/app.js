@@ -43,6 +43,11 @@ async function api(method, path, body) {
     opts.body = JSON.stringify(body);
   }
   const res = await fetch(path, opts);
+  if (res.status === 401) {
+    // Session expired mid-use: reload so the server serves the login page.
+    location.reload();
+    throw new Error('Unauthorized');
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
