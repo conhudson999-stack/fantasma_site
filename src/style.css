@@ -2316,6 +2316,24 @@ body::after {
   filter: brightness(0.95);
 }
 
+/* Logo variant — show the Fantasma stamp instead of a photo */
+.testimonial-photo--logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 42%, rgba(197, 179, 88, 0.06), rgba(255, 255, 255, 0.01));
+  border-bottom: 1px solid rgba(197, 179, 88, 0.12);
+}
+
+.testimonial-photo--logo img,
+.testimonial-card:hover .testimonial-photo--logo img {
+  width: auto;
+  height: 150px;
+  object-fit: contain;
+  object-position: center;
+  filter: none;
+}
+
 .testimonial-content {
   padding: 32px;
 }
