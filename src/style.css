@@ -2277,12 +2277,14 @@ body::after {
 }
 
 .testimonials-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
 }
 
 .testimonial-card {
+  width: calc(25% - 18px);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(197, 179, 88, 0.12);
   border-radius: 4px;
@@ -2359,9 +2361,12 @@ body::after {
 
 @media (max-width: 1024px) {
   .testimonials-grid {
-    grid-template-columns: 1fr;
     max-width: 600px;
     margin: 0 auto;
+  }
+
+  .testimonial-card {
+    width: 100%;
   }
 }
 
