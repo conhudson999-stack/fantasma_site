@@ -114,17 +114,18 @@ function renderCalendar() {
     const date = new Date(state.currentYear, state.currentMonth, day)
     date.setHours(0, 0, 0, 0)
 
-    const isSunday = date.getDay() === 0
     const isPast = date < today
     const isToday = date.getTime() === today.getTime()
     const isSelected = state.selectedDate && date.getTime() === state.selectedDate.getTime()
 
+    // Any non-past day is selectable; the availability API decides which days
+    // actually have open slots (e.g. a closed day returns an empty slot list).
     let classes = 'calendar-day'
-    if (isSunday || isPast) classes += ' calendar-day--disabled'
-    if (isToday && !isSunday) classes += ' calendar-day--today'
+    if (isPast) classes += ' calendar-day--disabled'
+    if (isToday) classes += ' calendar-day--today'
     if (isSelected) classes += ' calendar-day--selected'
 
-    const attrs = (isSunday || isPast)
+    const attrs = isPast
       ? 'aria-disabled="true"'
       : `role="button" tabindex="0" aria-label="${formatDate(date)}" data-day="${day}"`
 
