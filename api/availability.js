@@ -4,7 +4,7 @@ const TIMEZONE = 'America/New_York'
 
 // General available hours per day of week (0=Sun, 1=Mon, ..., 6=Sat)
 const GENERAL_HOURS = {
-  0: null,                     // Sunday — closed
+  0: { start: 7, end: 10 },    // Sunday 7am-10am (last 1-on-1 start 9am)
   1: { start: 15, end: 20 },  // Monday 3pm-8pm
   2: { start: 15, end: 20 },  // Tuesday
   3: { start: 15, end: 20 },  // Wednesday
