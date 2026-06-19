@@ -5,11 +5,11 @@ const TIMEZONE = 'America/New_York'
 
 const GENERAL_HOURS = {
   0: { start: 7, end: 10 },
-  1: { start: 15, end: 20 },
-  2: { start: 15, end: 20 },
-  3: { start: 15, end: 20 },
-  4: { start: 15, end: 20 },
-  5: { start: 15, end: 20 },
+  1: { start: 15, end: 21 },
+  2: { start: 15, end: 21 },
+  3: { start: 15, end: 21 },
+  4: { start: 15, end: 21 },
+  5: { start: 15, end: 21 },
   6: { start: 9, end: 14 },
 }
 
