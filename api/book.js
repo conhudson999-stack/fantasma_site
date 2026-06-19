@@ -15,7 +15,7 @@ const GENERAL_HOURS = {
 
 const SESSION_DURATIONS = {
   '1-on-1': 60,
-  'small-group': 90,
+  'small-group': 60,
 }
 
 const SESSION_LABELS = {

@@ -14,7 +14,7 @@ const SESSION_LABELS = {
 
 const SESSION_DURATIONS = {
   '1-on-1': '1 hour',
-  'small-group': '1.5 hours'
+  'small-group': '1 hour'
 }
 
 const COACH_NAMES = {

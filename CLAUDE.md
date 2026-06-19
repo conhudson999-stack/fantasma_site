@@ -91,8 +91,8 @@ const envPath = fs.existsSync(path.join(__dirname, '..', '.env.local'))
 
 ## Booking System
 - 1-on-1: 60 min sessions, $50/session
-- Small group: 90 min sessions, $40/player/session
-- Available: Mon–Fri 3–8pm, Sat 9am–2pm, Sun closed
+- Small group: 60 min sessions, $40/player/session
+- Available: Mon–Fri 3–8pm, Sat 9am–2pm, Sun 7am–10am (last slot 9am)
 
 ## Contact
 - Email: conhudbusiness@gmail.com
