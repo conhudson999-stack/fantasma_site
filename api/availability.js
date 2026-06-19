@@ -126,33 +126,11 @@ export default async function handler(req, res) {
 
     const busyPeriods = freeBusyRes.data.calendars[calendarId]?.busy || []
 
-    // Also query events to find "Work" events and add 30-min buffer
-    let workBuffers = []
-    try {
-      const eventsRes = await calendar.events.list({
-        calendarId: calendarId,
-        timeMin: windowStart,
-        timeMax: windowEnd,
-        singleEvents: true,
-        orderBy: 'startTime',
-      })
-      const events = eventsRes.data.items || []
-      workBuffers = events
-        .filter(e => (e.summary || '').toLowerCase().trim() === 'work')
-        .map(e => {
-          const end = new Date(e.end.dateTime || e.end.date)
-          const bufferEnd = new Date(end.getTime() + 30 * 60 * 1000)
-          return { start: end, end: bufferEnd }
-        })
-    } catch (_) {
-      // If events.list fails (permissions), just skip the buffer
-    }
-
-    // Combine busy periods with work buffers
-    const blockedPeriods = [
-      ...busyPeriods.map(b => ({ start: new Date(b.start), end: new Date(b.end) })),
-      ...workBuffers,
-    ]
+    // Events (including "Work") block only the time they actually occupy. There
+    // is no extra post-event buffer: a session can be booked as soon as a busy
+    // period ends, so e.g. work ending by 5pm leaves the 5pm slot open. This
+    // matches book.js, which validates a booking against busy time alone.
+    const blockedPeriods = busyPeriods.map(b => ({ start: new Date(b.start), end: new Date(b.end) }))
 
     // Generate all possible slots at 1-hour intervals
     const slots = []
