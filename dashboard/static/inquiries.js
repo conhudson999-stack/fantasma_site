@@ -121,6 +121,13 @@ async function openDetailPanel(id) {
 
     <div class="detail-section">
       <div class="form-row">
+        <div class="form-group" style="flex:1">
+          <label>Name</label>
+          <input type="text" id="d-name" value="${esc(data.name || '')}">
+        </div>
+      </div>
+
+      <div class="form-row">
         <div class="form-group">
           <label>Status</label>
           <select id="d-status">
@@ -207,6 +214,24 @@ async function openDetailPanel(id) {
 
   // Close
   $('#close-panel').addEventListener('click', () => panel.classList.remove('open'));
+
+  // Name has its own handler: it must not be saved blank, and on save it
+  // updates both the heading and the board card.
+  const nameEl = $('#d-name');
+  let lastName = data.name || '';
+  nameEl.addEventListener('change', async () => {
+    const val = nameEl.value.trim();
+    if (!val) { nameEl.value = lastName; return; }
+    if (val === lastName) return;
+    lastName = val;
+    nameEl.value = val;
+    await api('PUT', `/api/inquiries/${id}`, { name: val });
+    const heading = panel.querySelector('h2');
+    if (heading) heading.textContent = val;
+    // Update the matching board card in place so we don't wipe the open panel.
+    const cardName = document.querySelector(`.inquiry-card[data-id="${id}"] .inquiry-card-name`);
+    if (cardName) cardName.textContent = val;
+  });
 
   // Auto-save on field change
   const fields = [
