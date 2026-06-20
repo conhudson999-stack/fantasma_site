@@ -124,10 +124,10 @@ function bookingConfirmationHTML(name, sessionLabel, datePretty, time12, duratio
             <td style="padding:8px 0;font-size:12px;letter-spacing:2px;color:rgba(248,247,244,0.4);border-top:1px solid rgba(255,255,255,0.05)">DURATION</td>
             <td style="padding:8px 0;font-size:15px;color:#F8F7F4;font-weight:600;text-align:right;border-top:1px solid rgba(255,255,255,0.05)">${durationLabel}</td>
           </tr>
-          <tr>
+          ${location ? `<tr>
             <td style="padding:8px 0;font-size:12px;letter-spacing:2px;color:rgba(248,247,244,0.4);border-top:1px solid rgba(255,255,255,0.05)">LOCATION</td>
             <td style="padding:8px 0;font-size:15px;color:#F8F7F4;font-weight:600;text-align:right;border-top:1px solid rgba(255,255,255,0.05)">${location}</td>
-          </tr>
+          </tr>` : ''}
         </table>
       </div>
 
@@ -171,7 +171,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'All fields are required.' })
   }
 
-  if (!location || !VALID_LOCATIONS.includes(location)) {
+  if (coach !== 'colton' && (!location || !VALID_LOCATIONS.includes(location))) {
     return res.status(400).json({ error: 'Please select a valid training location.' })
   }
 

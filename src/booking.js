@@ -60,6 +60,7 @@ const confirmationDetails = document.getElementById('confirmationDetails')
 const bookAnotherBtn = document.getElementById('bookAnotherBtn')
 const slotsPanel = document.getElementById('slotsPanel')
 const locationPicker = document.getElementById('locationPicker')
+const locationPickerGroup = document.getElementById('locationPickerGroup')
 
 // --- Utility: format 24h time to 12h ---
 function formatTime(time24) {
@@ -222,7 +223,7 @@ function onDayClick(day) {
 
   renderCalendar()
   fetchSlots()
-  fetchDayLocation()
+  if (state.selectedCoach !== 'colton') fetchDayLocation()
 }
 
 // --- Calendar Navigation ---
@@ -368,7 +369,9 @@ document.querySelectorAll('.session-type-btn').forEach(btn => {
 
 function showBookingForm() {
   state.selectedLocation = null
-  renderLocationPicker()
+  const showLocation = state.selectedCoach !== 'colton'
+  locationPickerGroup.style.display = showLocation ? '' : 'none'
+  if (showLocation) renderLocationPicker()
 
   document.getElementById('bookingCoachDisplay').value = COACH_NAMES[state.selectedCoach]
   bookingSessionDisplay.value = SESSION_LABELS[state.selectedSessionType]
@@ -382,7 +385,7 @@ bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault()
   if (state.isBooking) return
 
-  if (!state.selectedLocation) {
+  if (state.selectedCoach !== 'colton' && !state.selectedLocation) {
     alert('Please select a training location.')
     return
   }
@@ -475,10 +478,10 @@ function showConfirmation(booking) {
       <span class="booking-confirmation-detail-label">Duration</span>
       <span class="booking-confirmation-detail-value">${booking.duration}</span>
     </div>
-    <div class="booking-confirmation-detail">
+    ${booking.location ? `<div class="booking-confirmation-detail">
       <span class="booking-confirmation-detail-label">Location</span>
       <span class="booking-confirmation-detail-value">${booking.location}</span>
-    </div>
+    </div>` : ''}
   `
 
   bookingConfirmation.style.display = ''
