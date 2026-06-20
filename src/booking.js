@@ -31,6 +31,7 @@ const state = {
   selectedSessionType: '1-on-1',
   selectedCoach: 'connor',
   availableSlots: [],
+  unavailableDates: new Set(),
   isLoadingSlots: false,
   isBooking: false
 }
@@ -148,6 +149,29 @@ function renderCalendar() {
       }
     })
   })
+
+  applyUnavailableDays()
+}
+
+function applyUnavailableDays() {
+  calendarGrid.querySelectorAll('.calendar-day[data-day]').forEach(cell => {
+    const day = parseInt(cell.dataset.day)
+    const dateStr = toDateString(new Date(state.currentYear, state.currentMonth, day))
+    cell.classList.toggle('calendar-day--unavailable', state.unavailableDates.has(dateStr))
+  })
+}
+
+async function fetchMonthAvailability() {
+  const monthStr = `${state.currentYear}-${String(state.currentMonth + 1).padStart(2, '0')}`
+  try {
+    const res = await fetch(`/api/availability-month?month=${monthStr}&sessionType=${state.selectedSessionType}&coach=${state.selectedCoach}`)
+    if (!res.ok) return
+    const data = await res.json()
+    state.unavailableDates = new Set(data.unavailableDates || [])
+    applyUnavailableDays()
+  } catch {
+    // fail silently — red highlighting is enhancement-only
+  }
 }
 
 function onDayClick(day) {
@@ -170,7 +194,9 @@ calendarPrev.addEventListener('click', () => {
     state.currentMonth = 11
     state.currentYear--
   }
+  state.unavailableDates = new Set()
   renderCalendar()
+  fetchMonthAvailability()
 })
 
 calendarNext.addEventListener('click', () => {
@@ -179,7 +205,9 @@ calendarNext.addEventListener('click', () => {
     state.currentMonth = 0
     state.currentYear++
   }
+  state.unavailableDates = new Set()
   renderCalendar()
+  fetchMonthAvailability()
 })
 
 // ============================================
@@ -256,6 +284,9 @@ document.querySelectorAll('.coach-bubble').forEach(btn => {
     bookingFormWrapper.classList.remove('is-visible')
     bookingFormWrapper.style.maxHeight = null
 
+    state.unavailableDates = new Set()
+    fetchMonthAvailability()
+
     // Re-fetch if a date is selected
     if (state.selectedDate) {
       fetchSlots()
@@ -278,6 +309,9 @@ document.querySelectorAll('.session-type-btn').forEach(btn => {
     // Hide booking form
     bookingFormWrapper.classList.remove('is-visible')
     bookingFormWrapper.style.maxHeight = null
+
+    state.unavailableDates = new Set()
+    fetchMonthAvailability()
 
     // Re-fetch if a date is selected
     if (state.selectedDate) {
@@ -417,3 +451,4 @@ bookAnotherBtn.addEventListener('click', () => {
 // INIT
 // ============================================
 renderCalendar()
+fetchMonthAvailability()

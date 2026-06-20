@@ -3027,8 +3027,17 @@ body::after {
   font-family: var(--font-body);
 }
 
-.calendar-day:hover:not(.calendar-day--disabled):not(.calendar-day--empty):not(.calendar-day--selected) {
+.calendar-day:hover:not(.calendar-day--disabled):not(.calendar-day--empty):not(.calendar-day--selected):not(.calendar-day--unavailable) {
   background: rgba(197, 179, 88, 0.1);
+}
+
+.calendar-day--unavailable {
+  color: rgba(210, 55, 55, 0.75);
+  background: rgba(210, 55, 55, 0.07);
+}
+
+.calendar-day--unavailable:hover {
+  background: rgba(210, 55, 55, 0.14);
 }
 
 .calendar-day--today::after {
