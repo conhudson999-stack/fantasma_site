@@ -3166,6 +3166,41 @@ body::after {
   font-weight: 600;
 }
 
+/* --- Location Picker --- */
+.location-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.location-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--light-border);
+  border-radius: var(--radius);
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--dark-text);
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.location-btn:hover {
+  border-color: var(--gold);
+  color: var(--dark-text);
+  background: rgba(197, 179, 88, 0.06);
+}
+
+.location-btn--selected {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+}
+
 /* Slots states */
 .slots-loading {
   display: flex;

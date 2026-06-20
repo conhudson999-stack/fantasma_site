@@ -32,6 +32,8 @@ const state = {
   selectedCoach: 'connor',
   availableSlots: [],
   unavailableDates: new Set(),
+  selectedLocation: null,
+  dayLocation: null,
   isLoadingSlots: false,
   isBooking: false
 }
@@ -57,6 +59,7 @@ const bookingConfirmation = document.getElementById('bookingConfirmation')
 const confirmationDetails = document.getElementById('confirmationDetails')
 const bookAnotherBtn = document.getElementById('bookAnotherBtn')
 const slotsPanel = document.getElementById('slotsPanel')
+const locationPicker = document.getElementById('locationPicker')
 
 // --- Utility: format 24h time to 12h ---
 function formatTime(time24) {
@@ -174,10 +177,44 @@ async function fetchMonthAvailability() {
   }
 }
 
+async function fetchDayLocation() {
+  if (!state.selectedDate) return
+  const dateStr = toDateString(state.selectedDate)
+  try {
+    const res = await fetch(`/api/booking-location?date=${dateStr}&coach=${state.selectedCoach}`)
+    if (res.ok) {
+      const data = await res.json()
+      state.dayLocation = data.location || null
+    }
+  } catch {
+    // fail silently
+  }
+}
+
+const LOCATIONS = ['Franklin Regional High School', 'Fox Chapel High School', 'PISA']
+
+function renderLocationPicker() {
+  const available = state.dayLocation ? [state.dayLocation] : LOCATIONS
+
+  locationPicker.innerHTML = available.map(loc => {
+    const isSelected = state.selectedLocation === loc
+    return `<button type="button" class="location-btn${isSelected ? ' location-btn--selected' : ''}" data-location="${loc}">${loc}</button>`
+  }).join('')
+
+  locationPicker.querySelectorAll('.location-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.selectedLocation = btn.dataset.location
+      renderLocationPicker()
+    })
+  })
+}
+
 function onDayClick(day) {
   state.selectedDate = new Date(state.currentYear, state.currentMonth, day)
   state.selectedDate.setHours(0, 0, 0, 0)
   state.selectedTime = null
+  state.selectedLocation = null
+  state.dayLocation = null
 
   // Hide booking form
   bookingFormWrapper.classList.remove('is-visible')
@@ -185,6 +222,7 @@ function onDayClick(day) {
 
   renderCalendar()
   fetchSlots()
+  fetchDayLocation()
 }
 
 // --- Calendar Navigation ---
@@ -279,6 +317,8 @@ document.querySelectorAll('.coach-bubble').forEach(btn => {
 
     state.selectedCoach = btn.dataset.coach
     state.selectedTime = null
+    state.selectedLocation = null
+    state.dayLocation = null
 
     // Hide booking form
     bookingFormWrapper.classList.remove('is-visible')
@@ -305,6 +345,8 @@ document.querySelectorAll('.session-type-btn').forEach(btn => {
 
     state.selectedSessionType = btn.dataset.session
     state.selectedTime = null
+    state.selectedLocation = null
+    state.dayLocation = null
 
     // Hide booking form
     bookingFormWrapper.classList.remove('is-visible')
@@ -325,6 +367,9 @@ document.querySelectorAll('.session-type-btn').forEach(btn => {
 // ============================================
 
 function showBookingForm() {
+  state.selectedLocation = null
+  renderLocationPicker()
+
   document.getElementById('bookingCoachDisplay').value = COACH_NAMES[state.selectedCoach]
   bookingSessionDisplay.value = SESSION_LABELS[state.selectedSessionType]
   bookingDateTimeDisplay.value = `${formatDate(state.selectedDate)} at ${formatTime(state.selectedTime)}`
@@ -337,6 +382,11 @@ bookingForm.addEventListener('submit', async (e) => {
   e.preventDefault()
   if (state.isBooking) return
 
+  if (!state.selectedLocation) {
+    alert('Please select a training location.')
+    return
+  }
+
   state.isBooking = true
   bookingSubmitBtn.disabled = true
   bookingSubmitBtn.textContent = 'Booking...'
@@ -348,7 +398,8 @@ bookingForm.addEventListener('submit', async (e) => {
     sessionType: state.selectedSessionType,
     coach: state.selectedCoach,
     date: toDateString(state.selectedDate),
-    time: state.selectedTime
+    time: state.selectedTime,
+    location: state.selectedLocation,
   }
 
   try {
@@ -423,6 +474,10 @@ function showConfirmation(booking) {
     <div class="booking-confirmation-detail">
       <span class="booking-confirmation-detail-label">Duration</span>
       <span class="booking-confirmation-detail-value">${booking.duration}</span>
+    </div>
+    <div class="booking-confirmation-detail">
+      <span class="booking-confirmation-detail-label">Location</span>
+      <span class="booking-confirmation-detail-value">${booking.location}</span>
     </div>
   `
 

@@ -81,7 +81,7 @@ function formatDatePretty(dateStr) {
   return `${months[m - 1]} ${d}, ${y}`
 }
 
-function bookingConfirmationHTML(name, sessionLabel, datePretty, time12, durationLabel) {
+function bookingConfirmationHTML(name, sessionLabel, datePretty, time12, durationLabel, location) {
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="utf-8"></head>
@@ -124,6 +124,10 @@ function bookingConfirmationHTML(name, sessionLabel, datePretty, time12, duratio
             <td style="padding:8px 0;font-size:12px;letter-spacing:2px;color:rgba(248,247,244,0.4);border-top:1px solid rgba(255,255,255,0.05)">DURATION</td>
             <td style="padding:8px 0;font-size:15px;color:#F8F7F4;font-weight:600;text-align:right;border-top:1px solid rgba(255,255,255,0.05)">${durationLabel}</td>
           </tr>
+          <tr>
+            <td style="padding:8px 0;font-size:12px;letter-spacing:2px;color:rgba(248,247,244,0.4);border-top:1px solid rgba(255,255,255,0.05)">LOCATION</td>
+            <td style="padding:8px 0;font-size:15px;color:#F8F7F4;font-weight:600;text-align:right;border-top:1px solid rgba(255,255,255,0.05)">${location}</td>
+          </tr>
         </table>
       </div>
 
@@ -158,11 +162,17 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { name, email, phone, sessionType, coach = 'connor', date, time } = req.body
+  const { name, email, phone, sessionType, coach = 'connor', date, time, location } = req.body
+
+  const VALID_LOCATIONS = ['Franklin Regional High School', 'Fox Chapel High School', 'PISA']
 
   // Validate required fields
   if (!name || !email || !phone || !sessionType || !date || !time) {
     return res.status(400).json({ error: 'All fields are required.' })
+  }
+
+  if (!location || !VALID_LOCATIONS.includes(location)) {
+    return res.status(400).json({ error: 'Please select a valid training location.' })
   }
 
   const duration = SESSION_DURATIONS[sessionType]
@@ -219,7 +229,8 @@ export default async function handler(req, res) {
       calendarId: calendarId,
       requestBody: {
         summary: `Fantasma Training - ${SESSION_LABELS[sessionType]} - ${name} (Coach: ${coachConfig.name})`,
-        description: `Session Type: ${SESSION_LABELS[sessionType]}\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nBooked via fantasma-site.vercel.app`,
+        description: `Session Type: ${SESSION_LABELS[sessionType]}\nLocation: ${location}\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\n\nBooked via fantasma-site.vercel.app`,
+        location: location,
         start: {
           dateTime: `${slotStart}`,
           timeZone: TIMEZONE,
@@ -248,7 +259,7 @@ export default async function handler(req, res) {
         from: `"Fantasma Football" <${coachGmail}>`,
         to: email,
         subject: 'Fantasma Football — Session Confirmed',
-        html: bookingConfirmationHTML(name, SESSION_LABELS[sessionType], formatDatePretty(date), formatTime12(time), duration === 60 ? '1 hour' : '1.5 hours'),
+        html: bookingConfirmationHTML(name, SESSION_LABELS[sessionType], formatDatePretty(date), formatTime12(time), duration === 60 ? '1 hour' : '1.5 hours', location),
       })
     } catch (emailErr) {
       console.error('Customer confirmation email failed:', emailErr)
@@ -260,7 +271,7 @@ export default async function handler(req, res) {
         from: coachGmail,
         to: coachGmail,
         subject: `Fantasma Booking: ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
-        text: `New booking from the website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSession: ${SESSION_LABELS[sessionType]}\nDate: ${formatDatePretty(date)}\nTime: ${formatTime12(time)}\nDuration: ${duration === 60 ? '1 hour' : '1.5 hours'}`,
+        text: `New booking from the website:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nSession: ${SESSION_LABELS[sessionType]}\nLocation: ${location}\nDate: ${formatDatePretty(date)}\nTime: ${formatTime12(time)}\nDuration: ${duration === 60 ? '1 hour' : '1.5 hours'}`,
       })
     } catch (coachErr) {
       console.error('Coach notification email failed:', coachErr)
@@ -272,7 +283,7 @@ export default async function handler(req, res) {
         from: coachGmail,
         to: '4127372858@vtext.com',
         subject: '',
-        text: `New Booking (${coachConfig.name}): ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)}`,
+        text: `New Booking (${coachConfig.name}): ${SESSION_LABELS[sessionType]} - ${name} - ${formatDatePretty(date)} at ${formatTime12(time)} @ ${location}`,
       })
     } catch (smsErr) {
       console.error('SMS notification failed:', smsErr)
@@ -285,6 +296,7 @@ export default async function handler(req, res) {
         date: formatDatePretty(date),
         time: formatTime12(time),
         duration: duration === 60 ? '1 hour' : '1.5 hours',
+        location: location,
         calendarEventId: event.data.id,
       },
     })
